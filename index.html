@@ -21,10 +21,11 @@
 	
 		#advert_banner {
 			display: block;
-			width: 400px;
+			width: 300px;
 			height: 100px;
-
+			text-align: center;
 			margin: 0 auto;
+			
 			opacity: 0;
 		}
 		
@@ -62,7 +63,7 @@
 
 <!-- scripts -->
 	<!-- Game-Making Toolkit build -->
-<script type="application/javascript" src="src/ender.min.js"></script>
+<script type="application/javascript" src="ender.min.js"></script>
 
 	<!-- Game Code -->
 <script type="application/javascript" src="src/treeroots.js"></script>
@@ -72,7 +73,7 @@
 window.onload = function(){
 	var canvas = document.getElementById("treeroots")
 	
-	treeroots.init(canvas)
+	treeroots(canvas)
 }
 </script>
 </body>
