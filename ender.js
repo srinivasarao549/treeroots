@@ -1,7 +1,7 @@
 /*!
   * =============================================================
   * Ender: open module JavaScript framework (https://ender.no.de)
-  * Build: ender build flywheel keymaster
+  * Build: ender build ../../ender/flywheel keymaster
   * =============================================================
   */
 
