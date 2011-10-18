@@ -2,7 +2,7 @@
 
 There's no how-to, or read-me, or whatever.  If you're interested in the sourcecode, look at src.
 
-Otherwise, (play the damn thing, in whatever state it's in)[http://hughfdjackson.github.com/treeroots]
+Otherwise, [play the damn thing, in whatever state it's in](http://hughfdjackson.github.com/treeroots)
 
 
 ### Why 'Treeroots'?
