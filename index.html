@@ -2,17 +2,78 @@
 <html>
 <head>
 	<title>Treeroots</title>
+	<style>
+		body {
+			background-color: #111;
+			color: #eee;
+			
+			font-family: Georgia;
+		}
+		
+		canvas {
+			background-color: #fff;
+		}
+		
+		#main_container {
+			width: 600px;
+			margin: auto;
+		}
+	
+		#advert_banner {
+			display: block;
+			width: 400px;
+			height: 100px;
+
+			margin: 0 auto;
+			opacity: 0;
+		}
+		
+		#advert_banner:hover{
+			opacity: 1;
+		}
+		
+		.asside {
+			color: #aaa;
+			
+		}
+		
+		
+		
+	</style>
 </head>
 <body>
-
-<canvas id="main" width="400" height="400"></canvas>
-
 	
-	<h5>Bad news, Buddy</h5>
-	<p>
-		Unfortunately, your browser doesn't support the HTML5 canvas tag.  That's pretty unsporting of it.  Why not check out the latest versions of Chrome or Firefox?  Even IE9 is in on the party!
+<!-- content -->
+<div id="main_container">
+
+		<div id="advert_banner">Your Advert here.  Serious... (I'm not)</div>
+		<canvas id="treeroots" width="600" height="400">
+	
+	
+		<h2>Bad news, Buddy</h2>
+		<p>
+			Unfortunately, your browser doesn't support the HTML5 canvas tag.  That's pretty unsporting of it.  Why not check out the latest versions of Chrome or Firefox? <aside class="aside"> Even IE9 is in on the party, but you'll have to pay the for the privilege by installing Windows 7 if you're not using it already. </aside>
 		
-	</p> 
+		</p> 
+
+</canvas>
+</div>
+
+
+<!-- scripts -->
+	<!-- Game-Making Toolkit build -->
+<script type="application/javascript" src="src/ender.min.js"></script>
+
+	<!-- Game Code -->
+<script type="application/javascript" src="src/treeroots.js"></script>
+
+	<!-- Initialise game -->
+<script type="application/javascript">
+window.onload = function(){
+	var canvas = document.getElementById("treeroots")
 	
+	treeroots.init(canvas)
+}
+</script>
 </body>
 </html>
