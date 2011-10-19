@@ -156,8 +156,8 @@
             this.draw = function(context){
             
                 var style_cache = context.fillStyle
-                context.fillStyle = "rgba(0, 0, 0, 0.4)"
-            
+                context.fillStyle = "rgba(" + (150 + (Math.sin(this.x) * 100)).toFixed(0) + ", 0, 0, 0.8)"
+
                 context.beginPath();
                 context.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
                 context.closePath();
