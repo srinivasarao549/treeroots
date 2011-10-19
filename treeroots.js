@@ -100,7 +100,18 @@
             this.y = 0
             
             this.draw = function(context){
-                context.fillRect(this.x, this.y, 40, 40)
+                
+                var style_cache = context.fillStyle
+                
+                context.fillStyle = "rgba(0, 0, 0, 0.4)"
+                
+                context.beginPath();
+                context.arc(this.x, this.y, 100, 0, Math.PI*2, true);
+                context.closePath();
+                context.fill();
+                
+                context.fillStyle = style_cache
+                
             }
 
             this.update = function(td){
