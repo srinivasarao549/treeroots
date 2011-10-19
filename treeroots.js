@@ -59,7 +59,7 @@
                 
                 context.clearRect(0, 0, canvas.width, canvas.height)
                 layers.forEach(function(layer){
-                    layer.forEach(function(entity){
+                    layer.forEach(function(entity){                        
                         entity.draw(context, camera)
                     })
                 })
@@ -81,13 +81,28 @@
             
             // Methods
             draw: draw,
-            update: update
-            
+            update: update,
+            link: link            
         }
         
         // empty functions so it doesn't need to be checked at runtime 
         function draw(){}
         function update(){}
+        
+        // makes this entity aware of another
+        function link(entity, type){
+            
+            if ( !this.linked_to ) this.linked_to = {}
+            if ( !this.linked_to[type]) this.linked_to[type] = []
+            
+            this.linked_to[type].push(0)
+            
+            return this
+        }
+        
+        function create_entity(type){
+            return new game.constructors[type]().apply(this, arguments.splice[1, arguments.length - 1])
+        }
         
     })()
     
@@ -98,15 +113,14 @@
         var Cursor = function(){
             this.x = 0
             this.y = 0
-            
+
             this.draw = function(context){
                 
                 var style_cache = context.fillStyle
-                
                 context.fillStyle = "rgba(0, 0, 0, 0.4)"
                 
                 context.beginPath();
-                context.arc(this.x, this.y, 100, 0, Math.PI*2, true);
+                context.arc(this.x, this.y, 10, 0, Math.PI*2, true);
                 context.closePath();
                 context.fill();
                 
@@ -129,13 +143,60 @@
     }()
     !function(){
     
+        var Magic_missle = function(x, y, target){
+            this.x = x 
+            this.y = y
+            this.target = target
+            
+            this.draw = function(context){
+            
+                var style_cache = context.fillStyle
+                context.fillStyle = "rgba(0, 0, 0, 0.4)"
+            
+                context.beginPath();
+                context.arc(this.x, this.y, 10, 0, Math.PI*2, true);
+                context.closePath();
+                context.fill();
+            
+                context.fillStyle = style_cache
+            
+            }
+
+            this.update = function(td){
+                
+                var diffX = this.x - target.x,
+                    diffY = this.y - target.y
+                    
+                    var angle = Math.atan2(directionY, directionX)
+                    this.x += Math.cos(angle) * speed
+                    this.y += Math.sin(angle) * speed
+
+
+                // if goes off stage
+                if ( this.x < 0 || this.x > game.canvas.width || this.y < 0 ||  this.y > game.canvas.height ) game.remove_entity(this)
+            }
+        }
+    
+        Magic_missle.prototype = new Entity()
+
+        game.constructors["Magic_missle"] = Magic_missle        
+    
+    }()
+    !function(){
+    
         var Player = function(){
             this.x = 0
             this.y = 0
         
             this.draw = function(context){
+                var style_cache = context.fillStyle
+                context.fillStyle = "rgba(100, 0, 100, 0.8)"
+                
                 context.fillRect(this.x, this.y, 40, 40)
+            
+                context.fillStyle = style_cache
             }
+            
         
             this.update = function(td){
                 var input = game.input, 
@@ -154,6 +215,8 @@
                     this.x += Math.cos(angle) * speed
                     this.y += Math.sin(angle) * speed
                 }
+                
+                if ( input.mousedown_fresh ) this.create_entity("Magic_missle", this.x, this.y, this.linked.cursor[0])
             }
         }
     
@@ -210,20 +273,41 @@
         
         })
         
+        // handle mouse input
         !function(){
-            // handle mouse input
+            var input = game.input,
+                mousedown_fresh = false
+            
             bean.add(canvas, 'mousemove', function(e){
-                var input = game.input
-
                 input.mouseX = e.offsetX
                 input.mouseY = e.offsetY          
             })
+        
+            bean.add(canvas, 'mousedown', function(e){
+                input.mousedown = true
+                if ( mousedown_fresh ) mousedown_fresh = false
+                else mousedown_fresh = true
+            })
             
+            bean.add(canvas, 'mouseup', function(e){
+                input.mousedown = false
+            })
         }()
 
+
+        
         // load objects
-        game.add_object(new game.constructors.Cursor())
-        game.add_object(new game.constructors.Player())
+        !function(){
+            var player = new game.constructors.Player(),
+                cursor = new game.constructors.Cursor()
+                
+            // aquaint the two 
+            player.link(cursor, "cursor")
+            
+            game.add_object(player)
+            game.add_object(cursor)
+        
+        }()
         
         // loop
         flywheel(function(time_delta){

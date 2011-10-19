@@ -46,20 +46,41 @@
         
         })
         
+        // handle mouse input
         !function(){
-            // handle mouse input
+            var input = game.input,
+                mousedown_fresh = false
+            
             bean.add(canvas, 'mousemove', function(e){
-                var input = game.input
-
                 input.mouseX = e.offsetX
                 input.mouseY = e.offsetY          
             })
+        
+            bean.add(canvas, 'mousedown', function(e){
+                input.mousedown = true
+                if ( mousedown_fresh ) mousedown_fresh = false
+                else mousedown_fresh = true
+            })
             
+            bean.add(canvas, 'mouseup', function(e){
+                input.mousedown = false
+            })
         }()
 
+
+        
         // load objects
-        game.add_object(new game.constructors.Cursor())
-        game.add_object(new game.constructors.Player())
+        !function(){
+            var player = new game.constructors.Player(),
+                cursor = new game.constructors.Cursor()
+                
+            // aquaint the two 
+            player.link(cursor, "cursor")
+            
+            game.add_object(player)
+            game.add_object(cursor)
+        
+        }()
         
         // loop
         flywheel(function(time_delta){

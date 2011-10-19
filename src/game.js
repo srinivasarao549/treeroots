@@ -57,7 +57,7 @@
                 
                 context.clearRect(0, 0, canvas.width, canvas.height)
                 layers.forEach(function(layer){
-                    layer.forEach(function(entity){
+                    layer.forEach(function(entity){                        
                         entity.draw(context, camera)
                     })
                 })
