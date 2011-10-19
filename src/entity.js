@@ -1,15 +1,17 @@
 //--------------------------------//
 
 
-    // entity constructor
-    var Entity = function(){
-        this.x = 0
-        this.y = 0
-    }
+    // entity base constructor
+    var Entity = function(){}
     
     Entity.prototype = (function(){
         
         return {
+            // Default attr
+            layer: 0,
+            
+            
+            // Methods
             draw: draw,
             update: update
             
@@ -20,7 +22,4 @@
         function update(){}
         
     })()
-    
-    
-    
     

@@ -1,11 +1,19 @@
 
     !function(){
         
-        var player = new Entity()
+        var Player = function(){
+            this.x = 0
+            this.y = 0
+        }
         
-        console.log(player)
+        Player.prototype = new Entity()
         
-        game.constructors["player"] = player
+        Player.prototype.draw = function(context){
+            context.fillRect(0, 0, 100, 100)
+        }
+                
+                
+        game.constructors["Player"] = Player
         
     }()
     
