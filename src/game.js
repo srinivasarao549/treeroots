@@ -10,7 +10,8 @@
             camera: { x: 0, y: 0 }, 
             entities: [],           // all objects in scene
             layers: [],             // rough drawing order
-            constructors: {},       // constructor functions for each game object 
+            constructors: {},       // constructor functions for each game object
+            input: {},              // input types and bools, letting handlers be defined externally
             canvas: undefined,
             context: undefined,
         
@@ -33,7 +34,7 @@
             this.entities.push(entity)
             
             // make a new layer if need be
-            if ( this.layers[entity.layer] == undefined ) this.layers[entity.layer] = []
+            if ( typeof this.layers[entity.layer] == "undefined" ) this.layers[entity.layer] = []
             
             // add object to layer
             this.layers[entity.layer].push(entity)
@@ -54,6 +55,7 @@
                 layers = this.layers,
                 camera = this.camera
                 
+                context.clearRect(0, 0, canvas.width, canvas.height)
                 layers.forEach(function(layer){
                     layer.forEach(function(entity){
                         entity.draw(context, camera)
