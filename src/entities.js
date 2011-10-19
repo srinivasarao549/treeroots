@@ -35,7 +35,7 @@
         
             this.update = function(td){
                 var input = game.input, 
-                    speed = 0.5 * td,
+                    speed = 0.25 * td,
                     directionX = 0,
                     directionY = 0
         

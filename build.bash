@@ -1,8 +1,4 @@
-#!/bin/bash 
-
-
 # concat all treeroots files together
-
 
 #path to source
 pts="src/"
