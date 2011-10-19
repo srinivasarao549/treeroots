@@ -33,7 +33,11 @@
                     this.y += Math.sin(angle) * speed
                 }
                 
-                if ( input.mousedown_fresh ) this.create_entity("Magic_missle", this.x, this.y, this.linked.cursor[0])
+                if ( input.mousedown_fresh ) {
+                    var cursor = this.linked_to.cursor[0]
+                    var mm = new game.constructors.Magic_missle(this.x, this.y, {x: cursor.x, y: cursor.y, radius: cursor.radius})
+                    game.add_entity(mm)
+                }
             }
         }
     

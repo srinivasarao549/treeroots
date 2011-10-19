@@ -14,7 +14,7 @@
             // Methods
             draw: draw,
             update: update,
-            link: link            
+            link: link,
         }
         
         // empty functions so it doesn't need to be checked at runtime 
@@ -27,13 +27,9 @@
             if ( !this.linked_to ) this.linked_to = {}
             if ( !this.linked_to[type]) this.linked_to[type] = []
             
-            this.linked_to[type].push(0)
+            this.linked_to[type].push(entity)
             
             return this
-        }
-        
-        function create_entity(type){
-            return new game.constructors[type]().apply(this, arguments.splice[1, arguments.length - 1])
         }
         
     })()

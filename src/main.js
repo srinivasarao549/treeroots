@@ -8,12 +8,14 @@
         // helper modules
         var flywheel = require("flywheel"),
             bean = require("bean"),
-            bonzo = require("bonzo")
+            bonzo = require("bonzo"),
+            clash = require("clash")
             
         // initialise game
         game.canvas = canvas
         game.context = canvas.getContext("2d")
 
+        game.check_collision = clash().check
         
         // handle keyboard input
         bean.add(document, 'keydown', function(e){
@@ -48,9 +50,8 @@
         
         // handle mouse input
         !function(){
-            var input = game.input,
-                mousedown_fresh = false
-            
+            var input = game.input
+                        
             bean.add(canvas, 'mousemove', function(e){
                 input.mouseX = e.offsetX
                 input.mouseY = e.offsetY          
@@ -58,8 +59,7 @@
         
             bean.add(canvas, 'mousedown', function(e){
                 input.mousedown = true
-                if ( mousedown_fresh ) mousedown_fresh = false
-                else mousedown_fresh = true
+                input.mousedown_fresh = true
             })
             
             bean.add(canvas, 'mouseup', function(e){
@@ -77,8 +77,8 @@
             // aquaint the two 
             player.link(cursor, "cursor")
             
-            game.add_object(player)
-            game.add_object(cursor)
+            game.add_entity(player)
+            game.add_entity(cursor)
         
         }()
         
@@ -86,6 +86,9 @@
         flywheel(function(time_delta){
             game.update(time_delta)
             game.draw_all()
+            
+            // clear input 
+            game.input.mousedown_fresh = false
         }).start()
 
     }

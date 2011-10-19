@@ -17,8 +17,8 @@
         
             // methods
             update: update,         
-            add_object: add_object,
-            remove_object: remove_object,
+            add_entity: add_entity,
+            remove_entity: remove_entity,
             draw_all: draw_all
         }
         
@@ -30,7 +30,8 @@
         }
         
         // adds object to the game
-        function add_object(entity){
+        function add_entity(entity){
+            
             this.entities.push(entity)
             
             // make a new layer if need be
@@ -38,14 +39,20 @@
             
             // add object to layer
             this.layers[entity.layer].push(entity)
+            
+            return entity
         }
         
-        // removes object from the game
-        function remove_object(entity){
+        // removes entity from the game
+        function remove_entity(entity){
             var entities = this.entities,
-                i = entities.indexOf(entity)
+                layers = this.layers
                 
-            entities.splice(i, 1)
+            entities.splice(entities.indexOf(entity), 1)
+            
+            layers.forEach(function(layer){
+                layer.splice(layer.indexOf(entity), 1)
+            })
         }
     
         // draws everything in the game

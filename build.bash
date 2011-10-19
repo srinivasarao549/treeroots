@@ -14,4 +14,4 @@ cat ${pts}header.js ${pts}game.js ${pts}entity.js ${pts}entities.js ${pts}main.j
 
 #path to ender
 pte="../../ender/"
-ender build ${pte}flywheel bean bonzo
+ender build ${pte}flywheel ${pte}clash bean bonzo

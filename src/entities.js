@@ -5,14 +5,15 @@
         var Cursor = function(){
             this.x = 0
             this.y = 0
-
+            this.radius = 10
+            
             this.draw = function(context){
                 
                 var style_cache = context.fillStyle
                 context.fillStyle = "rgba(0, 0, 0, 0.4)"
                 
                 context.beginPath();
-                context.arc(this.x, this.y, 10, 0, Math.PI*2, true);
+                context.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
                 context.closePath();
                 context.fill();
                 
@@ -36,9 +37,10 @@
     !function(){
     
         var Magic_missle = function(x, y, target){
-            this.x = x 
+            this.x = x
             this.y = y
             this.target = target
+            this.radius = 10
             
             this.draw = function(context){
             
@@ -46,7 +48,7 @@
                 context.fillStyle = "rgba(0, 0, 0, 0.4)"
             
                 context.beginPath();
-                context.arc(this.x, this.y, 10, 0, Math.PI*2, true);
+                context.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
                 context.closePath();
                 context.fill();
             
@@ -56,16 +58,25 @@
 
             this.update = function(td){
                 
-                var diffX = this.x - target.x,
-                    diffY = this.y - target.y
-                    
-                    var angle = Math.atan2(directionY, directionX)
-                    this.x += Math.cos(angle) * speed
-                    this.y += Math.sin(angle) * speed
-
-
-                // if goes off stage
+                var diffX = this.target.x - this.x,
+                    diffY = this.target.y - this.y,
+                    speed = 0.4 * td              
+                
+                var angle = Math.atan2(diffY, diffX)
+                
+                this.x += Math.cos(angle) * speed
+                this.y += Math.sin(angle) * speed
+  
+                  // if goes off stage
                 if ( this.x < 0 || this.x > game.canvas.width || this.y < 0 ||  this.y > game.canvas.height ) game.remove_entity(this)
+                
+                // if gets to target
+                if ( game.check_collision.circle_circle(this, this.target)) this.explode()
+            }
+        
+            this.explode = function(){
+    
+                game.remove_entity(this)
             }
         }
     
@@ -108,7 +119,11 @@
                     this.y += Math.sin(angle) * speed
                 }
                 
-                if ( input.mousedown_fresh ) this.create_entity("Magic_missle", this.x, this.y, this.linked.cursor[0])
+                if ( input.mousedown_fresh ) {
+                    var cursor = this.linked_to.cursor[0]
+                    var mm = new game.constructors.Magic_missle(this.x, this.y, {x: cursor.x, y: cursor.y, radius: cursor.radius})
+                    game.add_entity(mm)
+                }
             }
         }
     
