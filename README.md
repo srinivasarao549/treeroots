@@ -1,11 +1,11 @@
-#### Treeroots is a complete WIP
+### Treeroots is a complete WIP
 
-There's no how-to, or read-me, or whatever.  If you're interested in the sourcecode, look at src.
+There's no how-to, or read-me, or whatever.  If you're interested in the source code, which is in treeroots.js.
 
-Otherwise, [play the damn thing, in whatever state it's in](http://hughfdjackson.github.com/treeroots)
+Otherwise, [play the damn thing, in whatever state it's in](http://hughfdjackson.github.com/treeroots).
 
 
-### Why 'Treeroots'?
+#### Why 'Treeroots'?
 
 Cause you're underground.
 

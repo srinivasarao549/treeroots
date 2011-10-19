@@ -1,5 +1,8 @@
 //  contains main game logic
 !function(window, undefined){
+//--------------------------------//
+
+
 
     // main controlling object
     var game = (function(){
@@ -59,7 +62,9 @@
                 })
         }
         
-    })()
+    })()//--------------------------------//
+
+
     // entity constructor
     var Entity = function(){
         this.x = 0
@@ -92,7 +97,9 @@
         game.constructors["player"] = player
         
     }()
-    
+    //--------------------------------//
+
+
 
     // the function the outside world gets to initialise the game
     window["treeroots"] = function(canvas){

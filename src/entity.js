@@ -1,3 +1,5 @@
+//--------------------------------//
+
 
     // entity constructor
     var Entity = function(){
