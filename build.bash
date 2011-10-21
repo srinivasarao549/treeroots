@@ -1,17 +1,25 @@
 # concat all treeroots files together
 
-#path to source
-pts="src/"
+#paths
+pt_src="src/"
+pt_boilerplate="${pt_src}/boilerplate/"
+pt_entities="${pt_src}entities/"
+pt_tests="src-test/"
+pt_temp="${pt_src}/.temp/"
 
-#path to entities
-ptes="src/entities/"
+#create temporary folder for all intermediate representations of the src
+mkdir $pt_temp
 
-#cat files
-cat ${ptes}* > ${pts}entities.js
-cat ${pts}header.js ${pts}game.js ${pts}entity.js ${pts}entities.js ${pts}main.js ${pts}footer.js > treeroots.js
+    #intermediate build steps
+    cat ${pt_entities}* > ${pt_temp}entities.tmp.js
+    cat ${pt_src}game.js ${pt_src}entity.js ${pt_temp}entities.tmp.js ${pt_src}main.js > ${pt_temp}treeroots.unwrapped.tmp.js
 
-#scripts to build the right ender modules
+    #cat files for test
+    cat ${pt_temp}treeroots.unwrapped.tmp.js > ${pt_test}treeroots.test.js
 
-#path to ender
-pte="../../ender/"
-ender build ${pte}flywheel ${pte}clash bean bonzo
+    #cat files for production
+    cat ${pt_boilerplate}header.js ${pt_temp}treeroots.unwrapped.tmp.js ${pt_boilerplate}footer.js > treeroots.js
+
+
+#remove the intermediate entities file created
+rm -r $pt_temp

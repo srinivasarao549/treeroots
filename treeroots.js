@@ -186,7 +186,7 @@
             }
         
             this.explode = function(){
-    
+                
                 game.remove_entity(this)
             }
         }
