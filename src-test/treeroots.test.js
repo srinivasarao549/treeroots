@@ -198,9 +198,9 @@
         !function(){
             var input = game.input
                         
-            bean.add(canvas, 'mousemove', function(e){
-                input.mouseX = e.offsetX
-                input.mouseY = e.offsetY          
+            bean.add(document, 'mousemove', function(e){
+                input.mouseX = e.x - canvas.offsetLeft
+                input.mouseY = e.y - canvas.offsetTop
             })
         
             bean.add(canvas, 'mousedown', function(e){
