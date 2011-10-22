@@ -23,6 +23,16 @@
 
             this.update = function(td){
                 
+                this.move(td)
+                
+                  // if goes off stage
+                if ( this.x < 0 || this.x > game.canvas.width || this.y < 0 ||  this.y > game.canvas.height ) game.remove_entity(this)
+                
+                // if gets to target
+                if ( game.check_collision.point_circle(this, this.target)) this.explode()
+            }
+            
+            this.move = function(td){
                 var diffX = this.target.x - this.x,
                     diffY = this.target.y - this.y,
                     speed = 0.4 * td              
@@ -31,16 +41,9 @@
                 
                 this.x += Math.cos(angle) * speed
                 this.y += Math.sin(angle) * speed
-  
-                  // if goes off stage
-                if ( this.x < 0 || this.x > game.canvas.width || this.y < 0 ||  this.y > game.canvas.height ) game.remove_entity(this)
-                
-                // if gets to target
-                if ( game.check_collision.circle_circle(this, this.target)) this.explode()
             }
         
             this.explode = function(){
-                
                 game.remove_entity(this)
             }
         }
