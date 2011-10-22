@@ -3,9 +3,9 @@ pt_src="src/"
 pt_boilerplate="${pt_src}/boilerplate/"
 pt_entities="${pt_src}entities/"
 pt_core="${pt_src}core/"
-pt_temp="${pt_src}/.temp/"
+pt_temp=".temp/"
 
-pt_tests="src-test/"
+pt_test="src-test/"
 
 #create temporary folder for all intermediate representations of the src
 mkdir $pt_temp
@@ -15,7 +15,7 @@ mkdir $pt_temp
     cat ${pt_core}game.js ${pt_core}entity.js ${pt_temp}entities.tmp.js ${pt_core}main.js > ${pt_temp}treeroots.unwrapped.tmp.js
 
     #cat files for test
-    cat ${pt_temp}treeroots.unwrapped.tmp.js > ${pt_test}treeroots.test.js
+    cp ${pt_temp}treeroots.unwrapped.tmp.js ${pt_test}treeroots.test.js
 
     #cat files for production
     cat ${pt_boilerplate}header.js ${pt_temp}treeroots.unwrapped.tmp.js ${pt_boilerplate}footer.js > treeroots.js
