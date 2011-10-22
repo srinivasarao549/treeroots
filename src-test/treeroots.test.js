@@ -71,47 +71,14 @@
         }
         
     })()
-//--------------------------------//
 
-
-    // entity base constructor
-    var Entity = function(){}
-    
-    Entity.prototype = (function(){
-        
-        return {
-            // Default attr
-            layer: 0,
-            
-            
-            // Methods
-            draw: draw,
-            update: update,
-            link: link,
-        }
-        
-        // empty functions so it doesn't need to be checked at runtime 
-        function draw(){}
-        function update(){}
-        
-        // makes this entity aware of another
-        function link(entity, type){
-            
-            if ( !this.linked_to ) this.linked_to = {}
-            if ( !this.linked_to[type]) this.linked_to[type] = []
-            
-            this.linked_to[type].push(entity)
-            
-            return this
-        }
-        
-    })()
-    
-
+    // collection for entities
+    var entities = {}
 
     !function(){
         
-        var Cursor = function(){
+        entities.Cursor = function(){
+            this.layer = 0
             this.x = 0
             this.y = 0
             this.radius = 10
@@ -138,68 +105,12 @@
             }
         }
         
-        Cursor.prototype = new Entity()
-
-        game.constructors["Cursor"] = Cursor        
         
     }()
     !function(){
     
-        var Magic_missle = function(x, y, target){
-            this.x = x
-            this.y = y
-            this.target = target
-            this.radius = 10
-            
-            this.draw = function(context){
-            
-                var style_cache = context.fillStyle
-                context.fillStyle = "rgba(" + (150 + (Math.sin(this.x) * 100)).toFixed(0) + ", 0, 0, 0.8)"
-
-                context.beginPath();
-                context.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
-                context.closePath();
-                context.fill();
-            
-                context.fillStyle = style_cache
-            
-            }
-
-            this.update = function(td){
-                
-                this.move(td)
-                
-                  // if goes off stage
-                if ( this.x < 0 || this.x > game.canvas.width || this.y < 0 ||  this.y > game.canvas.height ) game.remove_entity(this)
-                
-                // if gets to target
-                if ( game.check_collision.point_circle(this, this.target)) this.explode()
-            }
-            
-            this.move = function(td){
-                var diffX = this.target.x - this.x,
-                    diffY = this.target.y - this.y,
-                    speed = 0.4 * td              
-                
-                var angle = Math.atan2(diffY, diffX)
-                
-                this.x += Math.cos(angle) * speed
-                this.y += Math.sin(angle) * speed
-            }
-        
-            this.explode = function(){
-                game.remove_entity(this)
-            }
-        }
-    
-        Magic_missle.prototype = new Entity()
-
-        game.constructors["Magic_missle"] = Magic_missle        
-    
-    }()
-    !function(){
-    
-        var Player = function(){
+        entities.Player = function(){
+            this.layer = 0
             this.x = 0
             this.y = 0
         
@@ -212,7 +123,6 @@
                 context.fillStyle = style_cache
             }
             
-        
             this.update = function(td){
                 var input = game.input, 
                     speed = 0.25 * td,
@@ -231,17 +141,8 @@
                     this.y += Math.sin(angle) * speed
                 }
                 
-                if ( input.mousedown_fresh ) {
-                    var cursor = this.linked_to.cursor[0]
-                    var mm = new game.constructors.Magic_missle(this.x, this.y, {x: cursor.x, y: cursor.y, radius: cursor.radius})
-                    game.add_entity(mm)
-                }
             }
         }
-    
-        Player.prototype = new Entity()
-            
-        game.constructors["Player"] = Player
     
     }()
 //--------------------------------//
@@ -254,7 +155,6 @@
         // helper modules
         var flywheel = require("flywheel"),
             bean = require("bean"),
-            bonzo = require("bonzo"),
             clash = require("clash")
             
         // initialise game
@@ -281,7 +181,7 @@
         
         bean.add(document, 'keyup', function(e){
             var k = e.which,
-                input = game.input
+                input = game.input  
             
             if ( k == 65 ) 
                 input.left = false
@@ -317,11 +217,9 @@
         
         // load objects
         !function(){
-            var player = new game.constructors.Player(),
-                cursor = new game.constructors.Cursor()
+            var player = new entities.Player(),
+                cursor = new entities.Cursor()
                 
-            // aquaint the two 
-            player.link(cursor, "cursor")
             
             game.add_entity(player)
             game.add_entity(cursor)

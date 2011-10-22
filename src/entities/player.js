@@ -1,7 +1,8 @@
 
     !function(){
     
-        var Player = function(){
+        entities.Player = function(){
+            this.layer = 0
             this.x = 0
             this.y = 0
         
@@ -14,7 +15,6 @@
                 context.fillStyle = style_cache
             }
             
-        
             this.update = function(td){
                 var input = game.input, 
                     speed = 0.25 * td,
@@ -33,16 +33,7 @@
                     this.y += Math.sin(angle) * speed
                 }
                 
-                if ( input.mousedown_fresh ) {
-                    var cursor = this.linked_to.cursor[0]
-                    var mm = new game.constructors.Magic_missle(this.x, this.y, {x: cursor.x, y: cursor.y, radius: cursor.radius})
-                    game.add_entity(mm)
-                }
             }
         }
-    
-        Player.prototype = new Entity()
-            
-        game.constructors["Player"] = Player
     
     }()

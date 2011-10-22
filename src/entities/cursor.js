@@ -2,7 +2,8 @@
 
     !function(){
         
-        var Cursor = function(){
+        entities.Cursor = function(){
+            this.layer = 0
             this.x = 0
             this.y = 0
             this.radius = 10
@@ -29,8 +30,5 @@
             }
         }
         
-        Cursor.prototype = new Entity()
-
-        game.constructors["Cursor"] = Cursor        
         
     }()

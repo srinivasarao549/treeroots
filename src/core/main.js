@@ -8,7 +8,6 @@
         // helper modules
         var flywheel = require("flywheel"),
             bean = require("bean"),
-            bonzo = require("bonzo"),
             clash = require("clash")
             
         // initialise game
@@ -35,7 +34,7 @@
         
         bean.add(document, 'keyup', function(e){
             var k = e.which,
-                input = game.input
+                input = game.input  
             
             if ( k == 65 ) 
                 input.left = false
@@ -71,11 +70,9 @@
         
         // load objects
         !function(){
-            var player = new game.constructors.Player(),
-                cursor = new game.constructors.Cursor()
+            var player = new entities.Player(),
+                cursor = new entities.Cursor()
                 
-            // aquaint the two 
-            player.link(cursor, "cursor")
             
             game.add_entity(player)
             game.add_entity(cursor)
