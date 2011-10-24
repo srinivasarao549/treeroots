@@ -201,8 +201,8 @@
             var input = game.input
                         
             bean.add(document, 'mousemove', function(e){
-                input.mouseX = e.x - canvas.offsetLeft
-                input.mouseY = e.y - canvas.offsetTop
+                input.mouseX = e.clientX - canvas.offsetLeft
+                input.mouseY = e.clientY - canvas.offsetTop
             })
         
             bean.add(canvas, 'mousedown', function(e){
@@ -214,7 +214,6 @@
                 input.mousedown = false
             })
         }()
-
 
         
         // load objects
