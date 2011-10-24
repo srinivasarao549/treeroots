@@ -2,72 +2,51 @@
 
 
     // main controlling object
-    var game = (function(){
+    function Game(){
         
-        return {
-            // attr
-            
-            camera: { x: 0, y: 0 }, 
-            entities: [],           // all objects in scene
-            layers: [],             // rough drawing order
-            constructors: {},       // constructor functions for each game object
-            input: {},              // input types and bools, letting handlers be defined externally
-            canvas: undefined,
-            context: undefined,
+        // private
+        var channels = {}
         
-            // methods
-            update: update,         
-            add_entity: add_entity,
-            remove_entity: remove_entity,
-            draw_all: draw_all
+        // public        
+        return {       
+            input: {},
+            fire: fire,
+            bind: bind,
+            unbind: unbind,
+            before_fire: before_fire,
+            after_fire: after_fire
         }
         
-        // updates all objects in the game
-        function update(time_delta){
-            this.entities.forEach(function(entity, key){
-                entity.update(time_delta)
+        function before_fire(channel, callback){
+            if ( channels[channel] === undefined ) channels[channel] = []
+            channels[channel].before = callback
+        }
+        
+        function after_fire(channel, callback){
+            if ( channels[channel] === undefined ) channels[channel] = []
+            channels[channel].after = callback
+        }
+        
+        function fire(channel, message){
+            var c = channels[channel]
+            if ( !c ) c = []
+            
+            if ( c.before ) c.before()
+            c.forEach(function(callback){
+                if ( callback !== undefined ) callback(message)
             })
+            if ( c.after ) c.after()
         }
         
-        // adds object to the game
-        function add_entity(entity){
-            
-            this.entities.push(entity)
-            
-            // make a new layer if need be
-            if ( typeof this.layers[entity.layer] == "undefined" ) this.layers[entity.layer] = []
-            
-            // add object to layer
-            this.layers[entity.layer].push(entity)
-            
-            return entity
+        function bind(channel, callback){    
+            if ( channels[channel] === undefined ) channels[channel] = []
+            channels[channel].push(callback)
+            return channels[channel].length - 1
         }
         
-        // removes entity from the game
-        function remove_entity(entity){
-            var entities = this.entities,
-                layers = this.layers
-                
-            entities.splice(entities.indexOf(entity), 1)
-            
-            layers.forEach(function(layer){
-                layer.splice(layer.indexOf(entity), 1)
-            })
+        function unbind(channel, id){
+            delete channels[channel][id]
         }
+    }
     
-        // draws everything in the game
-        function draw_all(){
-            var canvas = this.canvas,
-                context = this.context,
-                layers = this.layers,
-                camera = this.camera
-                
-                context.clearRect(0, 0, canvas.width, canvas.height)
-                layers.forEach(function(layer){
-                    layer.forEach(function(entity){                        
-                        entity.draw(context, camera)
-                    })
-                })
-        }
-        
-    })()
+    var game = new Game()

@@ -2,75 +2,54 @@
 
 
     // main controlling object
-    var game = (function(){
+    function Game(){
         
-        return {
-            // attr
-            
-            camera: { x: 0, y: 0 }, 
-            entities: [],           // all objects in scene
-            layers: [],             // rough drawing order
-            constructors: {},       // constructor functions for each game object
-            input: {},              // input types and bools, letting handlers be defined externally
-            canvas: undefined,
-            context: undefined,
+        // private
+        var channels = {}
         
-            // methods
-            update: update,         
-            add_entity: add_entity,
-            remove_entity: remove_entity,
-            draw_all: draw_all
+        // public        
+        return {       
+            input: {},
+            fire: fire,
+            bind: bind,
+            unbind: unbind,
+            before_fire: before_fire,
+            after_fire: after_fire
         }
         
-        // updates all objects in the game
-        function update(time_delta){
-            this.entities.forEach(function(entity, key){
-                entity.update(time_delta)
+        function before_fire(channel, callback){
+            if ( channels[channel] === undefined ) channels[channel] = []
+            channels[channel].before = callback
+        }
+        
+        function after_fire(channel, callback){
+            if ( channels[channel] === undefined ) channels[channel] = []
+            channels[channel].after = callback
+        }
+        
+        function fire(channel, message){
+            var c = channels[channel]
+            if ( !c ) c = []
+            
+            if ( c.before ) c.before()
+            c.forEach(function(callback){
+                if ( callback !== undefined ) callback(message)
             })
+            if ( c.after ) c.after()
         }
         
-        // adds object to the game
-        function add_entity(entity){
-            
-            this.entities.push(entity)
-            
-            // make a new layer if need be
-            if ( typeof this.layers[entity.layer] == "undefined" ) this.layers[entity.layer] = []
-            
-            // add object to layer
-            this.layers[entity.layer].push(entity)
-            
-            return entity
+        function bind(channel, callback){    
+            if ( channels[channel] === undefined ) channels[channel] = []
+            channels[channel].push(callback)
+            return channels[channel].length - 1
         }
         
-        // removes entity from the game
-        function remove_entity(entity){
-            var entities = this.entities,
-                layers = this.layers
-                
-            entities.splice(entities.indexOf(entity), 1)
-            
-            layers.forEach(function(layer){
-                layer.splice(layer.indexOf(entity), 1)
-            })
+        function unbind(channel, id){
+            delete channels[channel][id]
         }
+    }
     
-        // draws everything in the game
-        function draw_all(){
-            var canvas = this.canvas,
-                context = this.context,
-                layers = this.layers,
-                camera = this.camera
-                
-                context.clearRect(0, 0, canvas.width, canvas.height)
-                layers.forEach(function(layer){
-                    layer.forEach(function(entity){                        
-                        entity.draw(context, camera)
-                    })
-                })
-        }
-        
-    })()
+    var game = new Game()
 
     // collection for entities
     var entities = {}
@@ -78,33 +57,7 @@
     !function(){
         
         entities.Cursor = function(){
-            this.layer = 0
-            this.x = 0
-            this.y = 0
-            this.radius = 10
-            
-            this.draw = function(context){
-                
-                var style_cache = context.fillStyle
-                context.fillStyle = "rgba(0, 0, 0, 0.4)"
-                
-                context.beginPath();
-                context.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
-                context.closePath();
-                context.fill();
-                
-                context.fillStyle = style_cache
-                
-            }
-
-            this.update = function(td){
-                var input = game.input
-                
-                this.x = input.mouseX
-                this.y = input.mouseY
-            }
         }
-        
         
     }()
     !function(){
@@ -120,15 +73,18 @@
                 
                 context.fillRect(this.x, this.y, 40, 40)
             
-                context.fillStyle = style_cache
+                context.fillStyle = style_cache                
             }
             
-            this.update = function(td){
-                var input = game.input, 
-                    speed = 0.25 * td,
+            this.update = function(e){
+                var input = e.input, 
+                    speed = 0.25 * e.td,
                     directionX = 0,
                     directionY = 0
-        
+                    
+                    this.x = input.mouseX
+                    this.y = input.mouseY
+        /*
                 if ( input.right ) directionX += 1
                 if ( input.left ) directionX -= 1
                 if ( input.down ) directionY += 1
@@ -140,13 +96,17 @@
                     this.x += Math.cos(angle) * speed
                     this.y += Math.sin(angle) * speed
                 }
-                
+          */
+          
             }
+            
+            game.bind("draw", this.draw.bind(this))
+            game.bind("update", this.update.bind(this))
+        
         }
     
     }()
 //--------------------------------//
-
 
 
     // the function the outside world gets to initialise the game
@@ -158,16 +118,15 @@
             clash = require("clash")
             
         // initialise game
-        game.canvas = canvas
-        game.context = canvas.getContext("2d")
+        var context = canvas.getContext("2d"),
+            input = {}
 
         game.check_collision = clash().check
         
         // handle keyboard input
         bean.add(document, 'keydown', function(e){
-            var k = e.which,
-                input = game.input
-            
+            var k = e.which
+
             if ( k == 65 ) 
                 input.left = true
             else if ( k == 68 ) 
@@ -180,9 +139,8 @@
         }) 
         
         bean.add(document, 'keyup', function(e){
-            var k = e.which,
-                input = game.input  
-            
+            var k = e.which
+                        
             if ( k == 65 ) 
                 input.left = false
             else if ( k == 68 ) 
@@ -196,8 +154,6 @@
         
         // handle mouse input
         !function(){
-            var input = game.input
-                        
             bean.add(document, 'mousemove', function(e){
                 input.mouseX = e.clientX - canvas.offsetLeft
                 input.mouseY = e.clientY - canvas.offsetTop
@@ -219,19 +175,19 @@
             var player = new entities.Player(),
                 cursor = new entities.Cursor()
                 
-            
-            game.add_entity(player)
-            game.add_entity(cursor)
-        
         }()
         
+        game.before_fire("draw", function(){
+            context.clearRect(0, 0, canvas.width, canvas.height)
+        })
+         
         // loop
         flywheel(function(time_delta){
-            game.update(time_delta)
-            game.draw_all()
             
-            // clear input 
-            game.input.mousedown_fresh = false
+            game.fire("update", {time_delta: time_delta, input: input})
+            game.fire("draw", context)
+
+            console.log(input)
         }).start()
 
     }

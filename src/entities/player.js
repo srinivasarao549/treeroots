@@ -12,15 +12,18 @@
                 
                 context.fillRect(this.x, this.y, 40, 40)
             
-                context.fillStyle = style_cache
+                context.fillStyle = style_cache                
             }
             
-            this.update = function(td){
-                var input = game.input, 
-                    speed = 0.25 * td,
+            this.update = function(e){
+                var input = e.input, 
+                    speed = 0.25 * e.td,
                     directionX = 0,
                     directionY = 0
-        
+                    
+                    this.x = input.mouseX
+                    this.y = input.mouseY
+        /*
                 if ( input.right ) directionX += 1
                 if ( input.left ) directionX -= 1
                 if ( input.down ) directionY += 1
@@ -32,8 +35,13 @@
                     this.x += Math.cos(angle) * speed
                     this.y += Math.sin(angle) * speed
                 }
-                
+          */
+          
             }
+            
+            game.bind("draw", this.draw.bind(this))
+            game.bind("update", this.update.bind(this))
+        
         }
     
     }()

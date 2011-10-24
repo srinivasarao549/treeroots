@@ -1,7 +1,6 @@
 //--------------------------------//
 
 
-
     // the function the outside world gets to initialise the game
     window["treeroots"] = function(canvas){
         
@@ -11,16 +10,15 @@
             clash = require("clash")
             
         // initialise game
-        game.canvas = canvas
-        game.context = canvas.getContext("2d")
+        var context = canvas.getContext("2d"),
+            input = {}
 
         game.check_collision = clash().check
         
         // handle keyboard input
         bean.add(document, 'keydown', function(e){
-            var k = e.which,
-                input = game.input
-            
+            var k = e.which
+
             if ( k == 65 ) 
                 input.left = true
             else if ( k == 68 ) 
@@ -33,9 +31,8 @@
         }) 
         
         bean.add(document, 'keyup', function(e){
-            var k = e.which,
-                input = game.input  
-            
+            var k = e.which
+                        
             if ( k == 65 ) 
                 input.left = false
             else if ( k == 68 ) 
@@ -49,8 +46,6 @@
         
         // handle mouse input
         !function(){
-            var input = game.input
-                        
             bean.add(document, 'mousemove', function(e){
                 input.mouseX = e.clientX - canvas.offsetLeft
                 input.mouseY = e.clientY - canvas.offsetTop
@@ -72,19 +67,19 @@
             var player = new entities.Player(),
                 cursor = new entities.Cursor()
                 
-            
-            game.add_entity(player)
-            game.add_entity(cursor)
-        
         }()
         
+        game.before_fire("draw", function(){
+            context.clearRect(0, 0, canvas.width, canvas.height)
+        })
+         
         // loop
         flywheel(function(time_delta){
-            game.update(time_delta)
-            game.draw_all()
             
-            // clear input 
-            game.input.mousedown_fresh = false
+            game.fire("update", {time_delta: time_delta, input: input})
+            game.fire("draw", context)
+
+            console.log(input)
         }).start()
 
     }
