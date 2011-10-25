@@ -4,109 +4,166 @@
 
     // main controlling object
     function Game(){
-        
-        // private
-        var channels = {}
-        
-        // public        
-        return {       
-            input: {},
-            fire: fire,
-            bind: bind,
-            unbind: unbind,
-            before_fire: before_fire,
-            after_fire: after_fire
-        }
-        
-        function before_fire(channel, callback){
-            if ( channels[channel] === undefined ) channels[channel] = []
-            channels[channel].before = callback
-        }
-        
-        function after_fire(channel, callback){
-            if ( channels[channel] === undefined ) channels[channel] = []
-            channels[channel].after = callback
-        }
-        
-        function fire(channel, message){
-            var c = channels[channel]
-            if ( !c ) c = []
-            
-            if ( c.before ) c.before()
-            c.forEach(function(callback){
-                if ( callback !== undefined ) callback(message)
-            })
-            if ( c.after ) c.after()
-        }
-        
-        function bind(channel, callback){    
-            if ( channels[channel] === undefined ) channels[channel] = []
-            channels[channel].push(callback)
-            return channels[channel].length - 1
-        }
-        
-        function unbind(channel, id){
-            delete channels[channel][id]
-        }
+        this.counter = 0
+        this.objects = []
     }
+    
+    Game.prototype = (function(){
+        
+        return {
+            // object tracking methods
+            add: add,
+            retrieve: retrieve,
+            remove: remove,
+            remove_all: remove_all,
+            
+            // processing methods
+            update: update,
+            draw: draw
+        }
+        
+        
+//----------------------------------------------------------//
+//              OBJECT TRACKING METHODS
+//----------------------------------------------------------//
+    
+        function add(object){
+            var id = this.counter
+            
+            this.counter += 1
+            
+            // store
+            this.objects.push(object)
+            
+            // so we can find with the object itself
+            Object.defineProperty(object, "_id", {  value: id,
+                                                    writable: false,
+                                                    enumerable: false
+                                                    })
+            return id
+        }
+        
+        function retrieve(objref){
+            if ( objref instanceof Object ) objref = objref._id
+            return this.objects[objref]
+        }
+        
+        
+        function remove(objref){
+            if ( objref instanceof Object ) objref = objref._id
+            delete this.objects[objref]
+        }
+        
+        function remove_all(){
+            this.objects = []
+        }
+        
+
+//----------------------------------------------------------//
+//              PROCESSING METHODS
+//----------------------------------------------------------//        
+        function update(td, input){
+            this.objects.forEach(function(val){
+                if ( val.update ) val.update(td, input)
+            })
+        }
+        
+        function draw(canvas, context){
+            context.clearRect(0, 0, canvas.width, canvas.height)
+            this.objects.forEach(function(val){
+                if ( val.draw ) val.draw(context)
+            })            
+        }
+        
+    })()
+    
     
     var game = new Game()
 
     // collection for entities
     var entities = {}
 
-    !function(){
+    entities.Cursor = function(){
+        this.layer = 0
+        this.x = Math.random() * 1000
+        this.y = Math.random() * 1000
+        this.radius = 10
+        this.draw = function(context){
+            context.fillRect(this.x, this.y, 10, 10)
+            context.fill();
+        }
+
+        this.update = function(td, input){
+            this.x = input.mouseX
+            this.y = input.mouseY
+            
+            if ( input.click ) for ( var i = 0; i < 100; i ++ ) game.add(new entities.Explosion(this.x, this.y))
+        }
+
+    }
+    
+    entities.Explosion = function(x, y){
         
-        entities.Cursor = function(){
+        this.x = x || 0
+        this.y = y || 0
+        this.angle = Math.random() * 2 * Math.PI
+        this.distance = 0
+        this.alpha = 1
+        
+        this.draw = function(context){
+            var style_cache = context.fillStyle
+            context.fillStyle = "rgba(100, 0, 100, " + this.alpha + ")"
+            context.fillRect(this.x, this.y, 5, 5)            
+            context.fillStyle = style_cache                
         }
         
-    }()
-    !function(){
-    
-        entities.Player = function(){
-            this.layer = 0
-            this.x = 0
-            this.y = 0
-        
-            this.draw = function(context){
-                var style_cache = context.fillStyle
-                context.fillStyle = "rgba(100, 0, 100, 0.8)"
-                
-                context.fillRect(this.x, this.y, 40, 40)
+        this.update = function(td){
+            var speed = 5,
+                angle = this.angle
             
-                context.fillStyle = style_cache                
-            }
+            this.x += Math.cos(angle) * speed
+            this.y += Math.sin(angle) * speed
             
-            this.update = function(e){
-                var input = e.input, 
-                    speed = 0.25 * e.td,
-                    directionX = 0,
-                    directionY = 0
-                    
-                    this.x = input.mouseX
-                    this.y = input.mouseY
-        /*
-                if ( input.right ) directionX += 1
-                if ( input.left ) directionX -= 1
-                if ( input.down ) directionY += 1
-                if ( input.up ) directionY -= 1
-                
-                // movement
-                if ( directionX !== 0 || directionY !== 0 ){
-                    var angle = Math.atan2(directionY, directionX)
-                    this.x += Math.cos(angle) * speed
-                    this.y += Math.sin(angle) * speed
-                }
-          */
-          
-            }
+            this.distance += speed
+            this.alpha -= td/1000
             
-            game.bind("draw", this.draw.bind(this))
-            game.bind("update", this.update.bind(this))
-        
+            if ( this.distance > 200 ) game.remove(this)
         }
+        
+        
+    }
+
+    entities.Player = function(){
+        this.layer = 0
+        this.x = 0
+        this.y = 0
     
-    }()
+        this.draw = function(context){
+            var style_cache = context.fillStyle
+            context.fillStyle = "rgba(100, 0, 100, 0.8)"
+            context.fillRect(this.x, this.y, 40, 40)            
+            context.fillStyle = style_cache                
+        }
+        
+        this.update = function(td, input){
+            var speed = 0.25 * td,
+                directionX = 0,
+                directionY = 0
+                
+            if ( input.right ) directionX += 1
+            if ( input.left ) directionX -= 1
+            if ( input.down ) directionY += 1
+            if ( input.up ) directionY -= 1
+            
+            // movement
+            if ( directionX !== 0 || directionY !== 0 ){
+                var angle = Math.atan2(directionY, directionX)
+                this.x += Math.cos(angle) * speed
+                this.y += Math.sin(angle) * speed
+            }
+      
+        }
+    }
 //--------------------------------//
 
 
@@ -162,7 +219,7 @@
         
             bean.add(canvas, 'mousedown', function(e){
                 input.mousedown = true
-                input.mousedown_fresh = true
+                input.click = true
             })
             
             bean.add(canvas, 'mouseup', function(e){
@@ -174,21 +231,19 @@
         // load objects
         !function(){
             var player = new entities.Player(),
-                cursor = new entities.Cursor()
+                cursor = new entities.Cursor()    
                 
+            game.add(player)
+            game.add(cursor)            
         }()
         
-        game.before_fire("draw", function(){
-            context.clearRect(0, 0, canvas.width, canvas.height)
-        })
-         
         // loop
-        flywheel(function(time_delta){
-            
-            game.fire("update", {time_delta: time_delta, input: input})
-            game.fire("draw", context)
+        flywheel(function(time_delta){            
+            game.update(time_delta, input)
+            game.draw(canvas, context)
 
-            console.log(input)
+            input.click = false 
+
         }).start()
 
     }

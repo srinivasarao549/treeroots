@@ -53,7 +53,7 @@
         
             bean.add(canvas, 'mousedown', function(e){
                 input.mousedown = true
-                input.mousedown_fresh = true
+                input.click = true
             })
             
             bean.add(canvas, 'mouseup', function(e){
@@ -65,21 +65,19 @@
         // load objects
         !function(){
             var player = new entities.Player(),
-                cursor = new entities.Cursor()
+                cursor = new entities.Cursor()    
                 
+            game.add(player)
+            game.add(cursor)            
         }()
         
-        game.before_fire("draw", function(){
-            context.clearRect(0, 0, canvas.width, canvas.height)
-        })
-         
         // loop
-        flywheel(function(time_delta){
-            
-            game.fire("update", {time_delta: time_delta, input: input})
-            game.fire("draw", context)
+        flywheel(function(time_delta){            
+            game.update(time_delta, input)
+            game.draw(canvas, context)
 
-            console.log(input)
+            input.click = false 
+
         }).start()
 
     }
