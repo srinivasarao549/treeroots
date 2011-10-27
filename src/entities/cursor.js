@@ -14,7 +14,11 @@
             this.x = input.mouseX
             this.y = input.mouseY
             
-            if ( input.click ) for ( var i = 0; i < 100; i ++ ) game.add(new entities.Explosion(this.x, this.y))
+            if ( input.click ) {
+                var xy = entities.camera.reverse_apply_camera(this)
+                game.add(new entities.Explosion(xy.x, xy.y, 100, 100))
+                
+            }
         }
 
     }

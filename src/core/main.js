@@ -65,15 +65,17 @@
         // load objects
         !function(){
             var player = new entities.Player(),
-                cursor = new entities.Cursor()    
+                cursor = new entities.Cursor(),
+                ground = new entities.Ground()    
                 
+            game.add(ground)    
             game.add(player)
             game.add(cursor)            
         }()
         
         // loop
         flywheel(function(time_delta){            
-            game.update(time_delta, input)
+            game.update(time_delta, input, canvas)
             game.draw(canvas, context)
 
             input.click = false 

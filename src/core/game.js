@@ -61,9 +61,9 @@
 //----------------------------------------------------------//
 //              PROCESSING METHODS
 //----------------------------------------------------------//        
-        function update(td, input){
+        function update(td, input, canvas){
             this.objects.forEach(function(val){
-                if ( val.update ) val.update(td, input)
+                if ( val.update ) val.update(td, input, canvas)
             })
         }
         

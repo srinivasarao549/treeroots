@@ -61,9 +61,9 @@
 //----------------------------------------------------------//
 //              PROCESSING METHODS
 //----------------------------------------------------------//        
-        function update(td, input){
+        function update(td, input, canvas){
             this.objects.forEach(function(val){
-                if ( val.update ) val.update(td, input)
+                if ( val.update ) val.update(td, input, canvas)
             })
         }
         
@@ -78,9 +78,37 @@
     
     
     var game = new Game()
-
+    
     // collection for entities
     var entities = {}
+
+
+    entities.camera = new (function(){
+        this.x = 0
+        this.y = 0
+        
+        
+        this.apply_camera = function(object, distance){
+            var x, y, distance = distance || 1
+            
+            x = (object.x - this.x) * distance
+            y = (object.y - this.y) * distance
+            
+            return {x: x, y: y}
+        }
+        
+        this.reverse_apply_camera = function(object, distance){
+            var x, y, distance = distance || 1
+            
+            x = (object.x + this.x) * distance
+            y = (object.y + this.y) * distance
+            
+            return {x: x, y: y}
+        }
+        
+        game.add(this)
+        
+    })()
 
     entities.Cursor = function(){
         this.layer = 0
@@ -96,40 +124,72 @@
             this.x = input.mouseX
             this.y = input.mouseY
             
-            if ( input.click ) for ( var i = 0; i < 100; i ++ ) game.add(new entities.Explosion(this.x, this.y))
+            if ( input.click ) {
+                var xy = entities.camera.reverse_apply_camera(this)
+                game.add(new entities.Explosion(xy.x, xy.y, 100, 100))
+                
+            }
         }
 
     }
     
-    entities.Explosion = function(x, y){
+    entities.Explosion = function(x, y, particles, speed){
+                
         
-        this.x = x || 0
-        this.y = y || 0
-        this.angle = Math.random() * 2 * Math.PI
-        this.distance = 0
-        this.alpha = 1
+        // spawn lots of particles!
+        for ( var i = 0; i < particles; i += 1 )
+            game.add(new Particle())
+        
+        // no reason to have an empty object hanging about
+        game.remove(this)
+        
+        function Particle(){
+            this.x = x || 0
+            this.y = y || 0
+            this.angle = Math.random() * 2 * Math.PI
+            this.distance = 0
+            this.alpha = 1
+            this.speed = speed || 100
+        
+            this.draw = function(context){
+                var style_cache = context.fillStyle
+                xy = entities.camera.apply_camera(this)
+                context.fillStyle = "rgba(100, 0, 100, " + this.alpha + ")"
+                context.fillRect(xy.x, xy.y, 5, 5)            
+                context.fillStyle = style_cache                
+            }
+        
+            this.update = function(td){
+                var speed = this.speed / td,
+                    angle = this.angle
+            
+                this.x += Math.cos(angle) * speed
+                this.y += Math.sin(angle) * speed
+            
+                this.distance += speed
+                this.alpha -= td/1000
+                if ( this.alpha < 0 ) game.remove(this)
+            }
+        }
+
+    }
+
+    entities.Ground = function(){
+        this.x = 0
+        this.y = 0
+        
+        this.image = new Image()
+        this.image.onload = function(){
+
+        }
+        
+        this.image.src = 'resources/images/ground.jpg'
         
         this.draw = function(context){
-            var style_cache = context.fillStyle
-            context.fillStyle = "rgba(100, 0, 100, " + this.alpha + ")"
-            context.fillRect(this.x, this.y, 5, 5)            
-            context.fillStyle = style_cache                
+            var xy = entities.camera.apply_camera(this)                
+            context.drawImage(this.image, xy.x, xy.y)
         }
-        
-        this.update = function(td){
-            var speed = 5,
-                angle = this.angle
-            
-            this.x += Math.cos(angle) * speed
-            this.y += Math.sin(angle) * speed
-            
-            this.distance += speed
-            this.alpha -= td/1000
-            
-            if ( this.distance > 200 ) game.remove(this)
-        }
-        
-        
+    
     }
 
     entities.Player = function(){
@@ -138,17 +198,18 @@
         this.y = 0
     
         this.draw = function(context){
-            var style_cache = context.fillStyle
+            var style_cache = context.fillStyle,
+                xy = entities.camera.apply_camera(this)
             context.fillStyle = "rgba(100, 0, 100, 0.8)"
-            context.fillRect(this.x, this.y, 40, 40)            
+            context.fillRect(xy.x, xy.y, 40, 40)            
             context.fillStyle = style_cache                
         }
         
-        this.update = function(td, input){
+        this.update = function(td, input, canvas){
             var speed = 0.25 * td,
                 directionX = 0,
                 directionY = 0
-                
+                                
             if ( input.right ) directionX += 1
             if ( input.left ) directionX -= 1
             if ( input.down ) directionY += 1
@@ -157,10 +218,16 @@
             // movement
             if ( directionX !== 0 || directionY !== 0 ){
                 var angle = Math.atan2(directionY, directionX)
+                                    
                 this.x += Math.cos(angle) * speed
                 this.y += Math.sin(angle) * speed
+
             }
       
+            // move camera
+            var camera = entities.camera
+            if ( this.x > (canvas.width/2)) camera.x = this.x - canvas.width/2
+            if ( this.y > (canvas.height/2)) camera.y = this.y - canvas.height/2
         }
     }
 //--------------------------------//
@@ -230,15 +297,17 @@
         // load objects
         !function(){
             var player = new entities.Player(),
-                cursor = new entities.Cursor()    
+                cursor = new entities.Cursor(),
+                ground = new entities.Ground()    
                 
+            game.add(ground)    
             game.add(player)
             game.add(cursor)            
         }()
         
         // loop
         flywheel(function(time_delta){            
-            game.update(time_delta, input)
+            game.update(time_delta, input, canvas)
             game.draw(canvas, context)
 
             input.click = false 
