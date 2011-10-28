@@ -4,7 +4,7 @@
 
     // main controlling object
     function Game(){
-        this.counter = 0
+        this.empty_spaces = []
         this.objects = []
         this.draw_buffer = []
         this.camera = { x: 0,
@@ -36,12 +36,17 @@
 //----------------------------------------------------------//
     
         function add(object){
-            var id = this.counter
-            this.counter += 1
-
+            var id
+            
+            if ( this.empty_spaces.length > 0 ){
+                id = this.empty_spaces.splice(0, 1)
+            } else {
+                id = this.objects.length
+            }
+            
             // store
-            this.objects.push(object)
-            // resort array
+            this.objects[id] = object
+            
             
             // so we can find with the object itself
             Object.defineProperty(object, "_id", {  value: id,
@@ -70,6 +75,13 @@
         function remove(objref){
             if ( objref instanceof Object ) objref = objref._id
             delete this.objects[objref]
+            this.empty_spaces.push(objref)
+            
+            this.draw_buffer = []
+            this.objects.forEach(function(val){
+                this.draw_buffer.push(val)
+            }.bind(this))
+            
         }
         
         function remove_all(){
