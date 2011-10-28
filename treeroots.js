@@ -4,7 +4,6 @@
 
     // main controlling object
     function Game(){
-        this.empty_spaces = []
         this.objects = []
         this.draw_buffer = []
         this.camera = { x: 0,
@@ -20,7 +19,6 @@
             remove: remove,
             remove_all: remove_all,
             
-            retrieve: retrieve,
             find: find,
             find_nearest: find_nearest,
             find_by_id: find_by_id,
@@ -36,59 +34,19 @@
 //----------------------------------------------------------//
     
         function add(object){
-            var id
-            
-            if ( this.empty_spaces.length > 0 ){
-                id = this.empty_spaces.splice(0, 1)
-            } else {
-                id = this.objects.length
-            }
-            
             // store
-            this.objects[id] = object
+            this.objects.push(object)
             
-            
-            // so we can find with the object itself
-            Object.defineProperty(object, "_id", {  value: id,
-                                                    writable: false,
-                                                    enumerable: false
-                                                    })
-            
-            this.draw_buffer = []
-            this.objects.forEach(function(val){
-                this.draw_buffer.push(val)
-            }.bind(this))
-            
-            this.draw_buffer.sort(function(a, b){
-                return a.z - b.z
-            })
-            
-            return id
-        }
-        
-        function retrieve(objref){
-            if ( objref instanceof Object ) objref = objref._id
-            return this.objects[objref]
-        }
-        
-        
-        function remove(objref){
-            if ( objref instanceof Object ) objref = objref._id
-            delete this.objects[objref]
-            this.empty_spaces.push(objref)
-            
-            this.draw_buffer = []
-            this.objects.forEach(function(val){
-                this.draw_buffer.push(val)
-            }.bind(this))
-            
+        }        
+                
+        function remove(object){
+            this.objects.splice(this.objects.indexOf(object), 1)            
         }
         
         function remove_all(){
             this.objects = []
         }
         
-
         function find(type, obj_set){
             var objs = obj_set || this.objects,
                 return_objs = []
@@ -144,6 +102,16 @@
         
         function draw(canvas, context){
             var camera = this.camera
+            
+            this.draw_buffer = []
+            this.objects.forEach(function(val){
+                this.draw_buffer.push(val)
+            }.bind(this))
+            
+            this.draw_buffer.sort(function(a, b){
+                return a.z - b.z
+            })
+            
             context.clearRect(0, 0, canvas.width, canvas.height)
             this.draw_buffer.forEach(function(obj){
                 if ( obj.draw ) obj.draw(context, camera)
@@ -279,7 +247,6 @@
             this.y = input.mouseY
         
             if ( input.click ){
-                console.log(game.objects.length)
                 var explosion = new entities.Explosion(this.x, this.y, 100, 40, 100)
                 game.add(explosion)
             } 
