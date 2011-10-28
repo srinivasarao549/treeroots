@@ -1,7 +1,6 @@
-    
-    entities.Explosion = function(x, y, particles, speed){
+
+    entities.Explosion = function(x, y, particles, velocity, max_distance){
                 
-        
         // spawn lots of particles!
         for ( var i = 0; i < particles; i += 1 )
             game.add(new Particle())
@@ -10,31 +9,20 @@
         game.remove(this)
         
         function Particle(){
-            this.x = x || 0
-            this.y = y || 0
+            entity.mixin(this, traits.moveByAngle, traits.fillRect)
+
+            this.set_color(1, 0, 1, 1)
+            this.max_distance = max_distance || 200
+            this.velocity = velocity || 75
+            
             this.angle = Math.random() * 2 * Math.PI
-            this.distance = 0
-            this.alpha = 1
-            this.speed = speed || 100
-        
-            this.draw = function(context){
-                var style_cache = context.fillStyle
-                xy = entities.camera.apply_camera(this)
-                context.fillStyle = "rgba(100, 0, 100, " + this.alpha + ")"
-                context.fillRect(xy.x, xy.y, 5, 5)            
-                context.fillStyle = style_cache                
-            }
-        
+            this.x = x
+            this.y = y
+            
             this.update = function(td){
-                var speed = this.speed / td,
-                    angle = this.angle
-            
-                this.x += Math.cos(angle) * speed
-                this.y += Math.sin(angle) * speed
-            
-                this.distance += speed
-                this.alpha -= td/1000
-                if ( this.alpha < 0 ) game.remove(this)
+                var distance_moved = this.moveByAngle(td)
+
+                this.color_alpha -= distance_moved/this.max_distance
             }
         }
 

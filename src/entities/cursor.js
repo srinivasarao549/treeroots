@@ -1,24 +1,22 @@
 
 
     entities.Cursor = function(){
-        this.layer = 0
-        this.x = Math.random() * 1000
-        this.y = Math.random() * 1000
-        this.radius = 10
-        this.draw = function(context){
-            context.fillRect(this.x, this.y, 10, 10)
-            context.fill();
-        }
 
+        // inherit ^^
+        entity.mixin(this, traits.fillRect)
+        
+        this.height = 5
+        this.width = 5
+        this.set_color(0, 0.25, 1, 1)
+                
         this.update = function(td, input){
             this.x = input.mouseX
             this.y = input.mouseY
-            
-            if ( input.click ) {
-                var xy = entities.camera.reverse_apply_camera(this)
-                game.add(new entities.Explosion(xy.x, xy.y, 100, 100))
-                
-            }
+        
+            if ( input.click ){
+                var explosion = new entities.Explosion(this.x, this.y, 30, 40, 100)
+                game.add(explosion)
+            } 
         }
-
     }
+

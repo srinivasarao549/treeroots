@@ -64,13 +64,11 @@
         
         // load objects
         !function(){
-            var player = new entities.Player(),
-                cursor = new entities.Cursor(),
-                ground = new entities.Ground()    
-                
-            game.add(ground)    
-            game.add(player)
-            game.add(cursor)            
+            var cursor = new entities.Cursor(),
+                ground = new entities.Ground()
+                            
+            game.add(ground)
+            game.add(cursor)
         }()
         
         // loop
