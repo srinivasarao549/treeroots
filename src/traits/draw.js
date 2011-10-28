@@ -44,7 +44,9 @@
     traits.drawImage = entity.mixin({
         image: undefined,
         draw: function(context, cam){
-            context.drawImage(this.image, cam.x - this.x, cam.y - this.y)
+            context.drawImage(this.image, 
+                            cam.x - this.x, 
+                            cam.y - this.y)
         },
         load_image: function(src, callback){
             this.image = new Image()
@@ -54,6 +56,9 @@
             this.image.src = src
         }
     }, traits.position)
+    
+    traits.drawImageStatic = entity.mixin({}, traits.drawImage)
+    
     
 }()
 

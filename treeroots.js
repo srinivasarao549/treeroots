@@ -6,6 +6,7 @@
     function Game(){
         this.counter = 0
         this.objects = []
+        this.draw_buffer = []
         this.camera = { x: 0,
                         y: 0
                     }
@@ -36,17 +37,27 @@
     
         function add(object){
             var id = this.counter
-            
             this.counter += 1
-            
+
             // store
             this.objects.push(object)
+            // resort array
             
             // so we can find with the object itself
             Object.defineProperty(object, "_id", {  value: id,
                                                     writable: false,
                                                     enumerable: false
                                                     })
+            
+            this.draw_buffer = []
+            this.objects.forEach(function(val){
+                this.draw_buffer.push(val)
+            }.bind(this))
+            
+            this.draw_buffer.sort(function(a, b){
+                return a.z - b.z
+            })
+            
             return id
         }
         
@@ -122,8 +133,8 @@
         function draw(canvas, context){
             var camera = this.camera
             context.clearRect(0, 0, canvas.width, canvas.height)
-            this.objects.forEach(function(val){
-                if ( val.draw ) val.draw(context, camera)
+            this.draw_buffer.forEach(function(obj){
+                if ( obj.draw ) obj.draw(context, camera)
             })            
         }
         
@@ -198,7 +209,9 @@
     traits.drawImage = entity.mixin({
         image: undefined,
         draw: function(context, cam){
-            context.drawImage(this.image, cam.x - this.x, cam.y - this.y)
+            context.drawImage(this.image, 
+                            cam.x - this.x, 
+                            cam.y - this.y)
         },
         load_image: function(src, callback){
             this.image = new Image()
@@ -208,6 +221,9 @@
             this.image.src = src
         }
     }, traits.position)
+    
+    traits.drawImageStatic = entity.mixin({}, traits.drawImage)
+    
     
 }()
 
@@ -229,24 +245,30 @@
         }
     }, traits.position)
 
-
 }()
 
     entities.Cursor = function(){
 
         // inherit ^^
-        entity.mixin(this, traits.fillRect)
+        entity.mixin(this, traits.drawImage)
+
+        this.load_image("resources/images/cursor.png")
         
-        this.height = 5
-        this.width = 5
-        this.set_color(0, 0.25, 1, 1)
+        this.z = 4
+        this.draw = function(context){
+            var mid_x = this.image.width/2,
+                mid_y = this.image.height/2
                 
+            context.drawImage(this.image, this.x - mid_x, this.y - mid_y)
+        }
+        
         this.update = function(td, input){
             this.x = input.mouseX
             this.y = input.mouseY
         
             if ( input.click ){
-                var explosion = new entities.Explosion(this.x, this.y, 30, 40, 100)
+                console.log(game.objects.length)
+                var explosion = new entities.Explosion(this.x, this.y, 100, 40, 100)
                 game.add(explosion)
             } 
         }
@@ -277,6 +299,7 @@
                 var distance_moved = this.moveByAngle(td)
 
                 this.color_alpha -= distance_moved/this.max_distance
+                if ( this.color_alpha < 0 ) game.remove(this)
             }
         }
 

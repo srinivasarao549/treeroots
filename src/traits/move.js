@@ -16,5 +16,4 @@
         }
     }, traits.position)
 
-
 }()

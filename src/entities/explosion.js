@@ -23,6 +23,7 @@
                 var distance_moved = this.moveByAngle(td)
 
                 this.color_alpha -= distance_moved/this.max_distance
+                if ( this.color_alpha < 0 ) game.remove(this)
             }
         }
 

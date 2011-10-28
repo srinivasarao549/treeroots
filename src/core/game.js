@@ -5,6 +5,7 @@
     function Game(){
         this.counter = 0
         this.objects = []
+        this.draw_buffer = []
         this.camera = { x: 0,
                         y: 0
                     }
@@ -35,17 +36,27 @@
     
         function add(object){
             var id = this.counter
-            
             this.counter += 1
-            
+
             // store
             this.objects.push(object)
+            // resort array
             
             // so we can find with the object itself
             Object.defineProperty(object, "_id", {  value: id,
                                                     writable: false,
                                                     enumerable: false
                                                     })
+            
+            this.draw_buffer = []
+            this.objects.forEach(function(val){
+                this.draw_buffer.push(val)
+            }.bind(this))
+            
+            this.draw_buffer.sort(function(a, b){
+                return a.z - b.z
+            })
+            
             return id
         }
         
@@ -121,8 +132,8 @@
         function draw(canvas, context){
             var camera = this.camera
             context.clearRect(0, 0, canvas.width, canvas.height)
-            this.objects.forEach(function(val){
-                if ( val.draw ) val.draw(context, camera)
+            this.draw_buffer.forEach(function(obj){
+                if ( obj.draw ) obj.draw(context, camera)
             })            
         }
         
