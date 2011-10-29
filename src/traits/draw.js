@@ -44,10 +44,13 @@
     
     traits.drawImage = entity.mixin({
         image: undefined,
+        scale: 1,
         draw: function(context, cam){
             context.drawImage(this.image, 
                             ~~ (this.x - cam.x), 
-                            ~~ (this.y - cam.y))
+                            ~~ (this.y - cam.y),
+                            this.image.width * this.scale,
+                            this.image.height * this.scale)
         },
         load_image: function(src, callback){
             this.image = new Image()
@@ -58,8 +61,26 @@
         }
     }, traits.position)
     
-    traits.drawImageStatic = entity.mixin({}, traits.drawImage)
-    
+    traits.drawSpritesheet = entity.mixin({
+        sprite_height: undefined,
+        sprite_width: undefined,
+        sprite_row: 0,
+        sprite_col: 0,
+        draw: function(context, cam){
+            context.drawImage(this.image, 
+                            this.sprite_width * this.sprite_col,
+                            this.sprite_height * this.sprite_row,
+                            this.sprite_width,
+                            this.sprite_height,
+                            ~~ (this.x - cam.x), 
+                            ~~ (this.y - cam.y),
+                            this.sprite_width * this.scale,
+                            this.sprite_height * this.scale
+                            )
+        },
+        
+        
+    }, traits.drawImage)
     
 }()
 

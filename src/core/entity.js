@@ -11,7 +11,7 @@
 
             sources.forEach(function(source){
                 Object.keys(source).forEach(function(key){
-                    obj[key] = source[key]
+                    if ( !obj[key] ) obj[key] = source[key]
                 })                
             })
             return obj;

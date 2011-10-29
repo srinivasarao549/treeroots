@@ -145,7 +145,7 @@
 
             sources.forEach(function(source){
                 Object.keys(source).forEach(function(key){
-                    obj[key] = source[key]
+                    if ( !obj[key] ) obj[key] = source[key]
                 })                
             })
             return obj;
@@ -199,10 +199,13 @@
     
     traits.drawImage = entity.mixin({
         image: undefined,
+        scale: 1,
         draw: function(context, cam){
             context.drawImage(this.image, 
                             ~~ (this.x - cam.x), 
-                            ~~ (this.y - cam.y))
+                            ~~ (this.y - cam.y),
+                            this.image.width * this.scale,
+                            this.image.height * this.scale)
         },
         load_image: function(src, callback){
             this.image = new Image()
@@ -213,8 +216,26 @@
         }
     }, traits.position)
     
-    traits.drawImageStatic = entity.mixin({}, traits.drawImage)
-    
+    traits.drawSpritesheet = entity.mixin({
+        sprite_height: undefined,
+        sprite_width: undefined,
+        sprite_row: 0,
+        sprite_col: 0,
+        draw: function(context, cam){
+            context.drawImage(this.image, 
+                            this.sprite_width * this.sprite_col,
+                            this.sprite_height * this.sprite_row,
+                            this.sprite_width,
+                            this.sprite_height,
+                            ~~ (this.x - cam.x), 
+                            ~~ (this.y - cam.y),
+                            this.sprite_width * this.scale,
+                            this.sprite_height * this.scale
+                            )
+        },
+        
+        
+    }, traits.drawImage)
     
 }()
 
@@ -313,22 +334,60 @@
 
     entities.Player = function(){
         
-        entity.mixin(this, traits.fillRect, traits.moveByAngle)
+        entity.mixin(this, traits.drawSpritesheet, traits.moveByAngle)
         
         this.z = 2
+        this.sprite_height = 32
+        this.sprite_width = 24
+        this.scale = 2
         
+        this.velocity = 0.20
+        
+        this.load_image("resources/images/seth.png")
+        
+        this.anim_timer = 250
         
         this.update = function(td, input, canvas){
             var directionX = 0,
                 directionY = 0
+        
+        
                                 
-            if ( input.right ) directionX += 1
-            if ( input.left ) directionX -= 1
-            if ( input.down ) directionY += 1
-            if ( input.up ) directionY -= 1
-
+            if ( input.up ){
+                this.sprite_row = 0
+                directionY -= 1
+            }
+        
+            if ( input.right ) {
+                this.sprite_row = 1
+                directionX += 1
+            }
+        
+            
+            if ( input.down ){
+                this.sprite_row = 2
+                directionY += 1
+            }
+        
+        
+            if ( input.left ) {
+                this.sprite_row = 3
+                directionX -= 1
+            }
+        
+        
             // movement
-            if ( directionX !== 0 || directionY !== 0 ){                
+            if ( directionX !== 0 || directionY !== 0 ){        
+                this.anim_timer -= td
+                if ( this.anim_timer < 0 ){
+                    this.anim_timer = 250
+                    this.sprite_col += 1
+
+                    if ( this.sprite_col > 2)
+                        this.sprite_col = 0
+                }
+                
+                        
                 this.angle = Math.atan2(directionY, directionX)
                 this.moveByAngle(td)
             }
