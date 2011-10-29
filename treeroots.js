@@ -338,13 +338,15 @@
         entity.mixin(this, traits.drawSpritesheet, traits.moveByAngle)
         
         this.z = 2
-        this.sprite_height = 32
-        this.sprite_width = 24
-        this.scale = 2
         
         this.velocity = 0.20
         
-        this.load_image("resources/images/seth.png")
+        this.load_image("resources/images/seth.png", function(){
+            this.sprite_height = 32
+            this.sprite_width = 24
+            this.scale = 2
+            
+        }.bind(this))
         
         this.anim_timer = 250
         
