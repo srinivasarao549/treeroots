@@ -19,7 +19,7 @@
             remove: remove,
             remove_all: remove_all,
             
-            find: find,
+            find_instances: find_instances,
             find_nearest: find_nearest,
             find_by_id: find_by_id,
             
@@ -52,12 +52,12 @@
             this.objects = []
         }
         
-        function find(type, obj_set){
+        function find_instances(ctor, obj_set){
             var objs = obj_set || this.objects,
                 return_objs = []
             
             objs.forEach(function(o){
-                if ( o.constructor.name == type ) 
+                if ( o.constructor == ctor ) 
                     return_objs.push(o)
             })
             return return_objs
