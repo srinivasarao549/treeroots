@@ -65,9 +65,11 @@
         // load objects
         !function(){
             var cursor = new entities.Cursor(),
-                ground = new entities.Ground()
+                ground = new entities.Ground(),
+                player = new entities.Player()
                             
             game.add(ground)
+            game.add(player)
             game.add(cursor)
         }()
         
@@ -78,6 +80,6 @@
 
             input.click = false 
 
-        }).start()
+        }).set_framerate_cap(20).start()
 
     }

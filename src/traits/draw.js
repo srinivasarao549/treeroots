@@ -24,17 +24,18 @@
                                 this.color_b + "," +
                                 this.color_g + "," +
                                 this.color_alpha + ")"
-            }
+                }
         }
 
     traits.fillRect = entity.mixin({
         height: 10,
         width: 10,
-        draw: function(context, camera){
+        draw: function(context, cam){
             var style_cache = context.fillStyle
 
             context.fillStyle = this.get_color()
-            context.fillRect(this.x, this.y, this.width, this.height)            
+            context.fillRect( ~~ (this.x - cam.x), ~~ (this.y - cam.y), 
+                                                this.width, this.height)            
             context.fillStyle = style_cache                
                         
         }
@@ -45,8 +46,8 @@
         image: undefined,
         draw: function(context, cam){
             context.drawImage(this.image, 
-                            cam.x - this.x, 
-                            cam.y - this.y)
+                            ~~ (this.x - cam.x), 
+                            ~~ (this.y - cam.y))
         },
         load_image: function(src, callback){
             this.image = new Image()

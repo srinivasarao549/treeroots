@@ -20,9 +20,7 @@
             this.y = input.mouseY
         
             if ( input.click ){
-                console.log(game.objects.length)
-                var explosion = new entities.Explosion(this.x, this.y, 30, 60, 100)
-                game.add(explosion)
+                new entities.Explosion(this.x + game.camera.x, this.y + game.camera.y, 100, 0.1, 150)
             } 
         }
     }

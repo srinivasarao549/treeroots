@@ -2,12 +2,13 @@
 
 
     // main controlling object
-    function Game(){
+    function Game(canvas){
         this.objects = []
-        this.draw_buffer = []
+        this.objects_modified = false
         this.camera = { x: 0,
                         y: 0
                     }
+        this.fps_cooldown = 500
     }
     
     Game.prototype = (function(){
@@ -35,11 +36,16 @@
         function add(object){
             // store
             this.objects.push(object)
+            this.objects_modified = true
             return object
         }        
                 
         function remove(object){
-            this.objects.splice(this.objects.indexOf(object), 1)            
+            var index = this.objects.indexOf(object)
+            if ( index >= 0 ){
+                this.objects.splice(index, 1)      
+                this.objects_modified = true                      
+            }
         }
         
         function remove_all(){
@@ -85,7 +91,6 @@
             objs.forEach(function(o){
                 if ( o.id == id ) obj = o
             })
-            
             return obj
         }
         
@@ -97,24 +102,30 @@
             this.objects.forEach(function(val){
                 if ( val.update ) val.update(td, input, canvas)
             })
+            
+            this.fps_cooldown -= td
+            if ( this.fps_cooldown <= 0 ){
+            
+                document.getElementById("fps").innerHTML = 1000 / td
+                this.fps_cooldown = 500
+            }
         }
         
         function draw(canvas, context){
             var camera = this.camera
             
-            this.draw_buffer = []
-            this.objects.forEach(function(val){
-                this.draw_buffer.push(val)
-            }.bind(this))
-            
-            this.draw_buffer.sort(function(a, b){
+            if ( this.objects_modified ) {
+                this.objects.sort(function(a, b){
                 return a.z - b.z
-            })
+                })
+                this.objects_modified = false
+            }
             
             context.clearRect(0, 0, canvas.width, canvas.height)
-            this.draw_buffer.forEach(function(obj){
+            this.objects.forEach(function(obj){
                 if ( obj.draw ) obj.draw(context, camera)
-            })            
+            })
+            
         }
         
     })()
@@ -168,17 +179,18 @@
                                 this.color_b + "," +
                                 this.color_g + "," +
                                 this.color_alpha + ")"
-            }
+                }
         }
 
     traits.fillRect = entity.mixin({
         height: 10,
         width: 10,
-        draw: function(context, camera){
+        draw: function(context, cam){
             var style_cache = context.fillStyle
 
             context.fillStyle = this.get_color()
-            context.fillRect(this.x, this.y, this.width, this.height)            
+            context.fillRect( ~~ (this.x - cam.x), ~~ (this.y - cam.y), 
+                                                this.width, this.height)            
             context.fillStyle = style_cache                
                         
         }
@@ -189,8 +201,8 @@
         image: undefined,
         draw: function(context, cam){
             context.drawImage(this.image, 
-                            cam.x - this.x, 
-                            cam.y - this.y)
+                            ~~ (this.x - cam.x), 
+                            ~~ (this.y - cam.y))
         },
         load_image: function(src, callback){
             this.image = new Image()
@@ -210,11 +222,11 @@
 !function(){
 
     traits.moveByAngle = entity.mixin({
-        velocity: 100,
+        velocity: 0.25,
         angle: 0,
         
         moveByAngle: function(td){
-            var velocity = this.velocity / td,
+            var velocity = this.velocity * td,
                 angle = this.angle
         
             this.x += Math.cos(angle) * velocity
@@ -246,92 +258,89 @@
             this.y = input.mouseY
         
             if ( input.click ){
-                console.log(game.objects.length)
-                var explosion = new entities.Explosion(this.x, this.y, 30, 60, 100)
-                game.add(explosion)
+                new entities.Explosion(this.x + game.camera.x, this.y + game.camera.y, 100, 0.1, 150)
             } 
         }
     }
 
 
+!function(){
+
     entities.Explosion = function(x, y, particles, velocity, max_distance){
+        
                 
         // spawn lots of particles!
         for ( var i = 0; i < particles; i += 1 )
-            game.add(new Particle())
+            game.add(new Particle(x, y, velocity, max_distance))
         
         // no reason to have an empty object hanging about
         game.remove(this)
+    }
+
+    function Particle(x, y, velocity, max_distance){
+        entity.mixin(this, traits.moveByAngle, traits.fillRect)
+
+        this.set_color(0.75, 0, 1, 1)
+        this.max_distance = max_distance || 200
+        this.velocity = velocity || 75
         
-        function Particle(){
-            entity.mixin(this, traits.moveByAngle, traits.fillRect)
-
-            this.set_color(1, 0, 1, 1)
-            this.max_distance = max_distance || 200
-            this.velocity = velocity || 75
+        this.angle = Math.random() * 2 * Math.PI
+        this.x = x
+        this.y = y
+        this.z = 3
+        
+        this.update = function(td){
+            var distance_moved = this.moveByAngle(td)
+            this.color_alpha -= distance_moved/this.max_distance
             
-            this.angle = Math.random() * 2 * Math.PI
-            this.x = x
-            this.y = y
-            
-            this.update = function(td){
-                var distance_moved = this.moveByAngle(td)
-
-                this.color_alpha -= distance_moved/this.max_distance
-                if ( this.color_alpha < 0 ) game.remove(this)
+            // for some reason, setting this to <= 0 causes occasional glitches
+            // where black boxes show instead of the nearly-invisible ones
+            // desired
+            if ( this.color_alpha <= 0.01 ) {
+                game.remove(this)
             }
         }
-
     }
+
+
+}()
 
     entities.Ground = function(){
         entity.mixin(this, traits.drawImage)
     
         this.load_image("resources/images/ground.jpg")
     }
-/*
 
     entities.Player = function(){
-        this.layer = 0
-        this.x = 0
-        this.y = 0
-    
-        this.draw = function(context, camera){
-            var style_cache = context.fillStyle,
-                xy = camera.apply_camera(this)
-            context.fillStyle = "rgba(100, 0, 100, 0.8)"
-            context.fillRect(xy.x, xy.y, 40, 40)            
-            context.fillStyle = style_cache                
-        }
+        
+        entity.mixin(this, traits.fillRect, traits.moveByAngle)
+        
+        this.z = 2
+        
         
         this.update = function(td, input, canvas){
-            var speed = 0.25 * td,
-                directionX = 0,
+            var directionX = 0,
                 directionY = 0
                                 
             if ( input.right ) directionX += 1
             if ( input.left ) directionX -= 1
             if ( input.down ) directionY += 1
             if ( input.up ) directionY -= 1
-            
-            // movement
-            if ( directionX !== 0 || directionY !== 0 ){
-                var angle = Math.atan2(directionY, directionX)
-                                    
-                this.x += Math.cos(angle) * speed
-                this.y += Math.sin(angle) * speed
 
+            // movement
+            if ( directionX !== 0 || directionY !== 0 ){                
+                this.angle = Math.atan2(directionY, directionX)
+                this.moveByAngle(td)
             }
       
             // move camera
-            var camera = game.find("Camera")[0]
-            if ( this.x > (canvas.width/2)) camera.x = this.x - canvas.width/2
-            if ( this.y > (canvas.height/2)) camera.y = this.y - canvas.height/2
+            if ( this.x > (canvas.width/2)) game.camera.x = ~~ ( this.x - canvas.width/2 )
+            if ( this.y > (canvas.height/2)) game.camera.y = ~~ ( this.y - canvas.height/2 )
             
         }
+        
     }
-    
-*///--------------------------------//
+//--------------------------------//
 
 
     // the function the outside world gets to initialise the game
@@ -398,9 +407,11 @@
         // load objects
         !function(){
             var cursor = new entities.Cursor(),
-                ground = new entities.Ground()
+                ground = new entities.Ground(),
+                player = new entities.Player()
                             
             game.add(ground)
+            game.add(player)
             game.add(cursor)
         }()
         
@@ -411,6 +422,6 @@
 
             input.click = false 
 
-        }).start()
+        }).set_framerate_cap(20).start()
 
     }

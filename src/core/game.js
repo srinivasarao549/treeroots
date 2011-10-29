@@ -2,12 +2,13 @@
 
 
     // main controlling object
-    function Game(){
+    function Game(canvas){
         this.objects = []
-        this.draw_buffer = []
+        this.objects_modified = false
         this.camera = { x: 0,
                         y: 0
                     }
+        this.fps_cooldown = 500
     }
     
     Game.prototype = (function(){
@@ -35,11 +36,16 @@
         function add(object){
             // store
             this.objects.push(object)
+            this.objects_modified = true
             return object
         }        
                 
         function remove(object){
-            this.objects.splice(this.objects.indexOf(object), 1)            
+            var index = this.objects.indexOf(object)
+            if ( index >= 0 ){
+                this.objects.splice(index, 1)      
+                this.objects_modified = true                      
+            }
         }
         
         function remove_all(){
@@ -85,7 +91,6 @@
             objs.forEach(function(o){
                 if ( o.id == id ) obj = o
             })
-            
             return obj
         }
         
@@ -97,24 +102,30 @@
             this.objects.forEach(function(val){
                 if ( val.update ) val.update(td, input, canvas)
             })
+            
+            this.fps_cooldown -= td
+            if ( this.fps_cooldown <= 0 ){
+            
+                document.getElementById("fps").innerHTML = 1000 / td
+                this.fps_cooldown = 500
+            }
         }
         
         function draw(canvas, context){
             var camera = this.camera
             
-            this.draw_buffer = []
-            this.objects.forEach(function(val){
-                this.draw_buffer.push(val)
-            }.bind(this))
-            
-            this.draw_buffer.sort(function(a, b){
+            if ( this.objects_modified ) {
+                this.objects.sort(function(a, b){
                 return a.z - b.z
-            })
+                })
+                this.objects_modified = false
+            }
             
             context.clearRect(0, 0, canvas.width, canvas.height)
-            this.draw_buffer.forEach(function(obj){
+            this.objects.forEach(function(obj){
                 if ( obj.draw ) obj.draw(context, camera)
-            })            
+            })
+            
         }
         
     })()
