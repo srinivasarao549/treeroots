@@ -18,7 +18,6 @@
             add: add,
             remove: remove,
             remove_all: remove_all,
-            
             find_instances: find_instances,
             find_nearest: find_nearest,
             find_by_id: find_by_id,

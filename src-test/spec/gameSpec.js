@@ -51,6 +51,7 @@ describe("Game (object management)", function(){
             expect(game.objects.length).toEqual(0)
         })
 
+
     })
 
     describe("finding objects from game.object", function(){
@@ -172,5 +173,51 @@ describe("Game (object management)", function(){
         // * Should duplicate ids be allowed in
     })
 
+    describe("drawing", function(){
+        
+        it("must always sort by the object's 'z' property on draw", function(){
+            var game = new Game(),
+                out_of_order = false,
+                last_z = 0
+            
+            for ( var i = 0; i < 100; i += 1){
+                game.add({z: Math.random()})
+            }
+            
+            game.draw({width: 0, height: 0}, {clearRect: function(){}})
 
+            game.objects.forEach(function(a){
+                if ( last_z > a.z ) out_of_order = true
+            })
+
+            expect(out_of_order).toBeFalsy()
+        })
+        
+        it("must call all objects' draw functions, if they have one", function(){
+            var count = 0,
+                objects_with_draw = 0,
+                Obj = function(){ 
+                        this.draw = function(){
+                            count += 1
+                        }
+                    }
+            
+                for ( var i = 0; i < 100; i += 1){
+                    var obj_to_add
+                    
+                    if ( Math.random() > 0.5 ) {
+                        objects_with_draw += 1
+                        game.add(new Obj)
+                    } else {
+                        game.add({})
+                    }
+                }
+            
+                game.draw({width: 0, height: 0}, {clearRect: function(){}})
+                
+                expect(objects_with_draw).toEqual(count)
+            
+        })
+        
+    })
 })
