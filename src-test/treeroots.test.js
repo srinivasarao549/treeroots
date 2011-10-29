@@ -35,7 +35,7 @@
         function add(object){
             // store
             this.objects.push(object)
-            
+            return object
         }        
                 
         function remove(object){
@@ -246,7 +246,8 @@
             this.y = input.mouseY
         
             if ( input.click ){
-                var explosion = new entities.Explosion(this.x, this.y, 100, 40, 100)
+                console.log(game.objects.length)
+                var explosion = new entities.Explosion(this.x, this.y, 30, 60, 100)
                 game.add(explosion)
             } 
         }

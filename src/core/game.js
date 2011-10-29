@@ -35,7 +35,7 @@
         function add(object){
             // store
             this.objects.push(object)
-            
+            return object
         }        
                 
         function remove(object){
