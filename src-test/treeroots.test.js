@@ -1,4 +1,19 @@
-//--------------------------------//
+
+    var core = {}        
+    core.mixin =  function(){        
+            var sources = [],
+                obj = arguments[arguments.length - 1]
+                
+            for ( var i = arguments.length - 2; i >= 0; i -= 1)
+                sources.push(arguments[i])
+            
+            sources.forEach(function(source){
+                Object.keys(source).forEach(function(key){
+                    if ( !obj[key] ) obj[key] = source[key]
+                })                
+            })
+            return obj;
+        }    //--------------------------------//
 
 
     // main controlling object
@@ -8,7 +23,6 @@
         this.camera = { x: 0,
                         y: 0
                     }
-        this.fps_cooldown = 500
     }
     
     Game.prototype = (function(){
@@ -95,19 +109,13 @@
         
         
 //----------------------------------------------------------//
-//              PROCESSING METHODS
+//              DEFAULT PROCESSING METHODS
 //----------------------------------------------------------//        
         function update(td, input, canvas){
             this.objects.forEach(function(val){
                 if ( val.update ) val.update(td, input, canvas)
             })
             
-            this.fps_cooldown -= td
-            if ( this.fps_cooldown <= 0 ){
-            
-                document.getElementById("fps").innerHTML = 1000 / td
-                this.fps_cooldown = 500
-            }
         }
         
         function draw(canvas, context){
@@ -132,58 +140,51 @@
     
     var game = new Game()
     
-    // collection for entities
-    //var entities = {}
-    
-    var entity = {
-        
-        mixin: function(){        
-            var sources = [],
-                obj = arguments[arguments.length - 1]
-                
-            for ( var i = arguments.length - 2; i >= 0; i -= 1)
-                sources.push(arguments[i])
-            
-            sources.forEach(function(source){
-                Object.keys(source).forEach(function(key){
-                    if ( !obj[key] ) obj[key] = source[key]
-                })                
-            })
-            return obj;
-        },
-    }
     
     var entities = {}
-    var mixins = {}    
-!function(){
-    
-    // all drawn things must have an x, y and z property
+    var mixins = {}
     mixins.position = {
            x: 0,
            y: 0,
            z: 0
         }
         
+    mixins.dimensions = {
+        width: 100,
+        height: 100
+    }
+        
     mixins.color = {
             color_r: 0,
             color_g: 0,
             color_b: 0,
-            alpha: 0,
-            set_color: function(r, b, g, a){
-                this.color_r = Math.floor(r * 255)
-                this.color_g = Math.floor(g * 255)
-                this.color_b = Math.floor(b * 255)
-                this.color_alpha = a
-            },
-            get_color: function(){
+            color_a: 1,
+            color_string: function(){
                 return "rgba("+ this.color_r + "," +
-                                this.color_b + "," +
                                 this.color_g + "," +
-                                this.color_alpha + ")"
+                                this.color_b + "," +
+                                this.color_a + ")"
                 }
         }
 
-    mixins.fillRect = entity.mixin({
+
+    mixins.fill_rect = core.mixin(mixins.position, mixins.dimensions, mixins.color, { 
+        draw_fill_rect: function(context, x, y, width, height, color){
+            var style_cache = context.fillsStyle
+
+            context.fillStyle = color
+            context.fillRect(~~x, ~~y, width, height )
+            context.fillStyle = style_cache
+        },
+        draw: function(context, offset){
+            var offset = offset || {x: 0, y: 0}
+            this.draw_fill_rect(context, this.x + offset.x, this.y + offset.y, this.width, this.height, this.color_string())
+        }
+    })
+
+
+/*
+    mixins.fillRect = core.mixin( mixins.position, mixins.color, {
         height: 10,
         width: 10,
         draw: function(context, cam){
@@ -195,10 +196,10 @@
             context.fillStyle = style_cache                
                         
         }
-    }, mixins.position, mixins.color)
+    })
     
     
-    mixins.drawImage = entity.mixin(mixins.position, {
+    mixins.drawImage = core.mixin(mixins.position, {
         image: undefined,
         scale: 1,
         draw: function(context, cam){
@@ -217,7 +218,7 @@
         }
     })
     
-    mixins.drawSpritesheet = entity.mixin(mixins.drawImage,
+    mixins.drawSpritesheet = core.mixin(mixins.drawImage,
         
         {
         sprite_height: undefined,
@@ -237,13 +238,9 @@
                             )
         }
     })
-    
-}()
 
-
-!function(){
-
-    mixins.moveByAngle = entity.mixin({
+*/
+    mixins.moveByAngle = core.mixin(mixins.position, {
         velocity: 0.25,
         angle: 0,
         
@@ -256,14 +253,13 @@
         
             return velocity
         }
-    }, mixins.position)
+    })
 
-}()
 
     entities.Cursor = function(){
 
         // inherit ^^
-        entity.mixin(mixins.drawImage, this)
+        core.mixin(mixins.drawImage, this)
 
         this.load_image("resources/images/cursor.png")
         
@@ -300,7 +296,7 @@
     }
 
     function Particle(x, y, velocity, max_distance){
-        entity.mixin(mixins.moveByAngle, mixins.fillRect, this)
+        core.mixin(mixins.moveByAngle, mixins.fillRect, this)
 
         this.set_color(0.75, 0, 1, 1)
         this.max_distance = max_distance || 200
@@ -328,14 +324,14 @@
 }()
 
     entities.Ground = function(){
-        entity.mixin(mixins.drawImage, this)
+        core.mixin(mixins.drawImage, this)
     
         this.load_image("resources/images/ground.jpg")
     }
 
     entities.Player = function(){
         
-        entity.mixin(mixins.drawSpritesheet, mixins.moveByAngle, this)
+        core.mixin(mixins.drawSpritesheet, mixins.moveByAngle, this)
         
         this.z = 2
         

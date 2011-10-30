@@ -8,7 +8,6 @@
         this.camera = { x: 0,
                         y: 0
                     }
-        this.fps_cooldown = 500
     }
     
     Game.prototype = (function(){
@@ -95,19 +94,13 @@
         
         
 //----------------------------------------------------------//
-//              PROCESSING METHODS
+//              DEFAULT PROCESSING METHODS
 //----------------------------------------------------------//        
         function update(td, input, canvas){
             this.objects.forEach(function(val){
                 if ( val.update ) val.update(td, input, canvas)
             })
             
-            this.fps_cooldown -= td
-            if ( this.fps_cooldown <= 0 ){
-            
-                document.getElementById("fps").innerHTML = 1000 / td
-                this.fps_cooldown = 500
-            }
         }
         
         function draw(canvas, context){
