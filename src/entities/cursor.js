@@ -3,7 +3,7 @@
     entities.Cursor = function(){
 
         // inherit ^^
-        entity.mixin(this, traits.drawImage)
+        entity.mixin(mixins.drawImage, this)
 
         this.load_image("resources/images/cursor.png")
         

@@ -13,7 +13,7 @@
     }
 
     function Particle(x, y, velocity, max_distance){
-        entity.mixin(this, traits.moveByAngle, traits.fillRect)
+        entity.mixin(mixins.moveByAngle, mixins.fillRect, this)
 
         this.set_color(0.75, 0, 1, 1)
         this.max_distance = max_distance || 200

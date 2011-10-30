@@ -137,11 +137,13 @@
     
     var entity = {
         
-        mixin: function(obj){        
-            var sources = []
-            for ( var i = 1; i < arguments.length; i += 1)
+        mixin: function(){        
+            var sources = [],
+                obj = arguments[arguments.length - 1]
+                
+            for ( var i = arguments.length - 2; i >= 0; i -= 1)
                 sources.push(arguments[i])
-
+            
             sources.forEach(function(source){
                 Object.keys(source).forEach(function(key){
                     if ( !obj[key] ) obj[key] = source[key]
@@ -152,17 +154,17 @@
     }
     
     var entities = {}
-    var traits = {}
+    var mixins = {}    
 !function(){
     
     // all drawn things must have an x, y and z property
-    traits.position = {
+    mixins.position = {
            x: 0,
            y: 0,
            z: 0
         }
         
-    traits.color = {
+    mixins.color = {
             color_r: 0,
             color_g: 0,
             color_b: 0,
@@ -181,7 +183,7 @@
                 }
         }
 
-    traits.fillRect = entity.mixin({
+    mixins.fillRect = entity.mixin({
         height: 10,
         width: 10,
         draw: function(context, cam){
@@ -193,10 +195,10 @@
             context.fillStyle = style_cache                
                         
         }
-    }, traits.position, traits.color)
+    }, mixins.position, mixins.color)
     
     
-    traits.drawImage = entity.mixin({
+    mixins.drawImage = entity.mixin(mixins.position, {
         image: undefined,
         scale: 1,
         draw: function(context, cam){
@@ -213,9 +215,11 @@
             }.bind(this)
             this.image.src = src
         }
-    }, traits.position)
+    })
     
-    traits.drawSpritesheet = entity.mixin({
+    mixins.drawSpritesheet = entity.mixin(mixins.drawImage,
+        
+        {
         sprite_height: undefined,
         sprite_width: undefined,
         sprite_row: 0,
@@ -231,17 +235,15 @@
                             this.sprite_width * this.scale,
                             this.sprite_height * this.scale
                             )
-        },
-        
-        
-    }, traits.drawImage)
+        }
+    })
     
 }()
 
 
 !function(){
 
-    traits.moveByAngle = entity.mixin({
+    mixins.moveByAngle = entity.mixin({
         velocity: 0.25,
         angle: 0,
         
@@ -254,14 +256,14 @@
         
             return velocity
         }
-    }, traits.position)
+    }, mixins.position)
 
 }()
 
     entities.Cursor = function(){
 
         // inherit ^^
-        entity.mixin(this, traits.drawImage)
+        entity.mixin(mixins.drawImage, this)
 
         this.load_image("resources/images/cursor.png")
         
@@ -298,7 +300,7 @@
     }
 
     function Particle(x, y, velocity, max_distance){
-        entity.mixin(this, traits.moveByAngle, traits.fillRect)
+        entity.mixin(mixins.moveByAngle, mixins.fillRect, this)
 
         this.set_color(0.75, 0, 1, 1)
         this.max_distance = max_distance || 200
@@ -326,14 +328,14 @@
 }()
 
     entities.Ground = function(){
-        entity.mixin(this, traits.drawImage)
+        entity.mixin(mixins.drawImage, this)
     
         this.load_image("resources/images/ground.jpg")
     }
 
     entities.Player = function(){
         
-        entity.mixin(this, traits.drawSpritesheet, traits.moveByAngle)
+        entity.mixin(mixins.drawSpritesheet, mixins.moveByAngle, this)
         
         this.z = 2
         

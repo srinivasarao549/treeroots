@@ -1,7 +1,7 @@
 
     entities.Player = function(){
         
-        entity.mixin(this, traits.drawSpritesheet, traits.moveByAngle)
+        entity.mixin(mixins.drawSpritesheet, mixins.moveByAngle, this)
         
         this.z = 2
         
