@@ -183,21 +183,40 @@
     })
 
 
-/*
-    mixins.fillRect = core.mixin( mixins.position, mixins.color, {
-        height: 10,
-        width: 10,
-        draw: function(context, cam){
-            var style_cache = context.fillStyle
+    mixins.draw_image = core.mixin(mixins.position, mixins.dimensions, {
+        image: undefined,
+        draw: function(context, offset){
+            var offset = offset || {x: 0, y: 0}
+            
+            this.draw_image(context, 
+                            this.image,
+                            this.x + offset.x,
+                            this.y + offset.y,
+                            this.image.width,
+                            this.image.height)
+        },
+        draw_image: function(context, image, x, y, width, height, clip_x, clip_y, clip_width, clip_height){
 
-            context.fillStyle = this.get_color()
-            context.fillRect( ~~ (this.x - cam.x), ~~ (this.y - cam.y), 
-                                                this.width, this.height)            
-            context.fillStyle = style_cache                
-                        
+            if ( arguments.length !== 10) 
+                context.drawImage(image,
+                                  x,
+                                  y, 
+                                  width, 
+                                  height)
+            else 
+                context.drawImage(image,
+                                 clip_x, 
+                                 clip_y, 
+                                 clip_width, 
+                                 clip_height, 
+                                 x, 
+                                 y, 
+                                 width, 
+                                 height)
         }
     })
-    
+
+/*
     
     mixins.drawImage = core.mixin(mixins.position, {
         image: undefined,
@@ -257,75 +276,21 @@
 
 
     entities.Cursor = function(){
-
-        // inherit ^^
-        core.mixin(mixins.drawImage, this)
-
-        this.load_image("resources/images/cursor.png")
         
-        this.z = 4
-        this.draw = function(context){
-            var mid_x = this.image.width/2,
-                mid_y = this.image.height/2
-                
-            context.drawImage(this.image, this.x - mid_x, this.y - mid_y)
-        }
-        
-        this.update = function(td, input){
-            this.x = input.mouseX
-            this.y = input.mouseY
-        
-            if ( input.click ){
-                new entities.Explosion(this.x + game.camera.x, this.y + game.camera.y, 100, 0.1, 150)
-            } 
-        }
-    }
-
-
-!function(){
-
-    entities.Explosion = function(x, y, particles, velocity, max_distance){
-        
-                
-        // spawn lots of particles!
-        for ( var i = 0; i < particles; i += 1 )
-            game.add(new Particle(x, y, velocity, max_distance))
-        
-        // no reason to have an empty object hanging about
-        game.remove(this)
-    }
-
-    function Particle(x, y, velocity, max_distance){
-        core.mixin(mixins.moveByAngle, mixins.fillRect, this)
-
-        this.set_color(0.75, 0, 1, 1)
-        this.max_distance = max_distance || 200
-        this.velocity = velocity || 75
-        
-        this.angle = Math.random() * 2 * Math.PI
-        this.x = x
-        this.y = y
-        this.z = 3
-        
-        this.update = function(td){
-            var distance_moved = this.moveByAngle(td)
-            this.color_alpha -= distance_moved/this.max_distance
-            
-            // for some reason, setting this to <= 0 causes occasional glitches
-            // where black boxes show instead of the nearly-invisible ones
-            // desired
-            if ( this.color_alpha <= 0.01 ) {
-                game.remove(this)
+        core.mixin(mixins.fill_rect, {
+            z: 4,
+            color_a: 0.4,
+            update: function(td, input){
+                this.x = input.mouseX
+                this.y = input.mouseY
             }
-        }
+        }, this)
+        
     }
 
-
-}()
 
     entities.Ground = function(){
         core.mixin(mixins.drawImage, this)
-    
         this.load_image("resources/images/ground.jpg")
     }
 
@@ -464,12 +429,8 @@
         
         // load objects
         !function(){
-            var cursor = new entities.Cursor(),
-                ground = new entities.Ground(),
-                player = new entities.Player()
-                            
-            game.add(ground)
-            game.add(player)
+            var cursor = new entities.Cursor()
+                                        
             game.add(cursor)
         }()
         

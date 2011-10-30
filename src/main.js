@@ -64,12 +64,8 @@
         
         // load objects
         !function(){
-            var cursor = new entities.Cursor(),
-                ground = new entities.Ground(),
-                player = new entities.Player()
-                            
-            game.add(ground)
-            game.add(player)
+            var cursor = new entities.Cursor()
+                                        
             game.add(cursor)
         }()
         

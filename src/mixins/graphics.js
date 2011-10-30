@@ -29,21 +29,40 @@
     })
 
 
-/*
-    mixins.fillRect = core.mixin( mixins.position, mixins.color, {
-        height: 10,
-        width: 10,
-        draw: function(context, cam){
-            var style_cache = context.fillStyle
+    mixins.draw_image = core.mixin(mixins.position, mixins.dimensions, {
+        image: undefined,
+        draw: function(context, offset){
+            var offset = offset || {x: 0, y: 0}
+            
+            this.draw_image(context, 
+                            this.image,
+                            this.x + offset.x,
+                            this.y + offset.y,
+                            this.image.width,
+                            this.image.height)
+        },
+        draw_image: function(context, image, x, y, width, height, clip_x, clip_y, clip_width, clip_height){
 
-            context.fillStyle = this.get_color()
-            context.fillRect( ~~ (this.x - cam.x), ~~ (this.y - cam.y), 
-                                                this.width, this.height)            
-            context.fillStyle = style_cache                
-                        
+            if ( arguments.length !== 10) 
+                context.drawImage(image,
+                                  x,
+                                  y, 
+                                  width, 
+                                  height)
+            else 
+                context.drawImage(image,
+                                 clip_x, 
+                                 clip_y, 
+                                 clip_width, 
+                                 clip_height, 
+                                 x, 
+                                 y, 
+                                 width, 
+                                 height)
         }
     })
-    
+
+/*
     
     mixins.drawImage = core.mixin(mixins.position, {
         image: undefined,
