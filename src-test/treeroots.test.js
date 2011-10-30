@@ -394,8 +394,8 @@
             }
       
             // move camera
-            if ( this.x > (canvas.width/2)) game.camera.x = ~~ ( this.x - canvas.width/2 )
-            if ( this.y > (canvas.height/2)) game.camera.y = ~~ ( this.y - canvas.height/2 )
+            if ( this.x > (canvas.width/2) - 42) game.camera.x = ~~ ( this.x - canvas.width/2 + 42 )
+            if ( this.y > (canvas.height/2) - 63) game.camera.y = ~~ ( this.y - canvas.height/2 + 64 )
             
         }
         

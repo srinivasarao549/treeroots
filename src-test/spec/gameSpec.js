@@ -173,6 +173,11 @@ describe("Game (object management)", function(){
         // * Should duplicate ids be allowed in
     })
 
+})
+
+
+describe("Game (Process Methds)", function(){
+    
     describe("drawing", function(){
         
         it("must always sort by the object's 'z' property on draw", function(){
@@ -220,4 +225,5 @@ describe("Game (object management)", function(){
         })
         
     })
+    
 })
