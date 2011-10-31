@@ -1,6 +1,10 @@
 !function(window, undefined){
 
-    var core = {}        
+    var core = {
+        event: require("bean"),
+        collision: require("clash").check_collision,
+        spin: require("flywheel")
+    }        
     core.mixin =  function(){        
             var sources = [],
                 obj = arguments[arguments.length - 1]
@@ -216,50 +220,8 @@
                                  height)
         }
     })
-
-/*
     
-    mixins.drawImage = core.mixin(mixins.position, {
-        image: undefined,
-        scale: 1,
-        draw: function(context, cam){
-            context.drawImage(this.image, 
-                            ~~ (this.x - cam.x), 
-                            ~~ (this.y - cam.y),
-                            this.image.width * this.scale,
-                            this.image.height * this.scale)
-        },
-        load_image: function(src, callback){
-            this.image = new Image()
-            this.image.onload = function(){
-                if ( callback instanceof Function ) callback()
-            }.bind(this)
-            this.image.src = src
-        }
-    })
-    
-    mixins.drawSpritesheet = core.mixin(mixins.drawImage,
         
-        {
-        sprite_height: undefined,
-        sprite_width: undefined,
-        sprite_row: 0,
-        sprite_col: 0,
-        draw: function(context, cam){
-            context.drawImage(this.image, 
-                            this.sprite_width * this.sprite_col,
-                            this.sprite_height * this.sprite_row,
-                            this.sprite_width,
-                            this.sprite_height,
-                            ~~ (this.x - cam.x), 
-                            ~~ (this.y - cam.y),
-                            this.sprite_width * this.scale,
-                            this.sprite_height * this.scale
-                            )
-        }
-    })
-
-*/
     mixins.moveByAngle = core.mixin(mixins.position, {
         velocity: 0.25,
         angle: 0,
@@ -291,98 +253,34 @@
 
 
     entities.Ground = function(){
-        core.mixin(mixins.drawImage, this)
-        this.load_image("resources/images/ground.jpg")
+        core.mixin(mixins.draw_image, this)
+        this.image = new Image()
+        this.image.src = "resources/images/ground.jpg"
     }
 
     entities.Player = function(){
-        
-        core.mixin(mixins.drawSpritesheet, mixins.moveByAngle, this)
-        
-        this.z = 2
-        
-        this.velocity = 0.20
-        
-        this.load_image("resources/images/seth.png", function(){
-            this.sprite_height = 32
-            this.sprite_width = 24
-            this.scale = 2
-            
-        }.bind(this))
-        
-        this.anim_timer = 250
-        
-        this.update = function(td, input, canvas){
-            var directionX = 0,
-                directionY = 0
-        
-        
-                                
-            if ( input.up ){
-                this.sprite_row = 0
-                directionY -= 1
-            }
-        
-            if ( input.right ) {
-                this.sprite_row = 1
-                directionX += 1
-            }
-        
-            
-            if ( input.down ){
-                this.sprite_row = 2
-                directionY += 1
-            }
-        
-        
-            if ( input.left ) {
-                this.sprite_row = 3
-                directionX -= 1
-            }
-        
-        
-            // movement
-            if ( directionX !== 0 || directionY !== 0 ){        
-                this.anim_timer -= td
-                if ( this.anim_timer < 0 ){
-                    this.anim_timer = 250
-                    this.sprite_col += 1
+        var img = new Image()
+        img.src = "resources/images/seth.png"
 
-                    if ( this.sprite_col > 2)
-                        this.sprite_col = 0
-                }
-                
-                        
-                this.angle = Math.atan2(directionY, directionX)
-                this.moveByAngle(td)
+        return core.mixin(mixins.draw_image, {
+            z: 3,
+            image: img,
+            update: function(){
             }
-      
-            // move camera
-            if ( this.x > (canvas.width/2) - 42) game.camera.x = ~~ ( this.x - canvas.width/2 + 42 )
-            if ( this.y > (canvas.height/2) - 63) game.camera.y = ~~ ( this.y - canvas.height/2 + 64 )
-            
-        }
-        
+        })
     }
 //--------------------------------//
 
 
     // the function the outside world gets to initialise the game
     window["treeroots"] = function(canvas){
-        
-        // helper modules
-        var flywheel = require("flywheel"),
-            bean = require("bean"),
-            clash = require("clash")
-            
+                    
         // initialise game
         var context = canvas.getContext("2d"),
             input = {}
-
-        game.check_collision = clash().check
         
         // handle keyboard input
-        bean.add(document, 'keydown', function(e){
+        core.event.add(document, 'keydown', function(e){
             var k = e.which
 
             if ( k == 65 ) 
@@ -393,10 +291,9 @@
                 input.up = true
             else if ( k == 83 )
                 input.down = true
-        
         }) 
         
-        bean.add(document, 'keyup', function(e){
+        core.event.add(document, 'keyup', function(e){
             var k = e.which
                         
             if ( k == 65 ) 
@@ -407,42 +304,44 @@
                 input.up = false
             else if ( k == 83 )
                 input.down = false
-        
         })
         
         // handle mouse input
         !function(){
-            bean.add(document, 'mousemove', function(e){
+            core.event.add(document, 'mousemove', function(e){
                 input.mouseX = e.clientX - canvas.offsetLeft
                 input.mouseY = e.clientY - canvas.offsetTop
             })
         
-            bean.add(canvas, 'mousedown', function(e){
+            core.event.add(canvas, 'mousedown', function(e){
                 input.mousedown = true
                 input.click = true
             })
             
-            bean.add(canvas, 'mouseup', function(e){
+            core.event.add(canvas, 'mouseup', function(e){
                 input.mousedown = false
             })
         }()
 
+        // loop
+        core.spin(function(time_delta){            
+            game.update(time_delta, input, canvas)
+            game.draw(canvas, context)
+            
+            input.click = false 
+
+        }).start()
         
         // load objects
         !function(){
-            var cursor = new entities.Cursor()
-                                        
+            var cursor = new entities.Cursor(),
+                ground = new entities.Ground(),
+                player = new entities.Player()
+
+            game.add(player)
             game.add(cursor)
+            game.add(ground)
         }()
-        
-        // loop
-        flywheel(function(time_delta){            
-            game.update(time_delta, input, canvas)
-            game.draw(canvas, context)
-
-            input.click = false 
-
-        }).set_framerate_cap(20).start()
 
     }
 }(this)

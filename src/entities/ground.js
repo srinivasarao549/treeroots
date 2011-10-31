@@ -1,5 +1,6 @@
 
     entities.Ground = function(){
-        core.mixin(mixins.drawImage, this)
-        this.load_image("resources/images/ground.jpg")
+        core.mixin(mixins.draw_image, this)
+        this.image = new Image()
+        this.image.src = "resources/images/ground.jpg"
     }

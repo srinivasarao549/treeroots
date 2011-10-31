@@ -1,6 +1,5 @@
 describe("graphics", function(){
     
-    
     describe("color", function(){
     
         it("must set default values of r=0, g=0, b=0 and a=1", function(){
@@ -188,7 +187,7 @@ describe("draw_image", function(){
         for ( var prop in p ){
             expect(mock_context[prop]).toEqual(p[prop])
         }
-        
     })
-    
+        
 })
+
