@@ -8,6 +8,12 @@
         var context = canvas.getContext("2d"),
             input = {}
         
+        core.mixin({    
+            event: require("bean") || undefined,
+            collision: require("clash").check_collision || undefined,
+            spin: require("flywheel") || undefined
+        }, core)
+        
         // handle keyboard input
         core.event.add(document, 'keydown', function(e){
             var k = e.which

@@ -1,9 +1,5 @@
 
-    var core = {
-        event: require("bean"),
-        collision: require("clash").check_collision,
-        spin: require("flywheel")
-    }        
+    var core = {}        
     core.mixin =  function(){        
             var sources = [],
                 obj = arguments[arguments.length - 1]
@@ -277,6 +273,12 @@
         // initialise game
         var context = canvas.getContext("2d"),
             input = {}
+        
+        core.mixin({    
+            event: require("bean") || undefined,
+            collision: require("clash").check_collision || undefined,
+            spin: require("flywheel") || undefined
+        }, core)
         
         // handle keyboard input
         core.event.add(document, 'keydown', function(e){
