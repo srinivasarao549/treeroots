@@ -1,6 +1,7 @@
 
-    var Core = function(){
-        var core = {}        
+var Core = function(){
+
+    var core = {}        
     core.mixin =  function(){        
             var sources = [],
                 obj = arguments[arguments.length - 1]
@@ -14,7 +15,9 @@
                 })                
             })
             return obj;
-        }    //--------------------------------//
+        }    
+    
+    core.mixins = {}//--------------------------------//
 
 
     // main controlling object
@@ -137,18 +140,21 @@
         }
         
     })()
-    mixins.position = {
+    !function(){
+        
+        var mixins = core.mixins
+    core.mixins.position = {
            x: 0,
            y: 0,
            z: 0
         }
         
-    mixins.dimensions = {
+    core.mixins.dimensions = {
         width: 100,
         height: 100
     }
         
-    mixins.color = {
+    core.mixins.color = {
             color_r: 0,
             color_g: 0,
             color_b: 0,
@@ -162,7 +168,7 @@
         }
 
 
-    mixins.fill_rect = core.mixin(mixins.position, mixins.dimensions, mixins.color, { 
+    core.mixins.fill_rect = core.mixin(mixins.position, mixins.dimensions, mixins.color, { 
         draw_fill_rect: function(context, x, y, width, height, color){
             var style_cache = context.fillsStyle
 
@@ -177,7 +183,7 @@
     })
 
 
-    mixins.draw_image = core.mixin(mixins.position, mixins.dimensions, {
+    core.mixins.draw_image = core.mixin(mixins.position, mixins.dimensions, {
         image: undefined,
         draw: function(context, offset){
             var offset = offset || {x: 0, y: 0}
@@ -209,7 +215,7 @@
                                  height)
         }
     })
-    mixins.moveByAngle = core.mixin(mixins.position, {
+    core.mixins.moveByAngle = core.mixin(mixins.position, {
         velocity: 0.25,
         angle: 0,
         
@@ -223,18 +229,26 @@
             return velocity
         }
     })
+
+    }()
     
     
-        return core
-    
-    }
-    
-    var entities = {}
-    var mixins = {}
-    
+    //---- END OF MIXINS ----//    
+
+    return core
+
+}
+
+
+
+// -------------------------------------------------------------------------- //
+
 !function(window, undefined){
+    
     var core = new Core(),
-        game = new core.Game()
+        game = new core.Game(),
+        entities = {},
+        mixins = core.mixins
 
     entities.Cursor = function(){
         

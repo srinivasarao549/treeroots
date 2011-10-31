@@ -14,7 +14,7 @@ mkdir $pt_temp
 #intermediate build steps
     
     #build core
-    cat ${pt_mixins}position.js ${pt_mixins}graphics.js ${pt_mixins}movement.js > ${pt_temp}mixins.js
+    cat ${pt_mixins}header.js ${pt_mixins}position.js ${pt_mixins}graphics.js ${pt_mixins}movement.js ${pt_mixins}footer.js > ${pt_temp}mixins.js
     cat ${pt_core}header.js ${pt_core}mixin.js ${pt_core}game.js ${pt_core}images.js ${pt_temp}mixins.js ${pt_core}footer.js > ${pt_temp}core.js
 
     #build game

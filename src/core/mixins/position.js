@@ -1,11 +1,11 @@
 
-    mixins.position = {
+    core.mixins.position = {
            x: 0,
            y: 0,
            z: 0
         }
         
-    mixins.dimensions = {
+    core.mixins.dimensions = {
         width: 100,
         height: 100
     }

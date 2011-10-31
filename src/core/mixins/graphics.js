@@ -1,6 +1,6 @@
 
         
-    mixins.color = {
+    core.mixins.color = {
             color_r: 0,
             color_g: 0,
             color_b: 0,
@@ -14,7 +14,7 @@
         }
 
 
-    mixins.fill_rect = core.mixin(mixins.position, mixins.dimensions, mixins.color, { 
+    core.mixins.fill_rect = core.mixin(mixins.position, mixins.dimensions, mixins.color, { 
         draw_fill_rect: function(context, x, y, width, height, color){
             var style_cache = context.fillsStyle
 
@@ -29,7 +29,7 @@
     })
 
 
-    mixins.draw_image = core.mixin(mixins.position, mixins.dimensions, {
+    core.mixins.draw_image = core.mixin(mixins.position, mixins.dimensions, {
         image: undefined,
         draw: function(context, offset){
             var offset = offset || {x: 0, y: 0}

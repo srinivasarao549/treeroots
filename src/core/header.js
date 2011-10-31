@@ -1,3 +1,4 @@
 
-    var Core = function(){
-        var core = {}
+var Core = function(){
+
+    var core = {}

@@ -1,5 +1,5 @@
 
-    mixins.moveByAngle = core.mixin(mixins.position, {
+    core.mixins.moveByAngle = core.mixin(mixins.position, {
         velocity: 0.25,
         angle: 0,
         

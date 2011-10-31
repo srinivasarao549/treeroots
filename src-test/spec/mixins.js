@@ -1,5 +1,6 @@
-var core = new Core()
-
+var core = new Core(),
+    mixins = core.mixins
+    
 describe("graphics", function(){
     
     describe("color", function(){
