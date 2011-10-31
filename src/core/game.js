@@ -2,7 +2,7 @@
 
 
     // main controlling object
-    function Game(canvas){
+    core.Game = function(canvas){
         this.objects = []
         this.objects_modified = false
         this.camera = { x: 0,
@@ -10,7 +10,7 @@
                     }
     }
     
-    Game.prototype = (function(){
+    core.Game.prototype = (function(){
         
         return {
             // object tracking methods
@@ -121,6 +121,3 @@
         }
         
     })()
-    
-    
-    var game = new Game()

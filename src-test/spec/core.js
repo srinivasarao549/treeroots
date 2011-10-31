@@ -1,16 +1,18 @@
-describe("Game (object management)", function(){
+var core = new Core()
+
+describe("game (object management)", function(){
     
     describe("adding and removing objects from game.objects", function(){
 
         it("must store an object in game.objects, and return that object when adding", function(){
-            var game = new Game(),
+            var game = new core.Game(),
                 obj = game.add({x: 3})
 
             expect(game.objects.indexOf(obj) != -1).toBeTruthy()
         })
         
         it("must remove objects from game.objects on request", function(){
-            var game = new Game(),
+            var game = new core.Game(),
                 obj = game.add({x: 2}),
                 obj2 = game.add({x: 2})
             
@@ -24,7 +26,7 @@ describe("Game (object management)", function(){
         })
 
         it("must not delete any extant objects if a non-game object is submitted to remove", function(){
-            var game = new Game(),
+            var game = new core.Game(),
                 obj = game.add({x: 2}),
                 obj2 = game.add({x: 2})
             
@@ -37,7 +39,7 @@ describe("Game (object management)", function(){
         })
         
         it("must allow removal of all objects", function(){
-            var game = new Game(),
+            var game = new core.Game(),
                 obj = game.add({x: 2}),
                 obj2 = game.add({x: 2})
             
@@ -57,7 +59,7 @@ describe("Game (object management)", function(){
     describe("finding objects from game.object", function(){
 
         it("must be able to find objects by their constructor", function(){
-            var game = new Game(),
+            var game = new core.Game(),
                 C = function(){ this.x = 1}
                 
             game.add(new C)
@@ -79,7 +81,7 @@ describe("Game (object management)", function(){
         })
 
         it("must be able to find objects by their constructor with submitted array", function(){
-            var game = new Game(),
+            var game = new core.Game(),
                 C = function(){ this.x = 1},    
                 obj1 = game.add(new C),
                 obj2 = game.add(new C),
@@ -103,7 +105,7 @@ describe("Game (object management)", function(){
         })
 
         it("must be able to find objects by distance", function(){
-            var game = new Game()
+            var game = new core.Game()
             
             game.add({x: 1, y: 2})
             game.add({x: 1.2, y: 3})
@@ -117,7 +119,7 @@ describe("Game (object management)", function(){
         })
         
         it("must be able to find objects by distance with submitted array", function(){
-            var game = new Game(),
+            var game = new core.Game(),
                 obj1 = game.add({x: 1, y: 2}),
                 obj2 = game.add({x: 1.2, y: 3}),
                 obj3 = game.add({x: 2, y: 2})
@@ -131,7 +133,7 @@ describe("Game (object management)", function(){
         
         it("must be able to find objects by ID", function(){
             
-            var game = new Game()
+            var game = new core.Game()
             
             game.add({x: 1, y: 2, id: "colbert"})
             game.add({x: 1, y: 3})
@@ -144,7 +146,7 @@ describe("Game (object management)", function(){
         
         it("must return undefined if no object with ID is found", function(){
             
-            var game = new Game()
+            var game = new core.Game()
             
             game.add({x: 1, y: 2, id: "colbert"})
             game.add({x: 1, y: 3})
@@ -156,7 +158,7 @@ describe("Game (object management)", function(){
         })
 
         it("must return objects by ID with submitted array", function(){
-            var game = new Game()
+            var game = new core.Game()
             
             game.add({x: 1, y: 2, id: "colbert"})
             game.add({x: 1, y: 3})
@@ -176,12 +178,12 @@ describe("Game (object management)", function(){
 })
 
 
-describe("Game (Process Methds)", function(){
+describe("game (Process Methds)", function(){
     
     describe("drawing", function(){
         
         it("must always sort by the object's 'z' property on draw", function(){
-            var game = new Game(),
+            var game = new core.Game(),
                 out_of_order = false,
                 last_z = 0
             
@@ -199,7 +201,8 @@ describe("Game (Process Methds)", function(){
         })
         
         it("must call all objects' draw functions, if they have one", function(){
-            var count = 0,
+            var game = new core.Game(),
+                count = 0,
                 objects_with_draw = 0,
                 Obj = function(){ 
                         this.draw = function(){
@@ -255,3 +258,10 @@ describe("mixin", function(){
     })
 })
 
+describe("images_manager", function(){
+    it("must preload images before callback", function(){
+        
+        
+        
+    })
+})

@@ -1,3 +1,5 @@
+var core = new Core()
+
 describe("graphics", function(){
     
     describe("color", function(){

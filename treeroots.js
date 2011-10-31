@@ -1,6 +1,6 @@
-!function(window, undefined){
 
-    var core = {}        
+    var Core = function(){
+        var core = {}        
     core.mixin =  function(){        
             var sources = [],
                 obj = arguments[arguments.length - 1]
@@ -18,7 +18,7 @@
 
 
     // main controlling object
-    function Game(canvas){
+    core.Game = function(canvas){
         this.objects = []
         this.objects_modified = false
         this.camera = { x: 0,
@@ -26,7 +26,7 @@
                     }
     }
     
-    Game.prototype = (function(){
+    core.Game.prototype = (function(){
         
         return {
             // object tracking methods
@@ -137,13 +137,6 @@
         }
         
     })()
-    
-    
-    var game = new Game()
-    
-    
-    var entities = {}
-    var mixins = {}
     mixins.position = {
            x: 0,
            y: 0,
@@ -216,8 +209,6 @@
                                  height)
         }
     })
-    
-        
     mixins.moveByAngle = core.mixin(mixins.position, {
         velocity: 0.25,
         angle: 0,
@@ -232,7 +223,18 @@
             return velocity
         }
     })
-
+    
+    
+        return core
+    
+    }
+    
+    var entities = {}
+    var mixins = {}
+    
+!function(window, undefined){
+    var core = new Core(),
+        game = new core.Game()
 
     entities.Cursor = function(){
         
@@ -275,12 +277,13 @@
         var context = canvas.getContext("2d"),
             input = {}
         
+
         core.mixin({    
-            event: require("bean") || undefined,
-            collision: require("clash").check_collision || undefined,
-            spin: require("flywheel") || undefined
+            event: require("bean"),
+            collision: require("clash").check_collision,
+            spin: require("flywheel")
         }, core)
-        
+    
         // handle keyboard input
         core.event.add(document, 'keydown', function(e){
             var k = e.which
