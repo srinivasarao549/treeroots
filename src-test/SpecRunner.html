@@ -9,18 +9,22 @@
 
   <!-- include source files here... -->
   <script type="text/javascript" src="require.js"></script>
-
-  <!-- include spec files here... -->
-  <script type="text/javascript" src="spec/core.js"></script>
-  <script type="text/javascript" src="spec/mixins.js"></script>
-  <script type="text/javascript" src="spec/entities.js"></script>
-
-</head>
+ </head>
 <body>
 
 <script type="text/javascript">
+
+require.config({
+    baseUrl: "../src",
+    paths: {
+        "test": "../src-test/spec"
+    }
+})
+
+require(["test/core", "test/behaviours"], function(){
   jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
   jasmine.getEnv().execute();
+})
 </script>
 
 </body>

@@ -1,6 +1,6 @@
-require(["../src/core/objectManager"], function(ObjectManager){
+define(["core/objectManager", "core/mixin"], function(ObjectManager, mixin){
 
-    describe("om (object management)", function(){
+    describe("om", function(){
         
         describe("adding and removing objects from om.objects", function(){
 
@@ -186,7 +186,7 @@ require(["../src/core/objectManager"], function(ObjectManager){
                     console.log('yes')
                 }},
                 
-                obj = core.mixin(pos, draw, {})
+                obj = mixin(pos, draw, {})
                                 
             expect(obj.x).toEqual(pos.x)
             expect(obj.y).toEqual(pos.y)
@@ -198,7 +198,7 @@ require(["../src/core/objectManager"], function(ObjectManager){
             var pos = {x: 2, y: 3},
                 pos2 = {x: 4, y: 4, z: 20}
                 
-                obj = core.mixin(pos2, pos, {})
+                obj = mixin(pos2, pos, {})
                 
                 expect(obj.x).toEqual(pos.x)
                 expect(obj.y).toEqual(pos.y)
