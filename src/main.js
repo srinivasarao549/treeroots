@@ -1,13 +1,9 @@
-require(['entities', 'core/objectManager'], function(entities, ObjectManager){
+require(['entities', 'game'], function(entities, Game){
     
     
     var canvas = document.getElementById("treeroots")
-    
-    var om = new ObjectManager(canvas)
-
+    var om = new Game(canvas)
     om.add(new entities.Cursor())
-    console.log(om)
-    om.draw(canvas, canvas.getContext('2d'))
-    
-})
+    om.draw(canvas, canvas.getContext("2d"))
 
+})

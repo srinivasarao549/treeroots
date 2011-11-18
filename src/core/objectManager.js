@@ -1,12 +1,9 @@
 define(function(){ 
 
    // main controlling object
-    var ObjectManager = function(canvas){
+    var ObjectManager = function(){
         this.objects = []
         this.objects_modified = false
-        this.camera = { x: 0,
-                        y: 0
-                    }
     }
     
     ObjectManager.prototype = (function(){
@@ -20,9 +17,6 @@ define(function(){
             find_nearest: find_nearest,
             find_by_id: find_by_id,
             
-            // processing methods
-            update: update,
-            draw: draw
         }
         
         
@@ -91,33 +85,6 @@ define(function(){
             return obj
         }
         
-        
-//----------------------------------------------------------//
-//              DEFAULT PROCESSING METHODS
-//----------------------------------------------------------//        
-        function update(td, input, canvas){
-            this.objects.forEach(function(val){
-                if ( val.update ) val.update(td, input, canvas)
-            })
-            
-        }
-        
-        function draw(canvas, context){
-            var camera = this.camera
-            
-            if ( this.objects_modified ) {
-                this.objects.sort(function(a, b){
-                return a.z - b.z
-                })
-                this.objects_modified = false
-            }
-            
-            context.clearRect(0, 0, canvas.width, canvas.height)
-            this.objects.forEach(function(obj){
-                if ( obj.draw ) obj.draw(context, camera)
-            })
-            
-        }
         
     })()
 
