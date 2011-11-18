@@ -1,20 +1,6 @@
 define(['behaviours', 'core/mixin'], function(b, mixin){
-
-    describe("base", function(){
-        
-        it("must add whatever is passed to it on 'on-add' to the object's 'game'", function(){
-            var val = 2,
-                obj = mixin(b.base, {})
-
-                obj.on_add(val)
-                
-                expect(obj.game).toEqual(val)
-                    
-        })
-
-    })
-
-    describe("graphics", function(){
+ 
+   describe("graphics", function(){
         
         describe("color", function(){
         

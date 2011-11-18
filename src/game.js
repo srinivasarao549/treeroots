@@ -11,7 +11,7 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
 
         this.add = function(obj){
             Game.prototype.add.call(this, obj)
-            obj.game = this
+            if ( obj.on_add ) obj.on_add(this)
         }
     }
 

@@ -7,16 +7,22 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
             z: 4,
             color_a: 0.4,
             update: function(td){
+                this.x = this.input.mousex
+                this.y = this.input.mousey
+            },
+            on_add: function(game){
+                console.log(game)
+                this.game = game
+                this.input = game.input
             }
         }, this)
     }
-
     
     e.Player = function(){
         var img = new Image()
         img.src = "resources/images/seth.png"
 
-        return mixin(b.draw_image, b.move_by_angle, {
+        return mixin( b.draw_image, b.move_by_angle, {
             z: 3,
             image: img,
             update: function(td){
@@ -25,7 +31,7 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
     }
 
     e.Ground = function(){
-        mixin(b.draw_image, this)
+        mixin( b.draw_image, this)
         this.image = new Image()
         this.image.src = "resources/images/ground.jpg"
     }
