@@ -1,5 +1,6 @@
-        
-    core.mixin =  function(){        
+define(function(){
+
+    return function(){        
             var sources = [],
                 obj = arguments[arguments.length - 1]
                 
@@ -14,5 +15,5 @@
             return obj;
         }    
     
-    core.mixins = {}
-    
+})
+  
