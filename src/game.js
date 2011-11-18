@@ -1,10 +1,18 @@
 define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
 
-    var Game = function(canvas, context){
+    var Game = function(canvas){
         this.objects = []
         this.camera = {x: 0, y: 0}
-        this.canvas = canvas
-        this.context = canvas.getContext("2d")       
+        
+        if ( canvas ) {
+            this.canvas = canvas
+            this.context = canvas.getContext("2d")       
+        }
+
+        this.add = function(obj){
+            Game.prototype.add.call(this, obj)
+            obj.game = this
+        }
     }
 
     Game.prototype = new ObjectManager()
@@ -16,7 +24,7 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
             draw: draw
         }
  
-       function update(td, input, canvas){
+        function update(td, input, canvas){
             this.objects.forEach(function(val){
                 if ( val.update ) val.update(td, input, canvas)
             })

@@ -1,7 +1,17 @@
-define(['behaviours', 'core/mixin'], function(behaviours, mixin){
+define(['behaviours', 'core/mixin'], function(b, mixin){
 
     describe("base", function(){
         
+        it("must add whatever is passed to it on 'on-add' to the object's 'game'", function(){
+            var val = 2,
+                obj = mixin(b.base, {})
+
+                obj.on_add(val)
+                
+                expect(obj.game).toEqual(val)
+                    
+        })
+
     })
 
     describe("graphics", function(){
@@ -9,7 +19,7 @@ define(['behaviours', 'core/mixin'], function(behaviours, mixin){
         describe("color", function(){
         
             it("must set default values of r=0, g=0, b=0 and a=1", function(){
-                var obj = mixin(behaviours.color, {})
+                var obj = mixin(b.color, {})
                         
                 expect(obj.color_r).toEqual(0)
                 expect(obj.color_g).toEqual(0)
@@ -20,7 +30,7 @@ define(['behaviours', 'core/mixin'], function(behaviours, mixin){
         
             it("must return a string representing the color in the rgba(r, g, b, a) format", function(){
             
-                var obj = mixin(behaviours.color, {
+                var obj = mixin(b.color, {
                     color_r: 0,
                     color_g: 50,
                     color_b: 100,
@@ -37,7 +47,7 @@ define(['behaviours', 'core/mixin'], function(behaviours, mixin){
         describe("fill_rect", function(){
         
             it("must make the default draw method draw rect using obj's own x, y, width, height", function(){
-                var obj = mixin(behaviours.fill_rect, {
+                var obj = mixin(b.fill_rect, {
                     x: 0, y: 10, height: 20, width: 10
                 }),
                 mock_context = {
@@ -60,7 +70,7 @@ define(['behaviours', 'core/mixin'], function(behaviours, mixin){
             })
         
             it("must apply offsets when drawing (passed as second param)", function(){
-                var obj = mixin(behaviours.fill_rect, {
+                var obj = mixin(b.fill_rect, {
                     x: 0, y: 10, height: 20, width: 10
                 }),
                 mock_context = {
@@ -81,7 +91,7 @@ define(['behaviours', 'core/mixin'], function(behaviours, mixin){
             })
 
             it("have a custom method for drawing", function(){
-                var obj = mixin(behaviours.fill_rect, {
+                var obj = mixin(b.fill_rect, {
                     x: 0, y: 10, height: 20, width: 10
                     }),
                     mock_context = {
@@ -111,7 +121,7 @@ define(['behaviours', 'core/mixin'], function(behaviours, mixin){
         describe("image", function(){
         
             it("must call drawImage with the short style by default", function(){
-                var obj = mixin(behaviours.image, {
+                var obj = mixin(b.image, {
                     image: {height: 10, width: 10}
                     }),
                     mock_context = {
@@ -135,7 +145,7 @@ define(['behaviours', 'core/mixin'], function(behaviours, mixin){
             })
         
             it("must apply offsets when drawing (passed as second param)", function(){
-                var obj = mixin(behaviours.image, {
+                var obj = mixin(b.image, {
                     image: {height: 10, width: 10}
                     }),
                     mock_context = {
@@ -161,7 +171,7 @@ define(['behaviours', 'core/mixin'], function(behaviours, mixin){
             })
         
             it("must re-order drawImage arguments if a sufficient number are submitted", function(){
-                var obj = mixin(behaviours.image, {}),
+                var obj = mixin(b.image, {}),
                     mock_context = {
                         drawImage: function(image, clip_x, clip_y, clip_width, clip_height, x, y, width, height){
                             this.image = image
