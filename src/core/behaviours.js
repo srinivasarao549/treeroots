@@ -37,11 +37,8 @@ define(['core/mixin'], function(mixin){
 
     b.fill_rect = mixin(b.position, b.dimensions, b.color, { 
         draw_fill_rect: function(context, x, y, width, height, color){
-            var style_cache = context.fillsStyle
-
             context.fillStyle = color
             context.fillRect(~~x, ~~y, width, height )
-            context.fillStyle = style_cache
         },
         draw: function(context, offset){
             var offset = offset || {x: 0, y: 0}

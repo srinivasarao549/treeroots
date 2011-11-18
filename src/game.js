@@ -1,9 +1,10 @@
 define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
 
-    var Game = function(){
+    var Game = function(canvas, context){
         this.objects = []
         this.camera = {x: 0, y: 0}
-        
+        this.canvas = canvas
+        this.context = canvas.getContext("2d")       
     }
 
     Game.prototype = new ObjectManager()
@@ -22,8 +23,10 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
             
         }
         
-        function draw(canvas, context){
-            var camera = this.camera
+        function draw(){
+            var camera = this.camera,
+                context = this.context,
+                canvas = this.canvas
             
             if ( this.objects_modified ) {
                 this.objects.sort(function(a, b){
@@ -32,7 +35,7 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
                 this.objects_modified = false
             }
             
-            context.clearRect(0, 0, canvas.width, canvas.height)
+            this.context.clearRect(0, 0, canvas.width, canvas.height)
             this.objects.forEach(function(obj){
                 if ( obj.draw ) obj.draw(context, camera)
             })
