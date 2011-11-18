@@ -1,4 +1,4 @@
-define(['core/mixin', 'core/behaviours'], function(mixin, b){
+define(['core/mixin', 'behaviours'], function(mixin, b){
     
     var e = {}
 

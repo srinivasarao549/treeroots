@@ -1,4 +1,8 @@
-define(['core/behaviours', 'core/mixin'], function(behaviours, mixin){
+define(['behaviours', 'core/mixin'], function(behaviours, mixin){
+
+    describe("base", function(){
+        
+    })
 
     describe("graphics", function(){
         
