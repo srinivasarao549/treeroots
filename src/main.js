@@ -5,19 +5,16 @@ require(['entities', 'game'], function(entities, Game){
         game = new Game(canvas),
         cursor = new entities.Cursor()
 
-    console.log(cursor)
- 
-    game.input = {
-        mousex: 20,
-        mousey: 20
+    canvas.onmousemove = function(e){
+        game.input.mousex = e.offsetX;
+        game.input.mousey = e.offsetY;
     }
     
     game.add(cursor)
-    console.log(cursor)
 
    !function update(){
         game.update()
         game.draw()
-        setTimeout(update, 10)
+        setTimeout(update, 16) // replace for flywheel later
     }()
 })

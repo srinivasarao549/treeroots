@@ -13,6 +13,9 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
             Game.prototype.add.call(this, obj)
             if ( obj.on_add ) obj.on_add(this)
         }
+    
+        // to store input handlers
+        this.input = {}
     }
 
     Game.prototype = new ObjectManager()
