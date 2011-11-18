@@ -178,7 +178,7 @@ describe("game (object management)", function(){
 })
 
 
-describe("game (Process Methds)", function(){
+describe("game (Process Methods)", function(){
     
     describe("drawing", function(){
         
