@@ -21,7 +21,7 @@ require.config({
     }
 })
 
-require(["test/core", "test/behaviours"], function(){
+require(["test/core", "test/behaviours", "test/game"], function(){
   jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
   jasmine.getEnv().execute();
 })
