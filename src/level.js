@@ -72,7 +72,6 @@ define(['core/mixin'], function(mixin){
                 this.game.images[src] = image 
             }
         }
-
     })()
 
     return Level
