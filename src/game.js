@@ -48,7 +48,7 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
             
             this.context.clearRect(0, 0, canvas.width, canvas.height)
             this.objects.forEach(function(obj){
-                if ( obj.draw ) obj.draw(context, camera)
+                if ( obj.draw ) obj.draw(camera, context, canvas)
             })
             
         }
