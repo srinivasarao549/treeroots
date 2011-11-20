@@ -18,6 +18,20 @@ describe("level", function(){
             expect(game.objects).toContain(new entities.Player)
     })
 
+    it("must mixin any non-type parameters to the object", function(){
+ 
+        var entities = {Cursor: function(){ this.x = 2}},
+            game = {objects: [],
+                    add: function(object){ this.objects.push(object)}
+                    },
+            level = new Level(game, entities),
+            json = '[{"type": "Cursor", "y": 4}]'
+
+            level.load(json)
+            
+      //      expect(game.objects[0]).toEqual({x: 2, y: 4})
+
+    })
 })
 
 })

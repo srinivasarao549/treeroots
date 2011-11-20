@@ -1,4 +1,4 @@
-define([], function(){
+define(['core/mixin'], function(mixin){
     
     function Level(game, entities){
         this.game = game
@@ -15,10 +15,16 @@ define([], function(){
                 i = data.length
 
             while ( i --> 0 ){
-                var type = data[i].type
-                this.game.add(new this.entities[type])
+                var spec = data[i],
+                    obj = new this.entities[spec.type]
+    
+                delete spec.type
+                mixin(spec, obj)
+            
+                this.game.add(obj)
+            
             }
-        
+            
         }
 
     })()
