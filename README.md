@@ -1,14 +1,9 @@
 ### Treeroots is a complete WIP
 
-There's no how-to, or read-me, or whatever.  If you're interested in the source code, which is in treeroots.js.
+Please don't expect anything of it - it's my hobby game.  
 
-Otherwise, [play the damn thing, in whatever state it's in](http://hughfdjackson.github.com/treeroots).
+At the moment, I'm using require.js to lead modules - the main module being src/main.js. 
 
+### So where are you going with this?
 
-#### Why 'Treeroots'?
-
-Cause you're underground.
-
-I know, genius, right?
-
-I was just born that way, don't feel bad.
+For the short-term, I wanna get to an arcade monster masher.
