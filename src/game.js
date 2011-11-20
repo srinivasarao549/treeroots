@@ -14,10 +14,11 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
             if ( obj.on_add ) obj.on_add(this)
         }
     
-        // to store input handlers
+        // stores we expect others to populate
         this.input = {}
+        this.images = {}
     }
-
+    
     Game.prototype = new ObjectManager()
 
     mixin((function(){
@@ -52,6 +53,7 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
             })
             
         }
+
         
     })(), Game.prototype)
 

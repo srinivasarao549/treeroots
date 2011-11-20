@@ -18,21 +18,24 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
     }
     
     e.Player = function(){
-        var img = new Image()
-        img.src = "resources/images/seth.png"
-
         return mixin( b.image, b.move_by_angle, {
             z: 3,
-            image: img,
+            on_add: function(game){
+                this.game = game
+                this.image = game.images["resources/images/seth.png"]
+            },
             update: function(td){
             }
         })
     }
 
     e.Ground = function(){
-        mixin( b.image, this)
-        this.image = new Image()
-        this.image.src = "resources/images/ground.jpg"
+        mixin( b.image, {
+            on_add: function(game){
+                this.game = game
+                this.image = game.images["resources/images/ground.jpg"]
+            }
+        }, this)
     }
 
 // ---- RETURN ---- //
