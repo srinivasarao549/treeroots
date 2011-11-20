@@ -11,7 +11,7 @@ require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Leve
 
     level.load({images: ["resources/images/seth.png", "resources/images/ground.jpg"],
                 objects: [
-                    {type: "Cursor"}, {type: "Ground"}
+                    {type: "Cursor"}, {type: "Player"}
                 ]})
 
    !function update(){
