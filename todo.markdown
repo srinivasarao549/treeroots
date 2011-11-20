@@ -2,15 +2,17 @@
 
 This is more of an immediate TODOs; I know I'm going to need collision/music/etc eventually.
 
-## Current:
+## Current
 
-* Sort out the draw-clip on images
+
 
 ## Tech
 
-* Image preload
+* Fade up/out on the whole level
+* Image preload w/ loading screen
 * level loader
-* 'shadow' on object manager (i.e. lets you see where an object was last frame)
+* 'shadow' in src/game(i.e. lets you see where an object was last frame)
+* Replace timer with flywheel.
 
 ## Creative
 
