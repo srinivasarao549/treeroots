@@ -45,7 +45,7 @@ define(['behaviours', 'core/mixin'], function(b, mixin){
                     }
                 }
             
-                obj.draw(mock_context)
+                obj.draw(undefined, mock_context)
             
             
                 expect(mock_context.x).toEqual(obj.x)
@@ -68,7 +68,7 @@ define(['behaviours', 'core/mixin'], function(b, mixin){
                     }
                 }
             
-                obj.draw(mock_context, {x: 10, y: 10})
+                obj.draw({x: 10, y: 10}, mock_context)
             
                 expect(mock_context.x).toEqual(obj.x + 10)
                 expect(mock_context.y).toEqual(obj.y + 10)
@@ -120,7 +120,7 @@ define(['behaviours', 'core/mixin'], function(b, mixin){
                         }
                     }
             
-                obj.draw(mock_context)
+                obj.draw(undefined, mock_context)
             
                 expect(mock_context.x).toEqual(obj.x)
                 expect(mock_context.y).toEqual(obj.y)
@@ -145,7 +145,7 @@ define(['behaviours', 'core/mixin'], function(b, mixin){
                     },
                     offset = {x: 10, y: 20}
             
-                obj.draw(mock_context, offset)
+                obj.draw(offset, mock_context)
             
                 expect(mock_context.x).toEqual(obj.x + offset.x)
                 expect(mock_context.y).toEqual(obj.y + offset.y)
