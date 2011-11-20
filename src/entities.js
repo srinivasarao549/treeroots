@@ -11,7 +11,6 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
                 this.y = this.input.mousey
             },
             on_add: function(game){
-                console.log(game)
                 this.game = game
                 this.input = game.input
             }
