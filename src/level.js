@@ -30,7 +30,7 @@ define(['core/mixin'], function(mixin){
         }
 
         function load_objects(data){
-
+            this.loaded = false
             this.pending_operations += 1
             var i = data.length
             
@@ -46,6 +46,7 @@ define(['core/mixin'], function(mixin){
             }
 
             this.pending_operations -= 1
+            if ( this.pending_operations <= 0 ) this.loaded = true
         }
 
         function load_images(data){
@@ -54,13 +55,19 @@ define(['core/mixin'], function(mixin){
             while ( i --> 0 ){
                 var src = data[i],
                     image 
-
+                
                 // don't try to load one we're loading already
                 if ( this.game.images[src] ) continue;
                 
+                this.pending_operations += 1
+                this.loaded = false
+
                 image = new Image
                 image.src = src
-                image.onload = function(){ this.pending_operations -= 1;}.bind(this)
+                image.onload = function(){ 
+                    this.pending_operations -= 1;
+                    if ( this.pending_operations <= 0 ) this.loaded = true
+                }.bind(this)
 
                 this.game.images[src] = image 
             }
