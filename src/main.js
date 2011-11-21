@@ -18,7 +18,7 @@ require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Leve
    !function update(){
         !function(){ 
             if (level.loaded != true ) return
-            game.update()
+            game.update(16)
             game.draw()
         }()
 

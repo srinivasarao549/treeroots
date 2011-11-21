@@ -5,13 +5,17 @@ define(['core/mixin'], function(mixin){
         this.entities = entities
         this.loaded = true
         this.pending_operations = 0
+        this.objects = []
     }   
 
     Level.prototype = (function(){
         return {
             load: load,
             load_objects: load_objects,
-            load_images: load_images
+            load_images: load_images,
+            
+            _inc_counter: _inc_counter,
+            _dec_counter: _dec_counter
         }
 
         function load(data){
@@ -30,8 +34,7 @@ define(['core/mixin'], function(mixin){
         }
 
         function load_objects(data){
-            this.loaded = false
-            this.pending_operations += 1
+            this._inc_counter()
             var i = data.length
             
             while ( i --> 0 ){
@@ -40,13 +43,13 @@ define(['core/mixin'], function(mixin){
     
                 delete spec.type
                 mixin(spec, obj)
-            
+                
+                this.objects.push(obj)
                 this.game.add(obj)
             
             }
 
-            this.pending_operations -= 1
-            if ( this.pending_operations <= 0 ) this.loaded = true
+            this._dec_counter()
         }
 
         function load_images(data){
@@ -61,19 +64,32 @@ define(['core/mixin'], function(mixin){
                 // don't try to load one we're loading already
                 if ( this.game.images[key] ) continue;
                 
-                this.pending_operations += 1
-                this.loaded = false
+                this._inc_counter()
 
                 image = new Image
                 image.src = src
-                image.onload = function(){ 
-                    this.pending_operations -= 1;
-                    if ( this.pending_operations <= 0 ) this.loaded = true
-                }.bind(this)
+                image.onload = this._dec_counter.bind(this)
 
                 this.game.images[key] = image 
             }
         }
+        
+        
+        function _inc_counter(){
+            this.loaded = false
+            this.pending_operations += 1
+        }
+
+        function _dec_counter(){
+            this.pending_operations -= 1
+            if ( this.pending_operations == 0 ){
+                this.objects.forEach(function(val){
+                    if ( val.init instanceof Function ) val.init(this.game)
+                }.bind(this))
+                this.loaded = true
+            }
+        }
+
     })()
 
     return Level

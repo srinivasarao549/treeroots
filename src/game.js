@@ -54,7 +54,6 @@ define(["core/mixin", "core/objectManager"], function(mixin, ObjectManager){
             
         }
 
-        
     })(), Game.prototype)
 
     return Game

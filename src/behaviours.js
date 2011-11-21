@@ -52,8 +52,8 @@ define(['core/mixin'], function(mixin){
             
             this.draw_image(context, 
                 this.image,
-                this.x + offset.x,
-                this.y + offset.y,
+                this.x - offset.x,
+                this.y - offset.y,
                 this.image.width,
                 this.image.height
                 )
@@ -88,6 +88,65 @@ define(['core/mixin'], function(mixin){
     })
 
 
+    b.spritesheet = mixin(b.image, {
+        spritesheet: {
+            sprite_height: undefined,
+            sprite_width: undefined,
+            current_sprite: [0, 0],
+            max_rows: undefined, 
+            max_cols: undefined,
+            next_sprite: function(){
+                this.current_sprite[0] += 1
+                if ( this.current_sprite[0] >= this.max_cols ) this.current_sprite[0] = 0
+            },
+            set_spritesheet: function(image, dimensions){
+                this.spritesheet = image
+                this.max_cols = Math.floor(image.width / dimensions[0])
+                this.max_rows = Math.floor(image.height / dimensions[1])
+                this.sprite_width = dimensions[0]
+                this.sprite_height = dimensions[1]
+            },
+            set_animation: function(order, length){
+                var ani = this.animation
+                
+                ani.order_index = 0
+                ani.order = order
+            },
+            animate: function(td){
+                var ani = this.animation
+                
+                ani.timer += td
+                if ( ani.timer > ani.timeout ) {
+                    ani.timer = 0
+                    ani.order_index += 1
+                    if ( ani.order_index > ani.order.length - 1) ani.order_index = 0
+                    this.current_sprite[0] = ani.order[ani.order_index]
+                    console.log(this.current_sprite[0])
+                }
+            },
+            animation: {
+                order_index: 0,
+                order: [],
+                timer: 0,
+                timeout: 500
+            }
+        },
+        draw: function(offset, context, canvas){
+            var ss = this.spritesheet
+
+            this.draw_image(context, 
+                ss.spritesheet,
+                ss.current_sprite[0] * ss.sprite_width,
+                ss.current_sprite[1] * ss.sprite_height,
+                ss.sprite_width,
+                ss.sprite_height,
+                this.x - offset.x,
+                this.y - offset.y,
+                ss.sprite_width,
+                ss.sprite_height
+                )
+        }
+    })
 
 // ---- MOVEMENT BEHAVIOURS ---- //
     b.move_angle = mixin(b.position, {

@@ -17,14 +17,18 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
             }
         })
     
-    e.Player = mixin.ctor(b.image,
-       {
-        z: 3,
-        init: function(game){
-            this.game = game
-            this.image = game.images["seth.png"]
-        }
-    })
+    e.Player = mixin.ctor(b.spritesheet,
+           {
+            z: 3,
+            init: function(game){
+                this.game = game
+                this.spritesheet.set_spritesheet(game.images["seth.png"], [24, 30])
+                this.spritesheet.set_animation([0, 1, 2], 100)
+            },
+            update: function(td){
+                this.spritesheet.animate(td)
+            }
+        })
 
     e.Ground = mixin.ctor(b.image, 
             {
