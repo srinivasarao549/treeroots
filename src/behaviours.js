@@ -18,16 +18,19 @@ define(['core/mixin'], function(mixin){
 // ---- COLOR/DRAWING BEHAVIOURS ---- //
 
     b.color = {
-            color_r: 0,
-            color_g: 0,
-            color_b: 0,
-            color_a: 1,
-            color_string: function(){
-                return "rgba("+ this.color_r + "," +
-                                this.color_g + "," +
-                                this.color_b + "," +
-                                this.color_a + ")"
-            }
+            color: {
+                r: 0,
+                g: 0,
+                b: 0,
+                a: 1,
+                string: function(){
+                    return "rgba("+ this.r + "," +
+                                    this.g + "," +
+                                    this.b + "," +
+                                    this.a + ")"
+                }
+                
+           }
         }
 
 
@@ -38,10 +41,9 @@ define(['core/mixin'], function(mixin){
         },
         draw: function(offset, context, canvas){
             var offset = offset || {x: 0, y: 0}
-            this.draw_fill_rect(context, this.x + offset.x, this.y + offset.y, this.width, this.height, this.color_string())
+            this.draw_fill_rect(context, this.x + offset.x, this.y + offset.y, this.width, this.height, this.color.string())
         }
     })
-
 
     b.image = mixin(b.position, b.dimensions, {
         image: undefined,

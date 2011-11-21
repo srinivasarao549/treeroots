@@ -10,11 +10,9 @@ define(function(){
             sources.forEach(function(source){
                 Object.keys(source).forEach(function(key){
                     var val = source[key]
-                    if ( !obj[key] ) {
-                        if ( val instanceof Array ) obj[key] = mixin(val, [])
-                        else if ( typeof val == "object" && val !== null) obj[key] = mixin(val, {})
-                        else obj[key] = val
-                    }
+                        if ( val instanceof Array ) obj[key] = mixin(val, obj[key] || [])
+                        else if ( typeof val == "object" && val !== null) obj[key] = mixin(val, obj[key] || {})
+                        else if ( !obj[key] ) obj[key] = val
                 })                
             })
             return obj;

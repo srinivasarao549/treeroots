@@ -6,24 +6,17 @@ define(['behaviours', 'core/mixin'], function(b, mixin){
         
             it("must set default values of r=0, g=0, b=0 and a=1", function(){
                 var obj = mixin(b.color, {})
-                        
-                expect(obj.color_r).toEqual(0)
-                expect(obj.color_g).toEqual(0)
-                expect(obj.color_b).toEqual(0)
-                expect(obj.color_a).toEqual(1)
-            
+                
+                expect(obj.color.string()).toEqual("rgba(0,0,0,1)")
             })
         
             it("must return a string representing the color in the rgba(r, g, b, a) format", function(){
             
                 var obj = mixin(b.color, {
-                    color_r: 0,
-                    color_g: 50,
-                    color_b: 100,
-                    color_a: 1
+                        color: {r: 0, g: 50, b: 100}
                     }),
                 expected_string = "rgba(0,50,100,1)",
-                actual_string = obj.color_string()
+                actual_string = obj.color.string()
             
                 expect(actual_string).toEqual(expected_string)
             
