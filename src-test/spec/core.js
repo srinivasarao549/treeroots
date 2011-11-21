@@ -206,5 +206,22 @@ define(["core/objectManager", "core/mixin"], function(ObjectManager, mixin){
             
         })
     })
+
+    describe("mixin.ctor", function(){
+         
+        it("must act like mixin, but return a constructor function", function(){
+            var pos = {x: 2, y: 3},
+                pos2 = {x: 4, y: 4, z: 20},
+                ctor = mixin.ctor(pos2, pos, {}),
+                obj = new ctor()
+                
+                expect(obj.x).toEqual(pos.x)
+                expect(obj.y).toEqual(pos.y)
+                expect(obj.z).toEqual(pos2.z)
+            
+        })
+
+
+    })
             
 })

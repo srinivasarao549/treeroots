@@ -1,11 +1,8 @@
 define(['core/mixin'], function(mixin){
     
-    // b contains the behaviours we will return    
     var b = {};
 
 // ---- POSITION/DIMENSION BEHAVIOURS ---- //
-
-    // NB - not really behaviours, are they? More like .. traits, attributes or qualities
 
     b.position = {
            x: 0,
@@ -30,7 +27,7 @@ define(['core/mixin'], function(mixin){
                                 this.color_g + "," +
                                 this.color_b + "," +
                                 this.color_a + ")"
-                }
+            }
         }
 
 
@@ -49,40 +46,34 @@ define(['core/mixin'], function(mixin){
     b.image = mixin(b.position, b.dimensions, {
         image: undefined,
         draw: function(offset, context, canvas){
-            var offset = offset || {x: 0, y: 0},
-                draw_width = this.image.width,
-                draw_height = this.image.height
-    
-            if ( canvas ) {
-                if ( this.x + draw_width > canvas.width ) draw_width = canvas.width - this.x
-                if ( this.y + draw_height > canvas.height ) draw_height = canvas.height - this.y
-            }
+            var offset = offset || {x: 0, y: 0}
 
             this.draw_image(context, 
-                            this.image,
-                            this.x + offset.x,
-                            this.y + offset.y,
-                            draw_width,
-                            draw_height)
+                this.image,
+                this.x + offset.x,
+                this.y + offset.y,
+                this.image.width,
+                this.image.height
+                )
         },
         draw_image: function(context, image, x, y, width, height, clip_x, clip_y, clip_width, clip_height){
+            var canvas = this.canvas
+    
+            if ( canvas ) {
+                if ( x + width > canvas.width ) width = canvas.width - x
+                if ( y + height > canvas.height ) height = canvas.height - y
+            }
             
-            if ( arguments.length !== 10) 
                 context.drawImage(image,
-                                  x,
-                                  y, 
-                                  width, 
-                                  height)
-            else 
-                context.drawImage(image,
-                                 clip_x, 
-                                 clip_y, 
-                                 clip_width, 
-                                 clip_height, 
                                  x, 
                                  y, 
                                  width, 
-                                 height)
+                                 height,
+                                 clip_x, 
+                                 clip_y, 
+                                 clip_width, 
+                                 clip_height 
+                                )
         }
     })
 

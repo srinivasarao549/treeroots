@@ -1,6 +1,6 @@
 define(function(){
 
-    return function(){        
+    function mixin(){        
             var sources = [],
                 obj = arguments[arguments.length - 1]
                 
@@ -14,6 +14,16 @@ define(function(){
             })
             return obj;
         }    
-    
+  
+    mixin.ctor = function(){
+        var obj = mixin.apply({}, arguments)
+        console.log(obj)
+        return function(){
+            mixin(obj, this)
+        }
+
+    }  
+
+    return mixin
 })
   

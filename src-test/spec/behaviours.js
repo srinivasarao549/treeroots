@@ -47,7 +47,6 @@ define(['behaviours', 'core/mixin'], function(b, mixin){
             
                 obj.draw(undefined, mock_context)
             
-            
                 expect(mock_context.x).toEqual(obj.x)
                 expect(mock_context.y).toEqual(obj.y)
                 expect(mock_context.height).toEqual(obj.height)
@@ -153,46 +152,11 @@ define(['behaviours', 'core/mixin'], function(b, mixin){
                 expect(mock_context.height).toEqual(obj.image.height)
                 expect(mock_context.image).toEqual(obj.image)
         
-        
             })
-        
-            it("must re-order drawImage arguments if a sufficient number are submitted", function(){
-                var obj = mixin(b.image, {}),
-                    mock_context = {
-                        drawImage: function(image, clip_x, clip_y, clip_width, clip_height, x, y, width, height){
-                            this.image = image
-                            this.x = x
-                            this.y = y
-                            this.width = width
-                            this.height = height
-                            this.clip_x = clip_x
-                            this.clip_y = clip_y
-                            this.clip_width = clip_width
-                            this.clip_height = clip_height
-                        }
-                    },
-                    p = {
-                        image: 0,
-                        clip_x: 1,
-                        clip_y: 2, 
-                        clip_width: 3,
-                        clip_height: 4,
-                        x: 5,
-                        y: 6, 
-                        height: 7, 
-                        width: 8
-                    }
-            
-                obj.draw_image(mock_context, p.image, p.x, p.y, p.width, p.height, p.clip_x, p.clip_y, p.clip_width, p.clip_height)
-        
-                for ( var prop in p ){
-                    expect(mock_context[prop]).toEqual(p[prop])
-                }
-            })
-            
-        })
-    })
+ 
+       })
 
+    })
 
 })
     

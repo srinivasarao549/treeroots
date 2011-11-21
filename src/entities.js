@@ -19,11 +19,13 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
     }
     
     e.Player = function(){
-        return mixin( b.image, b.move_angle, {
+        return mixin( b.move_angle, {
             z: 3,
             on_add: function(game){
                 this.game = game
                 this.image = game.images["seth.png"]
+                this.sprite_height = 30
+                this.sprite_width = 25
             },
             update: function(td){
             }
