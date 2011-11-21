@@ -23,7 +23,7 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
             init: function(game){
                 this.game = game
                 this.spritesheet.set_spritesheet(game.images["seth.png"], [24, 30])
-                this.spritesheet.set_animation([0, 1, 2], 100)
+                this.spritesheet.set_animation([0, 1, 2], 130)
             },
             update: function(td){
                 this.spritesheet.animate(td)

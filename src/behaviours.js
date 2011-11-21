@@ -111,6 +111,7 @@ define(['core/mixin'], function(mixin){
                 
                 ani.order_index = 0
                 ani.order = order
+                ani.timeout = length
             },
             animate: function(td){
                 var ani = this.animation
@@ -121,7 +122,6 @@ define(['core/mixin'], function(mixin){
                     ani.order_index += 1
                     if ( ani.order_index > ani.order.length - 1) ani.order_index = 0
                     this.current_sprite[0] = ani.order[ani.order_index]
-                    console.log(this.current_sprite[0])
                 }
             },
             animation: {
