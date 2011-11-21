@@ -3,7 +3,7 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
     var e = {}
 
     e.Cursor = function(){
-        mixin(b.fill_rect, {
+        mixin(b.image, {
             z: 4,
             color_a: 0.4,
             update: function(td){
@@ -13,6 +13,7 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
             on_add: function(game){
                 this.game = game
                 this.input = game.input
+                this.image = game.images["cursor.png"]
             }
         }, this)
     }
@@ -22,7 +23,7 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
             z: 3,
             on_add: function(game){
                 this.game = game
-                this.image = game.images["resources/images/seth.png"]
+                this.image = game.images["seth.png"]
             },
             update: function(td){
             }
@@ -33,7 +34,7 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
         mixin( b.image, {
             on_add: function(game){
                 this.game = game
-                this.image = game.images["resources/images/ground.jpg"]
+                this.image = game.images["ground.jpg"]
             }
         }, this)
     }

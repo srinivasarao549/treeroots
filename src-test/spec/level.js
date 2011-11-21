@@ -37,7 +37,7 @@ describe("level", function(){
     })
 
     describe("loading images and objects mixed", function(){
-
+        
    })
 })
 

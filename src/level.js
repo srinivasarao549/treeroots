@@ -54,10 +54,12 @@ define(['core/mixin'], function(mixin){
             
             while ( i --> 0 ){
                 var src = data[i],
+                    src_split = src.split('/'),
+                    key = src_split[src_split.length - 1].replace("/", ""),
                     image 
                 
                 // don't try to load one we're loading already
-                if ( this.game.images[src] ) continue;
+                if ( this.game.images[key] ) continue;
                 
                 this.pending_operations += 1
                 this.loaded = false
@@ -69,7 +71,7 @@ define(['core/mixin'], function(mixin){
                     if ( this.pending_operations <= 0 ) this.loaded = true
                 }.bind(this)
 
-                this.game.images[src] = image 
+                this.game.images[key] = image 
             }
         }
     })()

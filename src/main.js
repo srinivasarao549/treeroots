@@ -4,12 +4,12 @@ require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Leve
         game = new Game(canvas), 
         level = new Level(game, entities)
     
-    bean.add(canvas, 'mousemove', function(e){
+    bean.add(document, 'mousemove', function(e){
         game.input.mousex = e.clientX - canvas.offsetLeft;
         game.input.mousey = e.clientY - canvas.offsetTop;
     })
 
-    level.load({images: ["resources/images/seth.png", "resources/images/ground.jpg"],
+    level.load({images: ["resources/images/seth.png", "resources/images/ground.jpg", "resources/images/cursor.png"],
                 objects: [
                     {type: "Cursor"}, {type: "Player"}
                 ]})
