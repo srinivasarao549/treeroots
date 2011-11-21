@@ -199,11 +199,22 @@ define(["core/objectManager", "core/mixin"], function(ObjectManager, mixin){
                 pos2 = {x: 4, y: 4, z: 20}
                 
                 obj = mixin(pos2, pos, {})
-                
-                expect(obj.x).toEqual(pos.x)
-                expect(obj.y).toEqual(pos.y)
-                expect(obj.z).toEqual(pos2.z)
             
+            expect(obj.x).toEqual(pos.x)
+            expect(obj.y).toEqual(pos.y)
+            expect(obj.z).toEqual(pos2.z)
+            
+        })
+    
+        it("must make a deep copy", function(){
+            var a = {x: {y: 3}, b: 3, c: [1, 2, 3], d: null, e: undefined, f: NaN, g: function(){}},
+                json_a = JSON.stringify(a),
+                obj = mixin(a, {})
+
+            a.x.y = 1
+            a.c.push(1)
+            console.log(a, obj)
+            expect(JSON.stringify(obj)).toEqual(json_a)
         })
     })
 
@@ -221,7 +232,5 @@ define(["core/objectManager", "core/mixin"], function(ObjectManager, mixin){
             
         })
 
-
     })
-            
 })

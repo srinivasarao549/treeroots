@@ -23,7 +23,7 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
         init: function(game){
             this.game = game
             this.image = game.images["seth.png"]
-        },
+        }
     })
 
     e.Ground = mixin.ctor(b.image, 
