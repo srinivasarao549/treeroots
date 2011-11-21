@@ -3,15 +3,16 @@ require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Leve
     var canvas = document.getElementById("treeroots"),
         game = new Game(canvas), 
         level = new Level(game, entities)
-    
+
     bean.add(document, 'mousemove', function(e){
         game.input.mousex = e.clientX - canvas.offsetLeft;
         game.input.mousey = e.clientY - canvas.offsetTop;
     })
+    
 
-    level.load({images: ["resources/images/seth.png", "resources/images/ground.jpg", "resources/images/cursor.png"],
+    level.load({images: ["resources/images/seth.png", "resources/images/floor_1.png", "resources/images/cursor.png"],
                 objects: [
-                    {type: "Cursor"}, {type: "Player"}
+                     {type: "Player"}, {type: "Cursor"}, {type: "Ground"}
                 ]})
 
    !function update(){

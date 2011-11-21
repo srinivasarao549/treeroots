@@ -17,11 +17,10 @@ define(function(){
   
     mixin.ctor = function(){
         var obj = mixin.apply({}, arguments)
-        console.log(obj)
+        
         return function(){
             mixin(obj, this)
         }
-
     }  
 
     return mixin

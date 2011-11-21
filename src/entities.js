@@ -2,44 +2,37 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
     
     var e = {}
 
-    e.Cursor = function(){
-        mixin(b.image, {
+    e.Cursor =  mixin.ctor(b.image, 
+            {
             z: 4,
             color_a: 0.4,
             update: function(td){
                 this.x = this.input.mousex
                 this.y = this.input.mousey
             },
-            on_add: function(game){
+            init: function(game){
                 this.game = game
                 this.input = game.input
                 this.image = game.images["cursor.png"]
             }
-        }, this)
-    }
+        })
     
-    e.Player = function(){
-        return mixin( b.move_angle, {
-            z: 3,
-            on_add: function(game){
+    e.Player = mixin.ctor(b.image,
+       {
+        z: 3,
+        init: function(game){
+            this.game = game
+            this.image = game.images["seth.png"]
+        },
+    })
+
+    e.Ground = mixin.ctor(b.image, 
+            {
+            init: function(game){
                 this.game = game
-                this.image = game.images["seth.png"]
-                this.sprite_height = 30
-                this.sprite_width = 25
-            },
-            update: function(td){
+                this.image = game.images["floor_1.png"]
             }
         })
-    }
-
-    e.Ground = function(){
-        mixin( b.image, {
-            on_add: function(game){
-                this.game = game
-                this.image = game.images["ground.jpg"]
-            }
-        }, this)
-    }
 
 // ---- RETURN ---- //
     return e

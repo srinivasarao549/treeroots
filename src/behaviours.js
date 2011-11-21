@@ -47,7 +47,7 @@ define(['core/mixin'], function(mixin){
         image: undefined,
         draw: function(offset, context, canvas){
             var offset = offset || {x: 0, y: 0}
-
+            
             this.draw_image(context, 
                 this.image,
                 this.x + offset.x,
@@ -63,17 +63,25 @@ define(['core/mixin'], function(mixin){
                 if ( x + width > canvas.width ) width = canvas.width - x
                 if ( y + height > canvas.height ) height = canvas.height - y
             }
-            
-                context.drawImage(image,
-                                 x, 
-                                 y, 
-                                 width, 
-                                 height,
-                                 clip_x, 
-                                 clip_y, 
-                                 clip_width, 
-                                 clip_height 
-                                )
+                    
+                if ( arguments.length != 10 )
+                    context.drawImage(image,
+                                     x, 
+                                     y, 
+                                     width, 
+                                     height
+                                    )
+                else 
+                    context.drawImage(image,
+                                     x, 
+                                     y, 
+                                     width, 
+                                     height,
+                                     clip_x, 
+                                     clip_y, 
+                                     clip_width, 
+                                     clip_height 
+                                    )
         }
     })
 
