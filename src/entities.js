@@ -17,7 +17,7 @@ define(['core/mixin', 'behaviours'], function(mixin, b){
             }
         })
     
-    e.Player = mixin.ctor(b.spritesheet,
+    e.Player = mixin.ctor(b.spritesheet,  
            {
             z: 3,
             init: function(game){
