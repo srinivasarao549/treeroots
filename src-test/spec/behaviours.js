@@ -152,7 +152,7 @@ define(['behaviours', 'core/mixin'], function(b, mixin){
     })
 
     describe("spritesheet", function(){
-        
+        it("must ")
     })
 })
     

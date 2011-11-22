@@ -1,7 +1,7 @@
 define(['core/mixin', 'behaviours'], function(mixin, b){
     
     var e = {}
-
+    
     e.Cursor =  mixin.ctor(b.image, 
             {
             z: 4,
