@@ -1,7 +1,7 @@
 !function(){
 
-var modules = ["Cursor", "Player", "Ground"],
-    folder = "entities/",
+var modules = ["Sprite", "Spritesheet"],
+    folder = "./graphics/",
     full_path = modules.map(function(val){ return folder + val})
 
 define(full_path, function(){
