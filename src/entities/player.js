@@ -3,6 +3,7 @@ define(["lib/compose", "core/graphics"], function(compose, g){
     return compose(function(){
             this.x = 0
             this.y = 0
+            this.z = 1
         },
         {
             init: function(game){
