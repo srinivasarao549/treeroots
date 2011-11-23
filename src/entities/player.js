@@ -7,7 +7,7 @@ define(["lib/compose", "core/graphics"], function(compose, g){
 
             init: function(game){
                 this.input = game.input
-                this.sprite = new g.Sprite(game.images["seth.png"]).bind(this)
+                this.sprite = new g.Spritesheet(game.images["seth.png"], 3, 4).bind(this)
             },
             draw: function(c, co, ca){
                 this.sprite.draw(c, co, ca)

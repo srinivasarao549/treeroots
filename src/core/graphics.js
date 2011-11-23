@@ -1,6 +1,6 @@
 !function(){
 
-var modules = ["Sprite"],
+var modules = ["Sprite", "Spritesheet"],
     folder = "./graphics/",
     full_path = modules.map(function(val){ return folder + val})
 
