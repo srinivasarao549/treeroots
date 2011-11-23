@@ -1,5 +1,18 @@
-define(["core/package_load"], function(p_load){
-    
-    return p_load("entities/", ["cursor", "player", "ground"])
+!function(){
 
+var modules = ["Cursor", "Player", "Ground"],
+    folder = "entities/",
+    full_path = modules.map(function(val){ return folder + val})
+
+define(full_path, function(){
+    var ret_obj = {},
+        args = arguments
+    
+    modules.forEach(function(val, key){ 
+                ret_obj[val] = args[key]
+        })
+
+    return ret_obj
 })
+
+}()

@@ -9,8 +9,6 @@ require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Leve
         game.input.mousey = e.clientY - canvas.offsetTop;
     })
     
-
-    console.log(entities)
     level.load({images: ["resources/images/seth.png", "resources/images/floor_1.png", "resources/images/cursor.png"],
                 objects: [
                      {type: "Player"}, {type: "Cursor"}, {type: "Ground"}

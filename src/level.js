@@ -42,11 +42,11 @@ define(['core/mixin'], function(mixin){
                     obj = new this.entities[spec.type]
     
                 delete spec.type
+            
                 mixin(spec, obj)
-                
+
                 this.objects.push(obj)
                 this.game.add(obj)
-            
             }
 
             this._dec_counter()
