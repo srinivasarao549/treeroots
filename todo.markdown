@@ -15,6 +15,7 @@ This is more of an immediate TODOs; I know I'm going to need collision/music/etc
 * Write tests for image preloader + clean it up (massively)
 * Spritesheet animation behaviour
 * Particle generation system 
+* Add a "kill" handler
 
 ## Creative
 
