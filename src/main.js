@@ -1,6 +1,6 @@
 require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Level, bean){
     
-    var canvas = document.getElementById("treeroots"),
+   var canvas = document.getElementById("treeroots"),
         game = new Game(canvas), 
         level = new Level(game, entities)
 
@@ -10,6 +10,7 @@ require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Leve
     })
     
 
+    console.log(entities)
     level.load({images: ["resources/images/seth.png", "resources/images/floor_1.png", "resources/images/cursor.png"],
                 objects: [
                      {type: "Player"}, {type: "Cursor"}, {type: "Ground"}
