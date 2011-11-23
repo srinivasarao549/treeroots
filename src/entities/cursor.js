@@ -1,8 +1,8 @@
 define(["lib/compose", "core/graphics"], function(compose, g){
     
     return compose({
+        z: 2,
         init: function(game){
-            this.z = 2
             this.input = game.input
             this.sprite = new g.Sprite(game.images["cursor.png"])
                                 .bind(this)
