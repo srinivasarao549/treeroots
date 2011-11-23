@@ -1,14 +1,13 @@
-define(['core/mixin'], function(mixin){
+define(['lib/compose'], function(compose){
     
-    function Level(game, entities){
+    return compose(function(game, entities){
         this.game = game
         this.entities = entities
         this.loaded = true
         this.pending_operations = 0
         this.objects = []
-    }   
-
-    Level.prototype = (function(){
+    },
+    (function(){
         return {
             load: load,
             load_objects: load_objects,
@@ -42,8 +41,7 @@ define(['core/mixin'], function(mixin){
                     obj = new this.entities[spec.type]
     
                 delete spec.type
-            
-                mixin(spec, obj)
+                compose.call(obj, spec)
 
                 this.objects.push(obj)
                 this.game.add(obj)
@@ -91,6 +89,6 @@ define(['core/mixin'], function(mixin){
         }
 
     })()
+   )
 
-    return Level
 })
