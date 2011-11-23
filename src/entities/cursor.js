@@ -1,23 +1,16 @@
-define(["core/graphics"], function(g){
+define(["lib/compose", "core/graphics"], function(compose, g){
     
-    var Cursor = function(){}
-
-    Cursor.prototype = {
-    
+    return compose({
         init: function(game){
+            this.input = game.input
             this.sprite = new g.Sprite(game.images["cursor.png"])
         },
         draw: function(offset, context, canvas){
-            this.sprite.draw(offset, context, canvas)
+            context.drawImage(this.sprite.image, this.x, this.y)
         },
         update: function(td){
-
+            this.x = this.input.mousex
+            this.y = this.input.mousey
         }
-
-    }
-
-
-
-    return Cursor
-
+    })
 })
