@@ -56,7 +56,12 @@ require(['entities', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], fun
                         type: "TileMap", 
                         tileset: ["floor_1.png"],
                         map_dim: {width: 10, height: 20},
-                        map: [0, 0, 0, 0, 0, 0, 0]
+                        map: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                              undefined, 0, undefined, 0, 0, undefined, undefined, undefined, undefined, undefined,
+                              undefined, 0, undefined, 0, 0, 0, undefined, 0, 0, 0, 
+                              undefined, undefined, undefined, 0, 0, 0, undefined, 0, 0, 0, 
+                              undefined, 0, undefined, 0, 0, undefined, undefined, undefined, undefined, undefined,
+                              ]
                     
                     }
                 ]})

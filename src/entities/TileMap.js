@@ -23,7 +23,6 @@ define(["lib/compose", "core/graphics"], function(compose, g){
             buffer.width = tile_dim.width * this.map_dim.width
             buffer.height = tile_dim.height * this.map_dim.height
 
-
             // draw onto the buffer
             this.map.forEach(function(val, key){
                 var tile = tileset[val],
@@ -33,7 +32,6 @@ define(["lib/compose", "core/graphics"], function(compose, g){
                 if ( tile === undefined ) return 
                 buffer_context.drawImage(tile, tile_dim.width * col,  tile_dim.height * row)
             }.bind(this))
-
 
             this.sprite = new g.Sprite(buffer).bind(this)
  
