@@ -1,6 +1,7 @@
 define(["./Sprite", "lib/compose"], function(Sprite, compose){
 
-    return compose(function(img, col_num, row_num){
+    return compose(Sprite, 
+        function(img, col_num, row_num){
             this.image = img
             this.sprite = {
                 x: 0,
@@ -13,7 +14,6 @@ define(["./Sprite", "lib/compose"], function(Sprite, compose){
                 height: row_num,
             }
         },
-        Sprite,
         {
         
             animation: {
