@@ -9,14 +9,14 @@ define(["lib/compose", "core/graphics"], function(compose, g){
                 this.game = game
                 this.input = game.input
                 this.sprite = new g.Spritesheet(game.images["seth.png"], 3, 4)
-                                   .animate([0, 1, 2], 200) 
+                                   .animate([0, 1, 2], 100) 
                                    .bind(this)
                 
                 game.add(this.sprite)
             },
             update: function(td){
                 var input = this.input,
-                    speed = 0.23 * td,
+                    speed = 0.18 * td,
                     move = function(x, y, speed){
 
                         if ( !x && !y ) {
