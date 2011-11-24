@@ -6,12 +6,9 @@ define(["lib/compose", "core/graphics"], function(compose, g){
         {
             init: function(game){
                 this.input = game.input
-                this.sprite = new g.Sprite(game.images["ground.jpg"])
-
-           },
-            draw: function(c, co, ca){
-                this.sprite.draw(c, co, ca)
-            }
+                this.sprite = new g.Sprite(game.images["floor_1.png"])
+                game.add(this.sprite)
+           }
     })
 })
 

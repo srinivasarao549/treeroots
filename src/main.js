@@ -51,7 +51,14 @@ require(['entities', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], fun
                          "resources/images/cursor.png",
                          "resources/images/ground.jpg"],
                 objects: [
-                     {type: "Player"}, {type: "Cursor"}, {type: "Ground"}, {type: "GameDimmer"}
+                    {type: "Player"}, {type: "Cursor"}, {type: "Ground"}, {type: "GameDimmer"},
+                    {
+                        type: "TileMap", 
+                        tileset: ["floor_1.png"],
+                        map_dim: {width: 10, height: 20},
+                        map: [0, 0, 0, 0, 0, 0, 0]
+                    
+                    }
                 ]})
 
 

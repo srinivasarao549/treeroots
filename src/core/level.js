@@ -44,7 +44,6 @@ define(['lib/compose'], function(compose){
                 compose.call(obj, spec)
 
                 this.objects.push(obj)
-                this.game.add(obj)
             }
 
             this._dec_counter()
@@ -81,8 +80,8 @@ define(['lib/compose'], function(compose){
         function _dec_counter(){
             this.pending_operations -= 1
             if ( this.pending_operations == 0 ){
-                this.objects.forEach(function(val){
-                    if ( val.init instanceof Function ) val.init(this.game)
+                this.objects.forEach(function(obj){
+                    this.game.add(obj)
                 }.bind(this))
                 this.loaded = true
             }

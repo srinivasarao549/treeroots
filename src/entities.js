@@ -1,6 +1,6 @@
 !function(){
 
-var modules = ["Cursor", "Player", "Ground", "GameDimmer"],
+var modules = ["Cursor", "Player", "Ground", "GameDimmer", "TileMap"],
     folder = "entities/",
     full_path = modules.map(function(val){ return folder + val})
 
