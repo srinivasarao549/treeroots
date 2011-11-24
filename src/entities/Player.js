@@ -16,7 +16,7 @@ define(["lib/compose", "core/graphics"], function(compose, g){
             },
             update: function(td){
                 var input = this.input,
-                    speed = 0.2 * td,
+                    speed = 0.23 * td,
                     move = function(x, y, speed){
 
                         if ( x && y ) {
