@@ -27,18 +27,30 @@ define(["lib/compose", "core/objectManager"], function(compose, ObjectManager){
             if ( obj.init ) obj.init(this)
         },
 
+
+        //// Game.update
+        //
+        // Updates all functions with the arguments passed in, so that
+        // each object can update their own state
+        //
         update: function(td, input, canvas){
-            this.objects.forEach(function(val){
-                if ( val.update ) val.update(td, input, canvas)
+            this.objects.forEach(function(obj){
+                if ( obj.update ) obj.update(td, input, canvas)
             })
 
         },
 
+        //// Game.draw
+        //
+        //  Orders Game.objects by their z property, then redraws scene
+        //  by clearing canvas then firing the 'draw' event on all objects
+        //
         draw: function(){
             var camera = this.camera,
                 context = this.context,
                 canvas = this.canvas
 
+            // Updates the z sorting only if there's been a new item added, currently
             if ( this.objects_modified ) {
                 this.objects.sort(function(a, b){
                     return a.z - b.z
@@ -47,8 +59,10 @@ define(["lib/compose", "core/objectManager"], function(compose, ObjectManager){
                 this.objects_modified = false
               }
 
+            // clears all of canvas
             this.context.clearRect(0, 0, canvas.width, canvas.height)
         
+            // calls object methods to redraw themselves
             this.objects.forEach(function(obj){
                if ( obj.draw ) obj.draw(camera, context, canvas)
             })
