@@ -49,7 +49,7 @@ define(["./Sprite", "lib/compose"], function(Sprite, compose){
 
                 return this
             },
-            sheet_row: function(row){
+            row: function(row){
                 this.sprite.y = row
                 return this
             },

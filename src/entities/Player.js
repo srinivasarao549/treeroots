@@ -22,11 +22,17 @@ define(["lib/compose", "core/graphics"], function(compose, g){
                         if ( x && y ) {
                             this.x += x * speed * 0.7
                             this.y += y * speed * 0.7
-                        } else {
-                        
+                     
+                            // we can do this cheeky stuff because of the order of the spritesheet
+                            this.sprite.row(y + 1)
+                        } else if ( x ){
                             this.x += x * speed
+                            this.sprite.row( (-1 * x) + 2)
+                        } else if ( y ){
                             this.y += y * speed
-                        }
+                            this.sprite.row(y + 1)
+                        } 
+                        
                     }.bind(this),
                     y_move = 0,
                     x_move = 0
