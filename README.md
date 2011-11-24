@@ -1,13 +1,11 @@
-### Treeroots is a complete WIP
+## Treeroots
 
-Please don't expect anything of it - it's my hobby game.  
+Treeroots is a work-in-progress hobby project.  Aiming for hack'n'slash action RPG goodness.
 
-At the moment, I'm using require.js to lead modules - the main module being src/main.js. 
+## Credits
 
-### So where are you going with this?
-
-For the short-term, I wanna get to an arcade monster masher.
-
+Hugh FD Jackson [@hughfdjackson](https://twitter.com/#!/hughfdjackson) - Development and Design
+Tsatse [@tsa_tse](https://twitter.com/#!/tsa_tse) - Art and Design 
 ### Can I play?
 
 Sure - [head over here](http://hughfdjackson.github.com/treeroots) to play the game, whatever state it's in.
