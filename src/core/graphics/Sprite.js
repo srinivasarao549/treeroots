@@ -20,7 +20,7 @@ define(["lib/compose"], function(compose){
 
                 context.drawImage(this.image,
                                  0, 0, width, height, 
-                                 bound.x - camera.x, bound.y - camera.y, width, height)
+                                ~~ (bound.x - camera.x),~~ (bound.y - camera.y), width, height)
 
                 return this
             },

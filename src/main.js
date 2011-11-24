@@ -1,4 +1,4 @@
-require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Level, bean){
+require(['entities', 'game', 'level', 'lib/bean', 'lib/flywheel'], function(entities, Game, Level, bean, flywheel){
     
    var canvas = document.getElementById("treeroots"),
         game = new Game(canvas), 
@@ -48,13 +48,12 @@ require(['entities', 'game', 'level', 'lib/bean'], function(entities, Game, Leve
                      {type: "Player"}, {type: "Cursor"}, {type: "Ground"}
                 ]})
 
-   !function update(){
-        !function(){ 
+    flywheel(function(time_delta){
+
             if (level.loaded != true ) return
             game.update(16)
-            game.draw()
-        }()
+            game.draw(time_delta)
 
-        setTimeout(update, 16) // replace for flywheel later
-    }()
+    }).start()
+
 })
