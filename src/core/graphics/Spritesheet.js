@@ -49,6 +49,10 @@ define(["./Sprite", "lib/compose"], function(Sprite, compose){
 
                 return this
             },
+            sheet_row: function(row){
+                this.sprite.y = row
+                return this
+            },
             draw: function(camera, context, canvas){
                 var bound = this._bound || this,
                     height = this.sprite.height,

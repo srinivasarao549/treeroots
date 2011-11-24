@@ -16,13 +16,29 @@ define(["lib/compose", "core/graphics"], function(compose, g){
             },
             update: function(td){
                 var input = this.input,
-                    speed = 0.2 * td
+                    speed = 0.2 * td,
+                    move = function(x, y, speed){
 
-                if ( input.up ) this.y -= speed
-                if ( input.down ) this.y += speed
+                        if ( x && y ) {
+                            this.x += x * speed * 0.7
+                            this.y += y * speed * 0.7
+                        } else {
+                        
+                            this.x += x * speed
+                            this.y += y * speed
+                        }
+                    }.bind(this),
+                    y_move = 0,
+                    x_move = 0
 
-                if ( input.left ) this.x -= speed
-                if ( input.right ) this.x += speed
-           }
+                if ( input.up ) y_move -= 1
+                if ( input.down ) y_move += 1
+
+                if ( input.left ) x_move -= 1
+                if ( input.right ) x_move += 1
+            
+                move(x_move, y_move, speed)
+                
+            }
     })
 })
