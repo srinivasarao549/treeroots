@@ -5,6 +5,7 @@ define(["lib/compose", "core/graphics"], function(compose, g){
         tile_dim: {width: undefined, height: undefined},
         map: [],
         map_dim: undefined,
+        z: 1,
         init: function(game){
 
             // assuming tileset will be an array of resouces ["floor_1.png", "floor_2.png"] etc

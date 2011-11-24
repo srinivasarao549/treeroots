@@ -5,7 +5,7 @@ define(["lib/compose"], function(compose){
     return compose({
         opacity: 1,
         color: "0, 0, 0",
-        z: 1000,
+        z: 20,
         draw: function(camera, context, canvas){
             if ( this.opacity <= 0 ) return 
 
