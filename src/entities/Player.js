@@ -52,7 +52,6 @@ define(["lib/compose", "core/graphics"], function(compose, g){
                 if ( input.right ) x_move += 1
             
                 move(x_move, y_move, speed)
-                
             }
     })
 })

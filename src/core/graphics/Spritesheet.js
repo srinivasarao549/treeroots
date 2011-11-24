@@ -39,8 +39,6 @@ define(["./Sprite", "lib/compose"], function(Sprite, compose){
                 } 
                 
                 return this
-
-
             },
             animate: function(array, timeout){
                 var anim = this.animation
