@@ -51,7 +51,7 @@ require(['entities', 'game', 'level', 'lib/bean', 'lib/flywheel'], function(enti
                          "resources/images/cursor.png",
                          "resources/images/ground.jpg"],
                 objects: [
-                     {type: "Player"}, {type: "Cursor"}, {type: "Ground"}
+                     {type: "Player"}, {type: "Cursor"}, {type: "Ground"}, {type: "GameDimmer"}
                 ]})
 
 

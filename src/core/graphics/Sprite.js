@@ -26,10 +26,12 @@ define(["lib/compose"], function(compose){
             },
             bind: function(object){
                 this._bound = object
+                this.z = object.z
                 return this
             },
             unbind: function(object){
                 this._bound = undefined
+                this.z = 0
                 return this
             }
 

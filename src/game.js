@@ -53,9 +53,14 @@ define(["lib/compose", "core/objectManager"], function(compose, ObjectManager){
             // Updates the z sorting only if there's been a new item added, currently
             if ( this.objects_modified ) {
                 this.objects.sort(function(a, b){
+                    // handle the case where a.z or b.z are undefined
+                    if ( !a.z ) return -1
+                    if ( !b.z ) return 1
+
+                    // handle normal cases
                     return a.z - b.z
                 })
-                
+                console.log(this.objects)
                 this.objects_modified = false
               }
 
