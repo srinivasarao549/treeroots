@@ -63,7 +63,7 @@ define(["./Sprite", "lib/compose"], function(Sprite, compose){
 
                 context.drawImage(this.image,
                                  draw_x, draw_y, width, height, 
-                                 bound.x - camera.x, bound.y - camera.y, width, height)
+                                ~~ (bound.x - camera.x),~~ (bound.y - camera.y), width, height)
 
                 return this
         
