@@ -1,8 +1,12 @@
 require(['entities', 'game', 'level', 'lib/bean', 'lib/flywheel'], function(entities, Game, Level, bean, flywheel){
     
+    // get canvas, game and level
    var canvas = document.getElementById("treeroots"),
         game = new Game(canvas), 
         level = new Level(game, entities)
+
+
+    // set up input handlers for game
 
     bean.add(document, 'mousemove', function(e){
         game.input.mousex = e.clientX - canvas.offsetLeft;
@@ -40,6 +44,8 @@ require(['entities', 'game', 'level', 'lib/bean', 'lib/flywheel'], function(enti
     })
 
 
+    // Load test level
+
     level.load({images: ["resources/images/seth.png",
                          "resources/images/floor_1.png",
                          "resources/images/cursor.png",
@@ -47,6 +53,9 @@ require(['entities', 'game', 'level', 'lib/bean', 'lib/flywheel'], function(enti
                 objects: [
                      {type: "Player"}, {type: "Cursor"}, {type: "Ground"}
                 ]})
+
+
+    // Main engine loop
 
     flywheel(function(time_delta){
 
