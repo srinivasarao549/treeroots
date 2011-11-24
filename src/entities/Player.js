@@ -19,6 +19,14 @@ define(["lib/compose", "core/graphics"], function(compose, g){
                     speed = 0.23 * td,
                     move = function(x, y, speed){
 
+                        if ( !x && !y ) {
+                            this.sprite.pause()
+                            return
+                        }
+
+                        // if moving
+                        this.sprite.unpause()
+
                         if ( x && y ) {
                             this.x += x * speed * 0.7
                             this.y += y * speed * 0.7
@@ -31,8 +39,8 @@ define(["lib/compose", "core/graphics"], function(compose, g){
                         } else if ( y ){
                             this.y += y * speed
                             this.sprite.row(y + 1)
-                        } 
-                        
+                        }
+
                     }.bind(this),
                     y_move = 0,
                     x_move = 0

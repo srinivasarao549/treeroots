@@ -20,11 +20,14 @@ define(["./Sprite", "lib/compose"], function(Sprite, compose){
                 timer: 0,
                 timeout: undefined,
                 array: undefined,
-                index: 0
+                index: 0,
+                paused: false
             },
             step: function(td){
                 var anim = this.animation
  
+                if ( anim.paused ) return this
+                
                 anim.timer -= td
                 
                 if ( anim.timer <=  0 ){
@@ -48,6 +51,12 @@ define(["./Sprite", "lib/compose"], function(Sprite, compose){
                 anim.timer = timeout
 
                 return this
+            },
+            pause: function(){
+                this.animation.paused = true
+            },
+            unpause: function(){
+                this.animation.paused = false
             },
             row: function(row){
                 this.sprite.y = row
