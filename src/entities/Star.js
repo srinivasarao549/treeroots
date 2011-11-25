@@ -18,8 +18,14 @@ define(["lib/compose", "core/entities/particle_gen"], function(compose, Particle
             context.fillStyle = this.color
             context.fillRect(this.x, this.y, 2, 2)
         },
+        init: function(game){
+            this.game = game
+        },
         update: function(td){
             this.y += td * this.speed
+            if ( this.y > this.game.canvas.height ) {
+                this.game.remove(this)
+            }
         }
     })
     
