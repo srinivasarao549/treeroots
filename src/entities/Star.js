@@ -19,7 +19,7 @@ define(["lib/compose", "core/entities/particle_gen"], function(compose, Particle
             context.fillRect(this.x, this.y, 2, 2)
         },
         update: function(td){
-            this.x += td * this.speed
+            this.y += td * this.speed
         }
     })
     
@@ -27,11 +27,11 @@ define(["lib/compose", "core/entities/particle_gen"], function(compose, Particle
         init: function(game){
             var p = new Particle_gen(star, 100)
             
-            p.x = -10
+            p.x = 0
             p.y = -10
             
-            p.width = 1
-            p.height = game.canvas.height
+            p.height = 1
+            p.width = game.canvas.width
 
             game.add(p)
         }
