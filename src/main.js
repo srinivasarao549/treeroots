@@ -50,7 +50,8 @@ require(['entities', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], fun
                          "resources/images/floor_1.png",
                          "resources/images/cursor.png",
                          "resources/images/ground.jpg",
-                         "resources/images/warrior_100px.png"],
+                         "resources/images/warrior_100px.png",
+                         "resources/images/warrior_90px.png"],
                 objects: [
                     {type: "Player"}, {type: "Cursor"},  {type: "GameDimmer"}, {type: "Star"},
                     {

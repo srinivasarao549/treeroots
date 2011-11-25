@@ -12,7 +12,7 @@ define(["lib/compose", "core/graphics"], function(compose, g){
                                    .animate([0, 1, 2], 100) 
                                    .bind(this)
                */
-               this.sprite = new g.Spritesheet(game.images["warrior_100px.png"], 1, 1).pause().bind(this)
+               this.sprite = new g.Spritesheet(game.images["warrior_90px.png"], 1, 1).pause().bind(this)
                game.add(this.sprite)
             },
             update: function(td){
