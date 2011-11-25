@@ -49,7 +49,8 @@ require(['entities', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], fun
     level.load({images: ["resources/images/seth.png",
                          "resources/images/floor_1.png",
                          "resources/images/cursor.png",
-                         "resources/images/ground.jpg"],
+                         "resources/images/ground.jpg",
+                         "resources/images/warrior_100px.png"],
                 objects: [
                     {type: "Player"}, {type: "Cursor"},  {type: "GameDimmer"}, {type: "Star"},
                     {

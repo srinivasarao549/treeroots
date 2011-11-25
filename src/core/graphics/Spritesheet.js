@@ -52,9 +52,11 @@ define(["./Sprite", "lib/compose"], function(Sprite, compose){
             },
             pause: function(){
                 this.animation.paused = true
+                return this
             },
             unpause: function(){
                 this.animation.paused = false
+                return this
             },
             row: function(row){
                 this.sprite.y = row
