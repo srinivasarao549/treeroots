@@ -9,24 +9,42 @@ define(["lib/compose", "core/objectManager"], function(compose, ObjectManager){
             this.context = canvas.getContext("2d")       
         }
     
+        this.input = {}
+        this.images = {}
+
     },
     {
 
-        // Storage spaces
-        input: {},
-        images: {},
-
+     
         // EVENTS
 
         //// Game.add
         //
         // Extends ObjectManager.add to call an object's init method
         //
-        add: function(obj){
-            ObjectManager.prototype.add.call(this, obj)
-            if ( obj.init ) obj.init(this)
+        add: function(object){
+            ObjectManager.prototype.add.apply(this, arguments)
+            if ( object.init ) object.init(this)
         },
 
+        //// Game.remove
+        //
+        // Extends ObjectManager.remove to call an object's on_remove method
+        remove: function(object){
+            ObjectManager.prototype.remove.apply(this, arguments)
+            if ( object.on_remove ) object.on_remove()
+        },
+
+        //// Game.remove_all
+        //
+        // Extends ObjectManager.remove_all to call *all* objects' on_remove methods
+        remove_all: function(){
+            this.objects.forEach(function(object){
+                if ( object.on_remove ) object.on_remove()
+            })
+            
+            ObjectManager.prototype.remove_all.apply(this, arguments)
+        },
 
         //// Game.update
         //
