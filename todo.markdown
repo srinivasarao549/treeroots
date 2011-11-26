@@ -6,21 +6,21 @@ This is more of an immediate TODOs; I know I'm going to need collision/music/etc
 
 ## Tech
 
-* Movement Physics
-* Fade up/out on the whole level
 * 'shadow' in src/game(i.e. lets you see where an object was last frame)
-* Replace timer with flywheel.
-* Spritesheet animation behaviour
-* Particle generation system 
 * Add a "kill" handler
-* Tilesheet
+* Iso tile sheet
+* Named layers and in-layer depth-sorting
+* Layer parallax quotient
+* Draw offset from camera
 
 * TESTS AND CLEANUP
 
 ## Creative
-
 * simple menu screen
 * simple loading screen
+* Iso tileset
+* Play around with how the movement of the char should go - still wasd in iso?  
+
 
 ## Game design recommendations
 
