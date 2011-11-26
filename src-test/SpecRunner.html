@@ -21,7 +21,7 @@ require.config({
     }
 })
 
-require(["test/core", "test/game", "test/level"], function(){
+require(["test/objectManager", "test/levelSpec", "test/gameSpec"], function(){
   jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
   jasmine.getEnv().execute();
 })
