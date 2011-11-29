@@ -53,7 +53,11 @@ require(['entities/*', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], f
                          "resources/images/warrior_100px.png",
                          "resources/images/warrior_90px.png"],
                 objects: [
-                    {type: "Player"}, {type: "Cursor"},  {type: "GameDimmer"}, {type: "Ground"},                   {
+                    {type: "Player"},
+                    {type: "Cursor"},
+                    {type: "GameDimmer"},
+                    {type: "Ground"},
+                    {
                         type: "TileMap", 
                         tileset: ["floor_1.png"],
                         map_dim: {width: 10, height: 20},
@@ -64,7 +68,7 @@ require(['entities/*', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], f
                               undefined, 0, undefined, 0, 0, undefined, undefined, undefined, undefined, undefined,
                               ]
                     
-                    }
+                    } 
             ]})
 
     // Main engine loop
