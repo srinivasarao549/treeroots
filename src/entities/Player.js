@@ -5,7 +5,7 @@ define(["lib/compose", "core/graphics"], function(compose, g){
             y: 0,
             z: 10,
 
-            init: function(game){
+            on_add: function(game){
                 this.game = game
                 this.input = game.input
                 /*this.sprite = new g.Spritesheet(game.images["seth.png"], 3, 4)

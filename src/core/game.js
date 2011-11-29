@@ -20,11 +20,11 @@ define(["lib/compose", "core/objectManager"], function(compose, ObjectManager){
 
         //// Game.add
         //
-        // Extends ObjectManager.add to call an object's init method
+        // Extends ObjectManager.add to call an object's on_add method
         //
         add: function(object){
             ObjectManager.prototype.add.apply(this, arguments)
-            if ( object.init ) object.init(this)
+            if ( object.on_add ) object.on_add(this)
         },
 
         //// Game.remove

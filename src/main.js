@@ -1,5 +1,6 @@
-require(['entities', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], function(entities, Game, Level, bean, flywheel){
-    
+require(['entities/*', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], function(entities, Game, Level, bean, flywheel){
+    console.log(entities)
+
     // get canvas, game and level
    var canvas = document.getElementById("treeroots"),
         game = new Game(canvas), 

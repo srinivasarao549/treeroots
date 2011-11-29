@@ -11,7 +11,7 @@ define(["lib/compose", "core/timer"], function(compose, Timer){
         width: 100,
         height: 100,
         timer: new Timer(),
-        init: function(game){
+        on_add: function(game){
             this.game = game
         },
         update: function(td){

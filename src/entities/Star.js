@@ -18,7 +18,7 @@ define(["lib/compose", "core/entities/particle_gen"], function(compose, Particle
             context.fillStyle = this.color
             context.fillRect(this.x, this.y, 2, 2)
         },
-        init: function(game){
+        on_add: function(game){
             this.game = game
         },
         update: function(td){
@@ -30,7 +30,7 @@ define(["lib/compose", "core/entities/particle_gen"], function(compose, Particle
     })
     
     return compose({
-        init: function(game){
+        on_add: function(game){
             var p = new Particle_gen(star, 100)
             
             p.x = 0
