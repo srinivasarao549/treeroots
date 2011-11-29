@@ -13,8 +13,8 @@ define(["lib/compose"], function(compose){
                     height = this.image.height,
                     width = this.image.width 
 
-                if ( bound.y + height > canvas.height ) height = canvas.height - bound.y
-                if ( bound.x + width > canvas.width) width = canvas.width - bound.x
+                if ( bound.y + height > canvas.height + camera.y ) height = canvas.height - bound.y + camera.y
+                if ( bound.x + width > canvas.width + camera.x ) width = canvas.width - bound.x + camera.x
                 
                 if ( width < 0 || height < 0 ) return this
 

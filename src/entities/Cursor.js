@@ -9,6 +9,7 @@ define(["lib/compose", "core/graphics/*"], function(compose, g){
             game.add(this.sprite)
         },
         update: function(td){
+            console.log(this.input.mousex)
             this.x = this.input.mousex - (this.sprite.image.width/2)
             this.y = this.input.mousey - (this.sprite.image.height/2)
         }

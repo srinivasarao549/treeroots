@@ -6,6 +6,8 @@ define(["lib/compose", "core/graphics/*"], function(compose, g){
         map: [],
         map_dim: undefined,
         z: 1,
+        x: 0, 
+        y: 0,
         on_add: function(game){
 
             // assuming tileset will be an array of resouces ["floor_1.png", "floor_2.png"] etc

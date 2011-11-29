@@ -8,12 +8,9 @@ define(["lib/compose", "core/graphics/*"], function(compose, g){
             on_add: function(game){
                 this.game = game
                 this.input = game.input
-                /*this.sprite = new g.Spritesheet(game.images["seth.png"], 3, 4)
-                                   .animate([0, 1, 2], 100) 
-                                   .bind(this)
-               */
-               this.sprite = new g.Sprite(game.images["warrior_90px.png"]).bind(this)
-               game.add(this.sprite)
+                this.sprite = new g.Sprite(game.images["warrior_90px.png"]).bind(this)
+                
+                game.add(this.sprite)
             },
             update: function(td){
                 
@@ -56,7 +53,13 @@ define(["lib/compose", "core/graphics/*"], function(compose, g){
 
                 move_by_vector(this, vector, speed)
 
-                
+                // --- CAMERA --- //
+                function object_follow(object, camera){
+                    camera.x = object.x
+                    camera.y = object.y
+                }            
+
+                object_follow(this, this.game.camera)
             }
     })
 })
