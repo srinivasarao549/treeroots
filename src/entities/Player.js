@@ -12,13 +12,13 @@ define(["lib/compose", "core/graphics/*"], function(compose, g){
                                    .animate([0, 1, 2], 100) 
                                    .bind(this)
                */
-               this.sprite = new g.Spritesheet(game.images["warrior_90px.png"], 1, 1).pause().bind(this)
+               this.sprite = new g.Sprite(game.images["warrior_90px.png"]).bind(this)
                game.add(this.sprite)
             },
             update: function(td){
                 
                 // --- HANDLE MOVEMENT --- // 
-                function move(object, vector, speed){
+                function move_by_vector(object, vector, speed){
 
                         var x = vector.x,
                             y = vector.y 
@@ -54,7 +54,7 @@ define(["lib/compose", "core/graphics/*"], function(compose, g){
                     speed = 0.18 * td,
                     vector = input_to_vector(this.input)
 
-                move(this, vector, speed)
+                move_by_vector(this, vector, speed)
 
                 
             }
