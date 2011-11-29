@@ -4,17 +4,16 @@ This is more of an immediate TODOs; I know I'm going to need collision/music/etc
 
 ## Current
 
-* Named layers and in-layer depth-sorting
+* Draw offset from camera
 
 ## Tech
 
 * 'shadow' in src/game(i.e. lets you see where an object was last frame)
 * Iso tile sheet
 * Layer parallax quotient
-* Draw offset from camera
 * Sort out the spritesheet/sprite API
 * Generic animation API?
-
+* Named layers and in-layer depth-sorting
 * TESTS AND CLEANUP
 
 ## Creative

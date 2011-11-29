@@ -67,7 +67,6 @@ require(['entities/*', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], f
                     }
             ]})
 
-
     // Main engine loop
 
     flywheel(function(time_delta){

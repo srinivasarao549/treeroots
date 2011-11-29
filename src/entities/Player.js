@@ -16,43 +16,47 @@ define(["lib/compose", "core/graphics/*"], function(compose, g){
                game.add(this.sprite)
             },
             update: function(td){
+                
+                // --- HANDLE MOVEMENT --- // 
+                function move(object, vector, speed){
+
+                        var x = vector.x,
+                            y = vector.y 
+
+                        // not moving 
+                        if ( !x && !y ) return
+
+                        // diagonally moving 
+                        if ( x && y ) {
+                            object.x += x * speed * 0.7
+                            object.y += y * speed * 0.7
+                            return 
+                        }
+                       
+                        // horizontal or vertical movement
+                        if ( x ) object.x += x * speed 
+                        else if ( y ) object.y += y * speed
+                }
+            
+                function input_to_vector(input){
+                    var vector = {x: 0, y: 0}
+
+                    if ( input.up ) vector.y -= 1
+                    if ( input.down ) vector.y += 1
+
+                    if ( input.left ) vector.x -= 1
+                    if ( input.right ) vector.x += 1
+
+                    return vector
+                }
+            
                 var input = this.input,
                     speed = 0.18 * td,
-                    move = function(x, y, speed){
-                    
-                        if ( !x && !y ) {
-                          //  this.sprite.pause()
-                            return
-                        }
+                    vector = input_to_vector(this.input)
 
-                        // if moving
-                        //this.sprite.unpause()
+                move(this, vector, speed)
 
-                        if ( x && y ) {
-                            this.x += x * speed * 0.7
-                            this.y += y * speed * 0.7
-                     
-                            // we can do this cheeky stuff because of the order of the spritesheet
-                         //   this.sprite.row(y + 1)
-                        } else if ( x ){
-                            this.x += x * speed
-                         //   this.sprite.row( (-1 * x) + 2)
-                        } else if ( y ){
-                            this.y += y * speed
-                           // this.sprite.row(y + 1)
-                        }
-
-                    }.bind(this),
-                    y_move = 0,
-                    x_move = 0
-
-                if ( input.up ) y_move -= 1
-                if ( input.down ) y_move += 1
-
-                if ( input.left ) x_move -= 1
-                if ( input.right ) x_move += 1
-            
-                move(x_move, y_move, speed)
+                
             }
     })
 })
