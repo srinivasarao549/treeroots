@@ -55,8 +55,8 @@ define(["lib/compose", "core/graphics/*"], function(compose, g){
 
                 // --- CAMERA --- //
                 function object_follow(object, camera){
-                    camera.x = object.x
-                    camera.y = object.y
+                    camera.x = object.x-350
+                    camera.y = object.y-200
                 }            
 
                 object_follow(this, this.game.camera)
