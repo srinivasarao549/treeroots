@@ -1,4 +1,4 @@
-define(["lib/compose", "core/graphics"], function(compose, g){
+define(["lib/compose", "core/graphics/*"], function(compose, g){
 
     return compose({
         tileset: undefined,
@@ -6,7 +6,9 @@ define(["lib/compose", "core/graphics"], function(compose, g){
         map: [],
         map_dim: undefined,
         z: 1,
-        init: function(game){
+        x: 0, 
+        y: 0,
+        on_add: function(game){
 
             // assuming tileset will be an array of resouces ["floor_1.png", "floor_2.png"] etc
             var tileset = this.tileset.map(function(val){ 

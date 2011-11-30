@@ -1,5 +1,5 @@
-require(['entities', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], function(entities, Game, Level, bean, flywheel){
-    
+require(['entities/*', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], function(entities, Game, Level, bean, flywheel){
+
     // get canvas, game and level
    var canvas = document.getElementById("treeroots"),
         game = new Game(canvas), 
@@ -49,9 +49,14 @@ require(['entities', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], fun
     level.load({images: ["resources/images/seth.png",
                          "resources/images/floor_1.png",
                          "resources/images/cursor.png",
-                         "resources/images/ground.jpg"],
+                         "resources/images/ground.jpg",
+                         "resources/images/warrior_100px.png",
+                         "resources/images/warrior_90px.png"],
                 objects: [
-                    {type: "Player"}, {type: "Cursor"},  {type: "GameDimmer"}, {type: "Star"},
+                    {type: "Player"},
+                    {type: "Cursor"},
+                    {type: "GameDimmer"},
+                    {type: "Ground"},
                     {
                         type: "TileMap", 
                         tileset: ["floor_1.png"],
@@ -63,9 +68,8 @@ require(['entities', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], fun
                               undefined, 0, undefined, 0, 0, undefined, undefined, undefined, undefined, undefined,
                               ]
                     
-                    }
-                ]})
-
+                    } 
+            ]})
 
     // Main engine loop
 

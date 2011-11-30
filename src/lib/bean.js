@@ -7,10 +7,10 @@
   * dperini: https://github.com/dperini/nwevents
   * the entire mootools team: github.com/mootools/mootools-core
   */
-!function (name, definition) {
-  if (typeof module != 'undefined') module.exports = definition();
-  else if (typeof define == 'function' && typeof define.amd  == 'object') define(definition);
-  else this[name] = definition();
+!function (name, defon_addion) {
+  if (typeof module != 'undefined') module.exports = defon_addion();
+  else if (typeof define == 'function' && typeof define.amd  == 'object') define(defon_addion);
+  else this[name] = defon_addion();
 }('bean', function () {
   var win = window,
       __uid = 1,
@@ -228,7 +228,7 @@
 
   fireListener = W3C_MODEL ? function (isNative, type, element) {
     evt = document.createEvent(isNative ? "HTMLEvents" : "UIEvents");
-    evt[isNative ? 'initEvent' : 'initUIEvent'](type, true, true, win, 1);
+    evt[isNative ? 'on_addEvent' : 'on_addUIEvent'](type, true, true, win, 1);
     element.dispatchEvent(evt);
   } : function (isNative, type, element) {
     isNative ? element.fireEvent('on' + type, document.createEventObject()) : element['_on' + type]++;

@@ -1,16 +1,16 @@
-define(["lib/compose", "core/graphics"], function(compose, g){
+define(["lib/compose", "core/graphics/*"], function(compose, g){
     
     return compose({
-        z: 2,
-        init: function(game){
+        z: 20,
+        on_add: function(game){
             this.input = game.input
-            this.sprite = new g.Sprite(game.images["cursor.png"])
-                                .bind(this)
+            this.sprite = new g.Sprite(game.images["cursor.png"]).bind(this)
+            console.log(this.sprite.z)
             game.add(this.sprite)
         },
         update: function(td){
-            this.x = this.input.mousex
-            this.y = this.input.mousey
+            this.x = this.input.mousex - (this.sprite.image.width/2)
+            this.y = this.input.mousey - (this.sprite.image.height/2)
         }
     })
 })

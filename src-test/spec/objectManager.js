@@ -1,4 +1,4 @@
-define(["core/objectManager", "core/mixin"], function(ObjectManager, mixin){
+define(["core/objectManager"], function(ObjectManager){
 
     describe("om", function(){
         
@@ -177,68 +177,4 @@ define(["core/objectManager", "core/mixin"], function(ObjectManager, mixin){
 
     })
 
-
-    describe("mixin", function(){
-        
-        it("must copy across all properties", function(){
-            var pos = {x: 2, x: 3},
-                draw = {draw: function(context, camera) {
-                    console.log('yes')
-                }},
-                
-                obj = mixin(pos, draw, {})
-                                
-            expect(obj.x).toEqual(pos.x)
-            expect(obj.y).toEqual(pos.y)
-            expect(obj.draw).toEqual(draw.draw)
-                
-        })
-        
-        it("must inherit from objects to the right preferencially", function(){
-            var pos = {x: 2, y: 3},
-                pos2 = {x: 4, y: 4, z: 20}
-                
-                obj = mixin(pos2, pos, {})
-            
-            expect(obj.x).toEqual(pos.x)
-            expect(obj.y).toEqual(pos.y)
-            expect(obj.z).toEqual(pos2.z)
-            
-        })
-    
-        it("must make a deep copy", function(){
-            var a = {a: {y: 3}, b:  [1, 2, 3], c: 1, d: "string", e: null, f: undefined, g: NaN, h: function(){}},
-                json_a = JSON.stringify(a),
-                obj = mixin(a, {})
-
-            a.a.y = 1
-            a.b.push(1)
-            expect(JSON.stringify(obj)).toEqual(json_a)
-        })
-    
-        it("must allow overwriting partial objects in a deep copy", function(){
-            var a = {a: {b: 2}},
-                obj = mixin(a, {a: {c: 2}}),
-                expected_json = JSON.stringify()
-
-            expect(obj).toEqual({a: {b: 2, c: 2}})
-              
-        })
-    })
-
-    describe("mixin.ctor", function(){
-         
-        it("must act like mixin, but return a constructor function", function(){
-            var pos = {x: 2, y: 3},
-                pos2 = {x: 4, y: 4, z: 20},
-                ctor = mixin.ctor(pos2, pos, {}),
-                obj = new ctor()
-                
-                expect(obj.x).toEqual(pos.x)
-                expect(obj.y).toEqual(pos.y)
-                expect(obj.z).toEqual(pos2.z)
-            
-        })
-
-    })
 })

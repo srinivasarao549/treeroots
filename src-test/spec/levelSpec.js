@@ -1,4 +1,4 @@
-define(["level"], function(Level){
+define(["core/level"], function(Level){
 
 describe("level", function(){
 
@@ -35,10 +35,5 @@ describe("level", function(){
         })
 
     })
-
-    describe("loading images and objects mixed", function(){
-        
-   })
 })
-
 })

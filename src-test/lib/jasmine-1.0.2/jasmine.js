@@ -550,20 +550,20 @@ var afterEach = function(afterEachFunction) {
  * // TODO: a simple suite with a nested describe block
  *
  * @param {String} description A string, usually the class under test.
- * @param {Function} specDefinitions function that defines several specs.
+ * @param {Function} specDefon_addions function that defines several specs.
  */
-var describe = function(description, specDefinitions) {
-  return jasmine.getEnv().describe(description, specDefinitions);
+var describe = function(description, specDefon_addions) {
+  return jasmine.getEnv().describe(description, specDefon_addions);
 };
 
 /**
  * Disables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.
  *
  * @param {String} description A string, usually the class under test.
- * @param {Function} specDefinitions function that defines several specs.
+ * @param {Function} specDefon_addions function that defines several specs.
  */
-var xdescribe = function(description, specDefinitions) {
-  return jasmine.getEnv().xdescribe(description, specDefinitions);
+var xdescribe = function(description, specDefon_addions) {
+  return jasmine.getEnv().xdescribe(description, specDefon_addions);
 };
 
 
@@ -741,8 +741,8 @@ jasmine.Env.prototype.execute = function() {
   this.currentRunner_.execute();
 };
 
-jasmine.Env.prototype.describe = function(description, specDefinitions) {
-  var suite = new jasmine.Suite(this, description, specDefinitions, this.currentSuite);
+jasmine.Env.prototype.describe = function(description, specDefon_addions) {
+  var suite = new jasmine.Suite(this, description, specDefon_addions, this.currentSuite);
 
   var parentSuite = this.currentSuite;
   if (parentSuite) {
@@ -755,7 +755,7 @@ jasmine.Env.prototype.describe = function(description, specDefinitions) {
 
   var declarationError = null;
   try {
-    specDefinitions.call(suite);
+    specDefon_addions.call(suite);
   } catch(e) {
     declarationError = e;
   }
@@ -792,7 +792,7 @@ jasmine.Env.prototype.afterEach = function(afterEachFunction) {
 
 };
 
-jasmine.Env.prototype.xdescribe = function(desc, specDefinitions) {
+jasmine.Env.prototype.xdescribe = function(desc, specDefon_addions) {
   return {
     execute: function() {
     }
@@ -2088,10 +2088,10 @@ jasmine.Spec.prototype.removeAllSpies = function() {
  * @constructor
  * @param {jasmine.Env} env
  * @param {String} description
- * @param {Function} specDefinitions
+ * @param {Function} specDefon_addions
  * @param {jasmine.Suite} parentSuite
  */
-jasmine.Suite = function(env, description, specDefinitions, parentSuite) {
+jasmine.Suite = function(env, description, specDefon_addions, parentSuite) {
   var self = this;
   self.id = env.nextSuiteId ? env.nextSuiteId() : null;
   self.description = description;
