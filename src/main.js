@@ -17,13 +17,13 @@ require(['entities/*', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], f
          var k = e.which,
                 input = game.input
             
-            if ( k == 65 ) 
+            if ( k == 65 || k == 37) 
                 input.left = true
-            else if ( k == 68 ) 
+            else if ( k == 68 || k == 39) 
                 input.right = true
-            else if ( k == 87 )
+            else if ( k == 87 || k == 38)
                 input.up = true
-            else if ( k == 83 )
+            else if ( k == 83 || k == 40)
                 input.down = true
         
     })
@@ -33,13 +33,13 @@ require(['entities/*', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], f
          var k = e.which,
                 input = game.input
             
-            if ( k == 65 ) 
+            if ( k == 65 || k == 37) 
                 input.left = false
-            else if ( k == 68 ) 
+            else if ( k == 68 || k == 39 ) 
                 input.right = false
-            else if ( k == 87 )
+            else if ( k == 87 || k == 38 )
                 input.up = false
-            else if ( k == 83 )
+            else if ( k == 83 || k == 40 )
                 input.down = false
     })
 
