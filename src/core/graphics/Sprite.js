@@ -5,6 +5,7 @@ define(["lib/compose"], function(compose){
             this._bound = object || this._bound
         },
         {
+            offset: true,
             _bound: {
                 x: 0,
                 y: 0,
@@ -15,6 +16,7 @@ define(["lib/compose"], function(compose){
                     height = this.image.height,
                     width = this.image.width
                 
+                if ( this.offset != true ) camera = {x: 0, y: 0}
 
                 if ( bound.y + height > canvas.height + camera.y ) height = canvas.height - bound.y + camera.y
                 if ( bound.x + width > canvas.width + camera.x ) width = canvas.width - bound.x + camera.x
