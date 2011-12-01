@@ -1,5 +1,5 @@
-define(["lib/compose", "core/graphics/all"], function(compose, g){
-    
+define(["lib/compose", "core/graphics/all", 'entities/SpeechBubble'], function(compose, g, SpeechBubble){
+
     return compose({
             x: 0,
             y: 0,
@@ -9,7 +9,8 @@ define(["lib/compose", "core/graphics/all"], function(compose, g){
                 this.game = game
                 this.input = game.input
                 this.sprite = new g.Sprite(game.images["warrior_90px.png"]).bind(this)
-                
+                this.speech_bubble = new SpeechBubble()
+
                 game.add(this.sprite)
             },
             update: function(td){
@@ -67,6 +68,14 @@ define(["lib/compose", "core/graphics/all"], function(compose, g){
                 }
                 
                 object_follow(this, this.game.camera, offset_to_center(this.game.canvas, this.sprite.image))
+
+                // --- SPEECH BUBBLE DETECT --- //
+                function show_speech_bubble(speech, name, text){
+                    speech.set_text(name, text)
+                    speech.show()
+                }
+                if ( this.x > 200 )  show_speech_bubble(this.speech_bubble, "master voice", "Whoa there, mr.  Watch your step")
+
             }
     })
 })

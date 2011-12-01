@@ -1,7 +1,8 @@
 require(['entities/all', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], function(entities, Game, Level, bean, flywheel){
 
     // get canvas, game and level
-   var canvas = document.getElementById("treeroots"),
+    var canvas = document.getElementById("treeroots"),
+        container = document.getElementById("main_container"),
         game = new Game(canvas), 
         level = new Level(game, entities)
 
@@ -9,8 +10,8 @@ require(['entities/all', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'],
     // set up input handlers for game
 
     bean.add(document, 'mousemove', function(e){
-        game.input.mousex = e.clientX - canvas.offsetLeft;
-        game.input.mousey = e.clientY - canvas.offsetTop;
+        game.input.mousex = e.clientX - container.offsetLeft;
+        game.input.mousey = e.clientY - container.offsetTop;
     })
     
     bean.add(document, 'keydown', function(e){

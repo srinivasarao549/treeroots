@@ -11,10 +11,30 @@
 		}
 		
 		#main_container {
+            position: relative;
             width: 800px;
             margin: 5% auto;
 		}
-		
+        
+        .speech_bubble {
+            display: none; /* show with js */
+            top: 0;
+            width: 90%;
+            margin: 5%;
+            opacity: 0.9;
+            position: absolute;
+            background-color: #111;
+            border-radius: 0.3em;
+        }
+
+        .speech_bubble h4 {
+            padding: 0 1em;
+        }
+
+        .speech_bubble p {
+            padding: 0.5em;
+        }
+
 		canvas {
 			background-color: #000;
 			margin: auto;
@@ -44,11 +64,16 @@
 
 	</canvas>
 
-	<div id="fps"></div>
+    <div class="speech_bubble">
+        <h4 class="name">Henri</h4>
+        <p>
+            Hi. I'm Henri! <br>
+            There's nothin wrong with me :D
+
+        </div>
+    </div>
 
 </div>
-
-
 
 <!-- scripts -->
 <script data-main="src/main" src="src/require.js"></script>
