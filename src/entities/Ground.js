@@ -1,4 +1,4 @@
-define(["lib/compose", "core/graphics/*"], function(compose, g){
+define(["lib/compose", "core/graphics/all"], function(compose, g){
     
     return compose({
             x: 0,
