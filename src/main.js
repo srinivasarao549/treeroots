@@ -76,8 +76,8 @@ require(['entities/*', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], f
     flywheel(function(time_delta){
 
             if (level.loaded != true ) return
-            game.update(16)
-            game.draw(time_delta)
+            game.update(time_delta)
+            game.draw()
 
     }).start()
 
