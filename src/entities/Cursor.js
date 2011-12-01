@@ -5,7 +5,6 @@ define(["lib/compose", "core/graphics/all"], function(compose, g){
         on_add: function(game){
             this.input = game.input
             this.sprite = new g.Sprite(game.images["cursor.png"]).bind(this)
-            console.log(this.sprite.z)
             game.add(this.sprite)
         },
         update: function(td){

@@ -54,12 +54,19 @@ define(["lib/compose", "core/graphics/all"], function(compose, g){
                 move_by_vector(this, vector, speed)
 
                 // --- CAMERA --- //
-                function object_follow(object, camera){
-                    camera.x = object.x-350
-                    camera.y = object.y-200
+                function object_follow(object, camera, offset){
+                    camera.x = ~~object.x - offset.x
+                    camera.y = ~~object.y - offset.y
                 }            
 
-                object_follow(this, this.game.camera)
+                function offset_to_center(container, object){
+                    var offset = {}
+                    offset.x = ~~((container.width/2) - (object.width/2))
+                    offset.y = ~~((container.height/2) - (object.height/2))
+                    return offset
+                }
+                
+                object_follow(this, this.game.camera, offset_to_center(this.game.canvas, this.sprite.image))
             }
     })
 })
