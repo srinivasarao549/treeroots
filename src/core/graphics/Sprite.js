@@ -1,10 +1,11 @@
 define(["lib/compose"], function(compose){
  
-    return compose(function(image, object){
-            this.image = image
-            this._bound = object || this._bound
-        },
-        {
+    return compose({
+            init: function(image, object){
+                this.image = image
+                this._bound = object || this._bound
+                return this
+            },
             offset: true,
             _bound: {
                 x: 0,

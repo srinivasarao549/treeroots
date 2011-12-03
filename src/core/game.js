@@ -7,7 +7,7 @@ define(["lib/compose", "core/objectManager"], function(compose, ObjectManager){
             this.canvas = canvas
             this.context = canvas.getContext("2d")       
         }
-        this.entities = entities
+        this.entities = entities || {}
         
         // per instance objects
         this.objects = []
@@ -17,6 +17,20 @@ define(["lib/compose", "core/objectManager"], function(compose, ObjectManager){
     },
     {
         // Conveniences 
+
+        //// Game.register_entities
+        //
+        // mixes in entities to this.entities
+        register_entities: function(entities_obj){
+            function shallow_mixin(from, to){
+                Object.keys(from).forEach(function(val){
+                    to[val] = from[val]
+                })
+            }
+            shallow_mixin(entities_obj, this.entities)
+            
+            return this
+        },
 
         //// Game.create
         //

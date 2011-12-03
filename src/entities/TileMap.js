@@ -36,8 +36,9 @@ define(["lib/compose", "core/graphics/all"], function(compose, g){
                 buffer_context.drawImage(tile, tile_dim.width * col,  tile_dim.height * row)
             }.bind(this))
 
-            this.sprite = new g.Sprite(buffer).bind(this)
-            game.add(this.sprite)
+            this.sprite = game.create("Sprite")
+                            .init(buffer)
+                            .bind(this)
         }
     })
 

@@ -36,8 +36,40 @@ describe("game", function(){
         
         })
     
+
     })
+ 
+    describe("register_entities", function(){
     
+        it("must aggressively mixin entities from an entity object", function(){
+            var game = new Game(),
+                entity_list_1 = {
+                    foo: function(){ this.x = 0 },
+                    bar: function(){ this.x = 0 },
+                    baz: function(){ this.x = 0 }
+                },
+                entity_list_2 = {
+                    foo: function(){ this.x = 1 },
+                    quux: function(){ this.x = 1 }
+                }
+        
+            game.register_entities(entity_list_1)
+            game.register_entities(entity_list_2)
+
+            var foo = game.create("foo"),
+                bar = game.create("bar"),
+                baz = game.create("baz"),
+                quux = game.create("quux")
+
+            expect(foo.x).toEqual(1)
+            expect(quux.x).toEqual(1)
+            expect(baz.x).toEqual(0)
+            expect(bar.x).toEqual(0)
+        })
+    
+    
+    })
+
     describe("remove", function(){
     
         it("must call any on_remove callbacks when an object is removed via game.remove", function(){

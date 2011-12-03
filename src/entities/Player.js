@@ -8,9 +8,10 @@ define(["lib/compose", "core/graphics/all", 'entities/SpeechBubble'], function(c
             on_add: function(game){
                 this.game = game
                 this.input = game.input
-                this.sprite = new g.Sprite(game.images["warrior_90px.png"]).bind(this)
+                this.sprite = game.create("Sprite")
+                                .init(game.images["warrior_90px.png"])
+                                .bind(this)
 
-                game.add(this.sprite)
             },
             update: function(td){
                 

@@ -1,11 +1,13 @@
-require(['entities/all', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], function(entities, Game, Level, bean, flywheel){
+require(['entities/all', 'core/graphics/all', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'], function(entities, graphics, Game, Level, bean, flywheel){
 
     // get canvas, game and level
     var canvas = document.getElementById("treeroots"),
         container = document.getElementById("main_container"),
-        game = new Game(canvas, entities), 
+        game = new Game(canvas), 
         level = new Level(game, entities)
 
+    game.register_entities(entities)
+        .register_entities(graphics)
 
     // set up input handlers for game
 
@@ -69,7 +71,7 @@ require(['entities/all', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'],
                               undefined, 0, undefined, 0, 0, undefined, undefined, undefined, undefined, undefined,
                               ]
                     
-                    } 
+                    }
             ]})
 
     // Main engine loop
