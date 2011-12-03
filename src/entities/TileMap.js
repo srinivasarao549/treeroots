@@ -1,4 +1,4 @@
-define(["lib/compose", "core/graphics/all"], function(compose, g){
+define(["lib/compose"], function(compose){
 
     return compose({
         tileset: undefined,

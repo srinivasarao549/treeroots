@@ -1,4 +1,4 @@
-define(["lib/compose", "core/graphics/all", 'entities/SpeechBubble'], function(compose, g, SpeechBubble){
+define(["lib/compose"], function(compose){
 
     return compose({
             x: 0,
