@@ -61,7 +61,7 @@ require(['entities/all', 'core/graphics/all', 'core/game', 'core/level', 'lib/be
                     {type: "GameDimmer"},
                     {type: "Ground"},
                     {
-                        type: "TileMap", 
+                        type: "IsoTileMap", 
                         tileset: ["floor_1.png"],
                         map_dim: {width: 10, height: 20},
                         map: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
