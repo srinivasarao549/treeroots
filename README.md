@@ -8,9 +8,9 @@ Presently, only Chrome and Firefox are actively supported.
 
 ## Credits
 
-Hugh FD Jackson [@hughfdjackson](https://twitter.com/#!/hughfdjackson) - Development and Design
+Hugh FD Jackson [@hughfdjackson](https://twitter.com/#!/hughfdjackson) - Development and Game Design.
 
-Tsatse [@tsa_tse](https://twitter.com/#!/tsa_tse) - Art and Design 
+Tsatse [@tsa_tse](https://twitter.com/#!/tsa_tse) - Art, Game Design and Development.
 
 
 ### Can I play?
