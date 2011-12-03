@@ -70,7 +70,7 @@ define(["lib/compose", "core/graphics/all", 'entities/SpeechBubble'], function(c
 
                 // --- SPEECH BUBBLE DETECT --- //
                 if ( this.x > 200 && !this.bubble ) {
-                    this.bubble = new SpeechBubble()
+                    this.bubble = this.game.create("SpeechBubble");
                     this.bubble.set_text("Internal Dialog:", "I wonder if this wilderness has any burger joints..")
                     this.game.add(this.bubble)
                 }  

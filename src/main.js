@@ -3,7 +3,7 @@ require(['entities/all', 'core/game', 'core/level', 'lib/bean', 'lib/flywheel'],
     // get canvas, game and level
     var canvas = document.getElementById("treeroots"),
         container = document.getElementById("main_container"),
-        game = new Game(canvas), 
+        game = new Game(canvas, entities), 
         level = new Level(game, entities)
 
 

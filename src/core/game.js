@@ -1,20 +1,36 @@
 define(["lib/compose", "core/objectManager"], function(compose, ObjectManager){
 
-    return compose(ObjectManager, function(canvas){
-        this.objects = []
-        this.camera = {x: 0, y: 0}
+    return compose(ObjectManager, function(canvas, entities){
         
+        // params
         if ( canvas ) {
             this.canvas = canvas
             this.context = canvas.getContext("2d")       
         }
-    
+        this.entities = entities
+        
+        // per instance objects
+        this.objects = []
+        this.camera = {x: 0, y: 0}
         this.input = {}
         this.images = {}
-
     },
     {
+        // Conveniences 
 
+        //// Game.create
+        //
+        // Creates entity from entities list, if it exists
+        create: function(entity_name){
+            var entities = this.entities,
+                entity
+
+            if ( !(entities && entities[entity_name]) ) return
+        
+            entity = new entities[entity_name]
+            this.add(entity)
+            return entity
+        },
      
         // EVENTS
 

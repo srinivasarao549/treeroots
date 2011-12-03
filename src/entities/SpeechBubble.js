@@ -11,7 +11,6 @@ define(["lib/compose"], function(compose){
     
     },
     {
-
         on_remove: function(){
             this.main.removeChild(this.el);
         },
@@ -22,7 +21,6 @@ define(["lib/compose"], function(compose){
             this.el.style.display = "block"
             text_el.innerHTML = text
             name_el.innerHTML = name
-            
         }
     })
 

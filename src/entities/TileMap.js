@@ -37,10 +37,8 @@ define(["lib/compose", "core/graphics/all"], function(compose, g){
             }.bind(this))
 
             this.sprite = new g.Sprite(buffer).bind(this)
- 
             game.add(this.sprite)
         }
-    
     })
 
 })
