@@ -69,11 +69,10 @@ define(["lib/compose", "core/graphics/all", 'entities/SpeechBubble'], function(c
                 object_follow(this, this.game.camera, offset_to_center(this.game.canvas, this.sprite.image))
 
                 // --- SPEECH BUBBLE DETECT --- //
-                
                 if ( this.x > 200 && !this.bubble ) {
                     this.bubble = new SpeechBubble()
-                    this.game.add(this.bubble)
                     this.bubble.set_text("Internal Dialog:", "I wonder if this wilderness has any burger joints..")
+                    this.game.add(this.bubble)
                 }  
 
             }
